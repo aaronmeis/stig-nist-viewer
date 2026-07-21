@@ -2454,15 +2454,24 @@
     lb.classList.remove("open");
     lb.hidden = true;
     document.body.style.overflow = "";
+    const wasSlides = window.__lbMode === "slides";
+    window.__lbMode = null;
+    if (wasSlides && state.view === "deck") render();
   }
 
   function lightboxStep(delta) {
     if (!lightboxIds.length) return;
     lightboxIndex = (lightboxIndex + delta + lightboxIds.length) % lightboxIds.length;
+    if (window.__lbMode === "slides") {
+      state.deckSlide = lightboxIndex;
+      openSlideLightbox(lightboxIndex);
+      return;
+    }
     renderLightbox();
   }
 
   function renderLightbox() {
+    window.__lbMode = "diagrams";
     const id = lightboxIds[lightboxIndex];
     const d = getDiagram(id);
     if (!d) return;
@@ -3572,6 +3581,8 @@
 
   document.addEventListener("keydown", (e) => {
     const lbOpen = $("#lightbox")?.classList.contains("open");
+    const tag = (document.activeElement && document.activeElement.tagName) || "";
+    const typing = tag === "INPUT" || tag === "TEXTAREA" || document.activeElement?.isContentEditable;
     if (e.key === "Escape") {
       if (lbOpen) { closeLightbox(); return; }
       closeDetail();
@@ -3580,6 +3591,11 @@
     if (lbOpen) {
       if (e.key === "ArrowLeft") { e.preventDefault(); lightboxStep(-1); return; }
       if (e.key === "ArrowRight") { e.preventDefault(); lightboxStep(1); return; }
+    }
+    if (!lbOpen && !typing && state.view === "deck") {
+      if (e.key === "ArrowLeft") { e.preventDefault(); setDeckSlide(state.deckSlide - 1); return; }
+      if (e.key === "ArrowRight") { e.preventDefault(); setDeckSlide(state.deckSlide + 1); return; }
+      if (e.key === "e" || e.key === "E") { e.preventDefault(); openSlideLightbox(state.deckSlide); return; }
     }
     if (e.key === "/" && document.activeElement !== $("#search") && !lbOpen) {
       e.preventDefault();
