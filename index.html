@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>STIG · NIST Viewer — Classified AI Lab</title>
-  <meta name="description" content="Navigate NIST SP 800-53 Rev 5, DISA STIGs, Zero Trust, and RMF requirements for a classified AI lab." />
+  <title>STIG · NIST Viewer — Learning Resource</title>
+  <meta name="description" content="Learning resource: navigate NIST SP 800-53 Rev 5, DISA STIGs, Zero Trust, and RMF themes for a classified AI lab scenario. Educational only — not official guidance." />
   <style>
     :root {
       --bg: #0b1220;
@@ -689,13 +689,13 @@
       <div class="brand">
         <div class="brand-mark">SN</div>
         STIG · NIST
-        <span>Classified AI Lab</span>
+        <span>Learning resource</span>
       </div>
       <div class="search-wrap">
         <input id="search" type="search" placeholder="Search controls, STIGs, families, keywords…  ( / )" autocomplete="off" />
       </div>
       <div class="top-meta">
-        <span class="pill"><span class="dot"></span> Offline SPA</span>
+        <span class="pill"><span class="dot"></span> Educational</span>
         <span class="pill" id="resultCount">—</span>
       </div>
     </header>
@@ -710,15 +710,16 @@
 
   <script>
   /* =========================================================================
-     DATA — derived from Classified AI Lab Data Architecture deep dive
-     + NIST SP 800-53 Rev 5 families + DISA STIG / ZT / RMF mappings
+     DATA — educational scenario: classified AI lab architecture themes
+     + NIST SP 800-53 Rev 5 families + DISA STIG / ZT / RMF study mappings
      ========================================================================= */
   const DATA = {
     meta: {
-      title: "Classified AI Lab Compliance Navigator",
-      source: "Classified AI Lab Data Architecture: Design, Compliance, and Lifecycle Framework",
+      title: "STIG · NIST Learning Navigator",
+      source: "Educational synthesis: classified AI lab architecture, compliance, and lifecycle themes",
       baseline: "NIST SP 800-53 Rev 5 · DISA STIGs · DoD Zero Trust · RMF / cATO",
-      constraint: "No data leaves the lab (high-side / air-gap posture)",
+      constraint: "Scenario constraint: no data leaves the lab (high-side / air-gap posture)",
+      disclaimer: "Learning resource only. Not official NIST, DISA, DoD, or organizational guidance. Not affiliated with any company or employer.",
     },
 
     families: [
@@ -872,7 +873,7 @@
           "Database STIG baselines for metadata stores",
         ],
         families: ["AC", "IA", "SC", "SI", "AU"],
-        lab: ["Internal Artifactory/Nexus/GitLab", "Model APIs", "Lab portals"],
+        lab: ["Internal artifact registry", "Model APIs", "Lab portals"],
       },
       {
         id: "boundary",
@@ -903,7 +904,7 @@
     ],
 
     controls: [
-      // —— Lab-critical controls (curated from deep dive themes) ——
+      // —— Lab-critical controls (curated for scenario study) ——
       { id: "AC-3", family: "AC", title: "Access Enforcement", severity: "high",
         summary: "Enforce approved authorizations for logical access to information and system resources.",
         lab: "RBAC on K8s and lab systems; no anonymous API access; namespace isolation between training and inference.",
@@ -1001,7 +1002,7 @@
         check: "Risk assessment updated when new model/pipeline classes added." },
       { id: "RA-5", family: "RA", title: "Vulnerability Monitoring and Scanning", severity: "high",
         summary: "Monitor and scan for vulnerabilities; remediate according to risk.",
-        lab: "Offline Trivy/Grype/Snyk DB on high side; scan before diode and after deploy.",
+        lab: "Offline vulnerability-scanner databases on the high side; scan before diode transfer and after deploy.",
         stigs: ["os", "container", "k8s"], layers: ["updates", "security"], zt: ["automation", "visibility"],
         check: "Scan results tied to image digests; SLA for critical CVEs." },
       { id: "SA-10", family: "SA", title: "Developer Configuration Management", severity: "med",
@@ -1168,7 +1169,7 @@
     { id: "zt", label: "Zero Trust pillars", ico: "✧", section: "Catalogs" },
     { id: "crosswalk", label: "Crosswalk", ico: "⇄", section: "Maps" },
     { id: "rmf", label: "RMF & cATO", ico: "↻", section: "Maps" },
-    { id: "assessor", label: "Assessor checklist", ico: "☑", section: "Maps" },
+    { id: "assessor", label: "Study checklist", ico: "☑", section: "Maps" },
   ];
 
   /* =========================================================================
@@ -1365,7 +1366,7 @@
         <p>${esc(l.standard)}</p>
       </div>
       <div class="detail-section">
-        <h4>Key design choice (deep dive)</h4>
+        <h4>Key design choice (scenario)</h4>
         <p>${esc(l.choice)}</p>
       </div>
       <div class="detail-section">
@@ -1534,34 +1535,39 @@
     const high = DATA.controls.filter(c => c.severity === "cat" || c.severity === "high").length;
     return `
       <div class="page-header">
-        <div class="breadcrumb">SOURCE · DEEP DIVE</div>
+        <div class="breadcrumb">LEARNING RESOURCE · EDUCATIONAL USE</div>
         <h1>${esc(DATA.meta.title)}</h1>
-        <p>Browse NIST SP 800-53 Rev 5 families, DISA STIG stacks, DoD Zero Trust pillars, and RMF/cATO expectations for a <strong style="color:var(--text)">classified AI lab</strong> with a strict <em>data-in / no-data-out</em> posture. Content is structured from your architecture deep dive for quick navigation—not a full STIG dump.</p>
+        <p>Browse NIST SP 800-53 Rev 5 families, DISA STIG stacks, DoD Zero Trust pillars, and RMF/cATO <strong style="color:var(--text)">concepts</strong> using a generic <strong style="color:var(--text)">classified AI lab</strong> scenario with a strict <em>data-in / no-data-out</em> posture. Built for study and literacy—not a full STIG dump or accreditation package.</p>
+      </div>
+      <div class="hint" style="margin-bottom:18px">
+        <strong>Learning resource.</strong> ${esc(DATA.meta.disclaimer)}
+        Product and standard names (NIST, DISA, DoD, Kubernetes, etc.) are used for educational reference only.
       </div>
       <div class="stats">
         <div class="stat"><div class="n">${DATA.families.length}</div><div class="l">NIST control families</div></div>
-        <div class="stat"><div class="n">${DATA.controls.length}</div><div class="l">Lab-mapped key controls</div></div>
+        <div class="stat"><div class="n">${DATA.controls.length}</div><div class="l">Scenario-mapped controls</div></div>
         <div class="stat"><div class="n">${DATA.stigs.length}</div><div class="l">STIG / SRG stacks</div></div>
         <div class="stat"><div class="n">${DATA.pillars.length}</div><div class="l">Zero Trust pillars</div></div>
         <div class="stat"><div class="n">${high}</div><div class="l">CAT I / high priority</div></div>
         <div class="stat"><div class="n">${DATA.layers.length}</div><div class="l">Architecture layers</div></div>
       </div>
       <div class="hint">
-        <strong>Constraint:</strong> ${esc(DATA.meta.constraint)}.
-        Start with <strong>Architecture layers</strong> for the big picture, or <strong>Assessor checklist</strong> for what a security reviewer typically looks for.
+        <strong>Scenario constraint:</strong> ${esc(DATA.meta.constraint)}.
+        Start with <strong>Architecture layers</strong> for the big picture, or <strong>Assessor checklist</strong> for typical evidence themes in study exercises.
       </div>
       <div style="margin-top:22px">
         <h2 style="font-size:15px;margin-bottom:12px;color:var(--text-muted)">Quick paths</h2>
         <div class="grid">
           <button class="card" data-view="layers"><div class="card-top"><h3>Architecture → controls</h3></div><p>Seven layers from ingress to lifecycle, each mapped to NIST, STIGs, and Zero Trust.</p></button>
-          <button class="card" data-view="crosswalk"><div class="card-top"><h3>Requirement crosswalk</h3></div><p>Mission needs (air-gap, SBOM, cATO…) mapped to control IDs and STIG stacks.</p></button>
-          <button class="card" data-view="assessor"><div class="card-top"><h3>Assessor checklist</h3></div><p>Ten evidence items drawn from the deep dive’s “what security will look for” guidance. Progress saves locally.</p></button>
+          <button class="card" data-view="crosswalk"><div class="card-top"><h3>Requirement crosswalk</h3></div><p>Scenario needs (air-gap, SBOM, cATO…) mapped to control IDs and STIG stacks.</p></button>
+          <button class="card" data-view="assessor"><div class="card-top"><h3>Study checklist</h3></div><p>Ten evidence themes a security reviewer often discusses. Progress saves locally in this browser.</p></button>
           <button class="card" data-view="stigs"><div class="card-top"><h3>DISA STIGs by stack</h3></div><p>OS, Kubernetes, Container Platform, Application SRG, and boundary/CDS.</p></button>
         </div>
       </div>
       <div class="source-bar">
-        Baseline: ${esc(DATA.meta.baseline)}<br/>
-        Source document: ${esc(DATA.meta.source)} · Also in <code style="color:var(--accent)">lab_design/Classified-AI-Lab-Data-Architecture.md</code>
+        <strong style="color:var(--text-muted)">Learning resource</strong> — not legal, accreditation, or employer guidance.<br/>
+        Baseline themes: ${esc(DATA.meta.baseline)}<br/>
+        ${esc(DATA.meta.source)}
       </div>
     `;
   }
@@ -1635,7 +1641,7 @@
       <div class="page-header">
         <div class="breadcrumb">${esc(crumbs.join(" · "))}</div>
         <h1>Key controls for the lab</h1>
-        <p>Curated ${DATA.controls.length} controls with lab-specific application notes. Not exhaustive of 800-53 — optimized for navigation of your deep dive themes.</p>
+        <p>Curated ${DATA.controls.length} controls with scenario application notes for learning. Not exhaustive of 800-53 — a study map, not an official catalog export.</p>
       </div>
       ${controlToolbar()}
       ${list.length ? `<div class="grid">${list.map(controlCard).join("")}</div>` : `<div class="empty">No controls match your filters. Clear filters or broaden search.</div>`}
@@ -1695,7 +1701,7 @@
       <div class="page-header">
         <div class="breadcrumb">MAP</div>
         <h1>Mission need → NIST → STIG → ZT</h1>
-        <p>Crosswalk of the deep dive’s compliance themes for quick briefing and package building.</p>
+        <p>Crosswalk of scenario compliance themes for study, self-briefing, and literacy exercises.</p>
       </div>
       <div class="table-wrap">
         <table>
@@ -1748,7 +1754,7 @@
         </div>
         <div class="card" style="cursor:default">
           <div class="card-top"><h3>Parallel: CMMC</h3></div>
-          <p>Aerospace/defense contractors handling CUI alongside classified data typically run a CMMC track (NIST 800-171 / 800-53 derivatives) in parallel.</p>
+          <p>Organizations handling CUI alongside classified data often study a parallel CMMC track (NIST 800-171 / 800-53 derivatives) as part of broader compliance literacy.</p>
         </div>
       </div>
     `;
@@ -1759,9 +1765,9 @@
     const done = DATA.assessor.filter(a => checks[a.id]).length;
     return `
       <div class="page-header">
-        <div class="breadcrumb">EVIDENCE</div>
-        <h1>What an assessor looks for</h1>
-        <p>From the deep dive’s security reviewer guidance. Check items off as evidence is ready — progress is stored in this browser only (${done}/${DATA.assessor.length} done).</p>
+        <div class="breadcrumb">STUDY CHECKLIST</div>
+        <h1>What an assessor often looks for</h1>
+        <p>Educational checklist of common evidence themes. Not a formal assessment package. Check items as you study — progress is stored in this browser only (${done}/${DATA.assessor.length} done).</p>
       </div>
       <div class="stats" style="grid-template-columns:repeat(3,1fr);max-width:480px">
         <div class="stat"><div class="n">${done}</div><div class="l">Complete</div></div>
