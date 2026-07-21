@@ -115,7 +115,9 @@ No proprietary processes, customer data, or organization-specific policy is incl
 | Key | Action |
 |-----|--------|
 | `/` | Focus search |
-| `Esc` | Close detail panel |
+| `Esc` | Close detail panel or diagram lightbox |
+| `←` / `→` | Previous / next diagram (lightbox open) |
+| Click diagram | Open full-size lightbox |
 
 ---
 

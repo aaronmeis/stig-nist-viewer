@@ -675,18 +675,47 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      cursor: zoom-in;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      width: 100%;
+      padding: 0;
+    }
+    .diagram-card:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .diagram-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
     .diagram-card.full {
       grid-column: 1 / -1;
     }
     .diagram-card header {
       padding: 14px 16px 0;
+      pointer-events: none;
     }
     .diagram-card header h3 {
       font-size: 14.5px;
       font-weight: 650;
       letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+    .diagram-card header h3 .zoom-hint {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-dim);
+      font-family: var(--mono);
+      opacity: 0.85;
+    }
+    .diagram-card:hover header h3 .zoom-hint { color: var(--accent); }
     .diagram-card header p {
       font-size: 12.5px;
       color: var(--text-muted);
@@ -696,6 +725,7 @@
     .diagram-body {
       padding: 8px 12px 14px;
       overflow-x: auto;
+      pointer-events: none;
     }
     .diagram-body svg {
       display: block;
@@ -712,6 +742,7 @@
       border-top: 1px solid var(--border);
       margin-top: auto;
       padding-top: 10px;
+      pointer-events: none;
     }
     .diagram-legend {
       display: flex;
@@ -744,6 +775,146 @@
       background: var(--accent-dim);
       border-color: rgba(56, 189, 248, 0.4);
       color: var(--accent);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: rgba(3, 8, 18, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-panel {
+      position: relative;
+      width: min(1100px, 100%);
+      max-height: min(92vh, 900px);
+      background: var(--bg-elev);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: lbIn 0.18s ease;
+    }
+    @keyframes lbIn {
+      from { opacity: 0; transform: scale(0.97) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .lightbox-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .lightbox-top h2 {
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      flex: 1;
+    }
+    .lightbox-top p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .lightbox-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .lightbox-btn {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      font-family: inherit;
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+    }
+    .lightbox-btn:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+      background: var(--bg-hover);
+    }
+    .lightbox-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+    .lightbox-stage {
+      flex: 1;
+      overflow: auto;
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(56, 189, 248, 0.06), transparent),
+        var(--bg);
+    }
+    .lightbox-stage svg {
+      width: 100%;
+      height: auto;
+      max-height: min(68vh, 620px);
+      display: block;
+    }
+    .lightbox-footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px 16px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .lightbox-footer .cap {
+      flex: 1;
+      min-width: 180px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .lightbox-footer .nav-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .lightbox-nav {
+      display: flex;
+      gap: 8px;
+    }
+    .lightbox-nav button {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .lightbox-nav button:hover:not(:disabled) {
+      color: var(--accent);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+    .lightbox-nav button:disabled { opacity: 0.35; cursor: default; }
+    .lightbox-hint {
+      width: 100%;
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: var(--mono);
     }
 
     @media (max-width: 860px) {
@@ -790,6 +961,32 @@
 
   <div class="detail-overlay" id="overlay">
     <aside class="detail-panel" id="detail" role="dialog" aria-modal="true"></aside>
+  </div>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" hidden>
+    <div class="lightbox-panel">
+      <div class="lightbox-top">
+        <div style="flex:1;min-width:0">
+          <h2 id="lightbox-title"></h2>
+          <p id="lightbox-blurb"></p>
+        </div>
+        <div class="lightbox-actions">
+          <button type="button" class="lightbox-btn" id="lb-prev" title="Previous (←)" aria-label="Previous diagram">‹</button>
+          <button type="button" class="lightbox-btn" id="lb-next" title="Next (→)" aria-label="Next diagram">›</button>
+          <button type="button" class="lightbox-btn" id="lb-close" title="Close (Esc)" aria-label="Close lightbox">×</button>
+        </div>
+      </div>
+      <div class="lightbox-stage" id="lightbox-stage"></div>
+      <div class="lightbox-footer">
+        <div class="cap" id="lightbox-caption"></div>
+        <span class="nav-label" id="lightbox-index"></span>
+        <div class="lightbox-nav">
+          <button type="button" id="lb-prev2">← Prev</button>
+          <button type="button" id="lb-next2">Next →</button>
+        </div>
+        <div class="lightbox-hint">Click backdrop or press Esc to close · ← → to navigate</div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1535,14 +1732,14 @@
   function diagramCard(d, { full } = {}) {
     const isFull = full ?? d.full;
     return `
-      <article class="diagram-card ${isFull ? "full" : ""}" id="diagram-${d.id}">
+      <button type="button" class="diagram-card ${isFull ? "full" : ""}" id="diagram-${d.id}" data-lightbox="${esc(d.id)}" aria-label="Open diagram: ${esc(d.title)}">
         <header>
-          <h3>${esc(d.title)}</h3>
+          <h3>${esc(d.title)}<span class="zoom-hint">click to enlarge</span></h3>
           <p>${esc(d.blurb)}</p>
         </header>
         <div class="diagram-body">${d.svg()}</div>
         <div class="diagram-caption">${esc(d.caption)}</div>
-      </article>
+      </button>
     `;
   }
 
@@ -1556,6 +1753,69 @@
       return d ? diagramCard(d, { full: ids.length === 1 }) : "";
     }).join("")}</div>`;
   }
+
+  /* Lightbox state */
+  let lightboxIds = [];
+  let lightboxIndex = 0;
+
+  function openLightbox(id, ids) {
+    const list = (ids && ids.length) ? ids : DIAGRAMS.map(d => d.id);
+    const idx = list.indexOf(id);
+    if (idx < 0) return;
+    lightboxIds = list;
+    lightboxIndex = idx;
+    closeDetail();
+    renderLightbox();
+    const lb = $("#lightbox");
+    lb.hidden = false;
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+    $("#lb-close")?.focus();
+  }
+
+  function closeLightbox() {
+    const lb = $("#lightbox");
+    if (!lb) return;
+    lb.classList.remove("open");
+    lb.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function lightboxStep(delta) {
+    if (!lightboxIds.length) return;
+    lightboxIndex = (lightboxIndex + delta + lightboxIds.length) % lightboxIds.length;
+    renderLightbox();
+  }
+
+  function renderLightbox() {
+    const id = lightboxIds[lightboxIndex];
+    const d = getDiagram(id);
+    if (!d) return;
+    $("#lightbox-title").textContent = d.title;
+    $("#lightbox-blurb").textContent = d.blurb;
+    $("#lightbox-caption").textContent = d.caption;
+    $("#lightbox-index").textContent = `${lightboxIndex + 1} / ${lightboxIds.length}`;
+    $("#lightbox-stage").innerHTML = d.svg();
+    const atStart = lightboxIds.length <= 1;
+    ["lb-prev", "lb-prev2", "lb-next", "lb-next2"].forEach(bid => {
+      const el = $("#" + bid);
+      if (el) el.disabled = atStart;
+    });
+  }
+
+  function wireLightboxTriggers(root) {
+    const scope = root || document;
+    const idsOnPage = [...scope.querySelectorAll("[data-lightbox]")].map(el => el.dataset.lightbox);
+    scope.querySelectorAll("[data-lightbox]").forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        openLightbox(el.dataset.lightbox, idsOnPage.length ? idsOnPage : null);
+      });
+    });
+  }
+
+  window.openLightbox = openLightbox;
+  window.closeLightbox = closeLightbox;
 
   /* =========================================================================
      HELPERS
@@ -1978,6 +2238,7 @@
       </div>
       <div class="source-bar" style="margin-top:18px">
         Educational illustrations only — simplified models, not official architecture drawings or accreditation artifacts.
+        <strong style="color:var(--text-muted)"> Click any diagram</strong> to open a full-size lightbox (← → to move between diagrams on the page).
       </div>
     `;
   }
@@ -2258,9 +2519,11 @@
     $("#main").innerHTML = html;
     $("#resultCount").textContent =
       state.view === "controls" ? `${filteredControls().length} controls` :
+      state.view === "diagrams" ? `${DIAGRAMS.length} diagrams` :
       state.q ? `q: ${state.q}` : DATA.meta.baseline.split("·")[0].trim();
 
     // wire interactions
+    wireLightboxTriggers($("#main"));
     $("#main").querySelectorAll("[data-ctrl]").forEach(el => {
       el.addEventListener("click", () => {
         const c = DATA.controls.find(x => x.id === el.dataset.ctrl);
@@ -2322,9 +2585,29 @@
     if (e.target === $("#overlay")) closeDetail();
   });
 
+  // Lightbox controls
+  const lb = $("#lightbox");
+  lb.addEventListener("click", (e) => {
+    if (e.target === lb) closeLightbox();
+  });
+  $("#lb-close").addEventListener("click", closeLightbox);
+  $("#lb-prev").addEventListener("click", () => lightboxStep(-1));
+  $("#lb-next").addEventListener("click", () => lightboxStep(1));
+  $("#lb-prev2").addEventListener("click", () => lightboxStep(-1));
+  $("#lb-next2").addEventListener("click", () => lightboxStep(1));
+
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDetail();
-    if (e.key === "/" && document.activeElement !== $("#search")) {
+    const lbOpen = $("#lightbox")?.classList.contains("open");
+    if (e.key === "Escape") {
+      if (lbOpen) { closeLightbox(); return; }
+      closeDetail();
+      return;
+    }
+    if (lbOpen) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); lightboxStep(-1); return; }
+      if (e.key === "ArrowRight") { e.preventDefault(); lightboxStep(1); return; }
+    }
+    if (e.key === "/" && document.activeElement !== $("#search") && !lbOpen) {
       e.preventDefault();
       $("#search").focus();
     }
