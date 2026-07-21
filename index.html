@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STIG · NIST Viewer — Classified AI Lab</title>
+  <meta name="description" content="Navigate NIST SP 800-53 Rev 5, DISA STIGs, Zero Trust, and RMF requirements for a classified AI lab." />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg-elev: #111a2e;
+      --bg-card: #151f35;
+      --bg-hover: #1a2740;
+      --border: #243049;
+      --border-strong: #334566;
+      --text: #e8eef9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #38bdf8;
+      --accent-dim: rgba(56, 189, 248, 0.12);
+      --accent-2: #a78bfa;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --high: #f97316;
+      --crit: #f43f5e;
+      --cat: #22d3ee;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      --sidebar-w: 280px;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow: hidden;
+    }
+
+    /* Layout */
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      grid-template-rows: 56px 1fr;
+      height: 100vh;
+    }
+    .topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+      background: linear-gradient(180deg, #0f172a 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+      z-index: 20;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 200px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-mark {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      display: grid; place-items: center;
+      font-size: 14px; font-weight: 800;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+    }
+    .brand span { color: var(--text-muted); font-weight: 500; font-size: 13px; margin-left: 4px; }
+
+    .search-wrap {
+      flex: 1;
+      max-width: 560px;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 9px 16px 9px 40px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .search-wrap::before {
+      content: "⌕";
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 16px;
+    }
+    .top-meta {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .pill .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 8px var(--ok);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--bg-elev);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 12px 10px 24px;
+    }
+    .nav-section {
+      margin-bottom: 18px;
+    }
+    .nav-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 6px 10px 8px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      padding: 9px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13.5px;
+      font-family: inherit;
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-item:hover { background: var(--bg-hover); color: var(--text); }
+    .nav-item.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .nav-item .ico { width: 18px; text-align: center; opacity: 0.85; }
+    .nav-item .count {
+      margin-left: auto;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      background: var(--bg);
+      padding: 1px 7px;
+      border-radius: 999px;
+    }
+    .nav-item.active .count { color: var(--accent); background: rgba(56,189,248,0.15); }
+
+    /* Main */
+    .main {
+      overflow-y: auto;
+      padding: 24px 28px 48px;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.08), transparent),
+        var(--bg);
+    }
+    .page-header {
+      margin-bottom: 22px;
+    }
+    .page-header h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .page-header p {
+      color: var(--text-muted);
+      max-width: 720px;
+      font-size: 14.5px;
+    }
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      font-family: var(--mono);
+    }
+
+    /* Filters toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+      align-items: center;
+    }
+    .chip {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.12s;
+    }
+    .chip:hover { border-color: var(--border-strong); color: var(--text); }
+    .chip.active {
+      background: var(--accent-dim);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: var(--accent);
+    }
+    .toolbar .spacer { flex: 1; }
+    .select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-family: inherit;
+    }
+
+    /* Cards grid */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .stat .n {
+      font-size: 1.65rem;
+      font-weight: 700;
+      font-family: var(--mono);
+      letter-spacing: -0.03em;
+      color: var(--accent);
+    }
+    .stat .l { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      width: 100%;
+    }
+    .card:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .card-id {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .card h3 {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.35;
+      flex: 1;
+    }
+    .card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+    .sev {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 5px;
+    }
+    .sev-cat { background: rgba(34, 211, 238, 0.15); color: var(--cat); }
+    .sev-high { background: rgba(249, 115, 22, 0.15); color: var(--high); }
+    .sev-med { background: rgba(251, 191, 36, 0.15); color: var(--warn); }
+    .sev-low { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); }
+
+    /* Detail panel */
+    .detail-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 20, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: none;
+      justify-content: flex-end;
+    }
+    .detail-overlay.open { display: flex; }
+    .detail-panel {
+      width: min(520px, 100vw);
+      height: 100%;
+      background: var(--bg-elev);
+      border-left: 1px solid var(--border);
+      box-shadow: -20px 0 60px rgba(0,0,0,0.4);
+      overflow-y: auto;
+      padding: 24px;
+      animation: slideIn 0.2s ease;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(24px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .detail-close {
+      float: right;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .detail-close:hover { color: var(--text); border-color: var(--border-strong); }
+    .detail-panel h2 {
+      font-size: 1.25rem;
+      margin: 8px 0 4px;
+      letter-spacing: -0.02em;
+      clear: both;
+    }
+    .detail-panel .detail-id {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .detail-section {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .detail-section h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .detail-section p, .detail-section li {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+    .detail-section ul {
+      padding-left: 18px;
+    }
+    .detail-section li { margin-bottom: 6px; }
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 4px 4px 0;
+      padding: 6px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--accent);
+      font-size: 12.5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .map-link:hover { border-color: var(--accent); }
+
+    /* Architecture layers */
+    .layers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .layer {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      width: 100%;
+    }
+    .layer:hover { border-color: rgba(56, 189, 248, 0.4); }
+    .layer-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent);
+    }
+    .layer-std {
+      font-size: 13px;
+      color: var(--text);
+    }
+    .layer-choice {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .layer-arrow { color: var(--text-dim); font-size: 18px; }
+
+    /* ZT pillars */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .pillar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      opacity: 0.7;
+    }
+    .pillar:hover { border-color: rgba(167, 139, 250, 0.5); transform: translateY(-2px); }
+    .pillar .num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+    .pillar h3 { font-size: 14px; margin: 6px 0 8px; }
+    .pillar p { font-size: 12.5px; color: var(--text-muted); }
+
+    /* Crosswalk table */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      padding: 12px 14px;
+      background: var(--bg-elev);
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg-hover); color: var(--text); }
+    td strong { color: var(--text); font-weight: 600; }
+    .mono { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+    /* Family list */
+    .family-list { display: flex; flex-direction: column; gap: 8px; }
+    .family-row {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      width: 100%;
+      transition: border-color 0.12s;
+    }
+    .family-row:hover { border-color: rgba(56, 189, 248, 0.4); }
+    .family-code {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--accent);
+    }
+    .family-name { font-weight: 600; font-size: 14px; }
+    .family-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .family-count {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      background: var(--bg);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* Checklist / assessor */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .check-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .check-item input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px; height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .check-item.done { opacity: 0.55; }
+    .check-item.done .check-title { text-decoration: line-through; }
+    .check-title { font-weight: 600; font-size: 13.5px; }
+    .check-body { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+
+    /* Empty / toast */
+    .empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-dim);
+    }
+    .hint {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .hint strong { color: var(--accent); }
+
+    .rmf-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .rmf-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      text-align: center;
+      position: relative;
+    }
+    .rmf-step .n {
+      width: 28px; height: 28px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: grid; place-items: center;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+    .rmf-step h4 { font-size: 12.5px; font-weight: 600; }
+    .rmf-step p { font-size: 11.5px; color: var(--text-dim); margin-top: 4px; }
+
+    .source-bar {
+      margin-top: 28px;
+      padding: 14px 16px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .source-bar a { color: var(--accent); text-decoration: none; }
+    .source-bar a:hover { text-decoration: underline; }
+
+    @media (max-width: 860px) {
+      .app { grid-template-columns: 1fr; grid-template-rows: 56px auto 1fr; }
+      .sidebar {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 8px;
+        gap: 4px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-section { display: flex; gap: 4px; margin: 0; align-items: center; }
+      .nav-label { display: none; }
+      .nav-item { white-space: nowrap; }
+      .nav-item .count { display: none; }
+      .layer { grid-template-columns: 1fr; }
+      .main { padding: 16px; }
+      .top-meta .pill:not(:first-child) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">SN</div>
+        STIG · NIST
+        <span>Classified AI Lab</span>
+      </div>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search controls, STIGs, families, keywords…  ( / )" autocomplete="off" />
+      </div>
+      <div class="top-meta">
+        <span class="pill"><span class="dot"></span> Offline SPA</span>
+        <span class="pill" id="resultCount">—</span>
+      </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar"></nav>
+    <main class="main" id="main"></main>
+  </div>
+
+  <div class="detail-overlay" id="overlay">
+    <aside class="detail-panel" id="detail" role="dialog" aria-modal="true"></aside>
+  </div>
+
+  <script>
+  /* =========================================================================
+     DATA — derived from Classified AI Lab Data Architecture deep dive
+     + NIST SP 800-53 Rev 5 families + DISA STIG / ZT / RMF mappings
+     ========================================================================= */
+  const DATA = {
+    meta: {
+      title: "Classified AI Lab Compliance Navigator",
+      source: "Classified AI Lab Data Architecture: Design, Compliance, and Lifecycle Framework",
+      baseline: "NIST SP 800-53 Rev 5 · DISA STIGs · DoD Zero Trust · RMF / cATO",
+      constraint: "No data leaves the lab (high-side / air-gap posture)",
+    },
+
+    families: [
+      { id: "AC", name: "Access Control", desc: "Limit system access to authorized users, processes, and devices; enforce least privilege and session controls.", nistCount: "≈64", labFocus: "high" },
+      { id: "AT", name: "Awareness and Training", desc: "Ensure personnel understand security risks and their role in protecting classified AI systems.", nistCount: "≈10", labFocus: "med" },
+      { id: "AU", name: "Audit and Accountability", desc: "Create, protect, and retain audit records to enable monitoring, analysis, and investigation.", nistCount: "≈16", labFocus: "high" },
+      { id: "CA", name: "Assessment, Authorization, and Monitoring", desc: "Assess controls, authorize systems (ATO/cATO), and continuously monitor security posture.", nistCount: "≈9", labFocus: "high" },
+      { id: "CM", name: "Configuration Management", desc: "Establish and maintain baseline configurations; control changes; inventory components.", nistCount: "≈14", labFocus: "high" },
+      { id: "CP", name: "Contingency Planning", desc: "Plans and capabilities to recover systems and operations after disruption.", nistCount: "≈13", labFocus: "med" },
+      { id: "IA", name: "Identification and Authentication", desc: "Identify and authenticate users, devices, and services before granting access.", nistCount: "≈12", labFocus: "high" },
+      { id: "IR", name: "Incident Response", desc: "Prepare for, detect, analyze, contain, eradicate, and recover from incidents.", nistCount: "≈10", labFocus: "med" },
+      { id: "MA", name: "Maintenance", desc: "Perform maintenance with authorized tools and personnel; control remote maintenance.", nistCount: "≈6", labFocus: "med" },
+      { id: "MP", name: "Media Protection", desc: "Protect and control system media; sanitize and destroy media with classified content.", nistCount: "≈8", labFocus: "high" },
+      { id: "PE", name: "Physical and Environmental Protection", desc: "Limit physical access; protect facilities, power, and environmental controls.", nistCount: "≈23", labFocus: "high" },
+      { id: "PL", name: "Planning", desc: "Security architecture, system security plans, rules of behavior, and privacy plans.", nistCount: "≈11", labFocus: "high" },
+      { id: "PM", name: "Program Management", desc: "Enterprise-wide security program controls (risk strategy, inventory, metrics).", nistCount: "≈32", labFocus: "med" },
+      { id: "PS", name: "Personnel Security", desc: "Screen, authorize, and terminate personnel access consistent with risk.", nistCount: "≈9", labFocus: "med" },
+      { id: "PT", name: "PII Processing and Transparency", desc: "Privacy controls for personal data processing, consent, and notice (Rev 5).", nistCount: "≈8", labFocus: "low" },
+      { id: "RA", name: "Risk Assessment", desc: "Assess risk; vulnerability scanning; supply-chain risk; criticality analysis.", nistCount: "≈10", labFocus: "high" },
+      { id: "SA", name: "System and Services Acquisition", desc: "Acquisition lifecycle, supply chain, development security, and external services.", nistCount: "≈23", labFocus: "high" },
+      { id: "SC", name: "System and Communications Protection", desc: "Boundary protection, encryption, isolation, and secure communications.", nistCount: "≈51", labFocus: "high" },
+      { id: "SI", name: "System and Information Integrity", desc: "Flaw remediation, malware protection, integrity monitoring, and input validation.", nistCount: "≈23", labFocus: "high" },
+      { id: "SR", name: "Supply Chain Risk Management", desc: "Identify, assess, and mitigate supply-chain risks for components and services.", nistCount: "≈12", labFocus: "high" },
+    ],
+
+    layers: [
+      {
+        id: "ingress",
+        name: "Data Ingress",
+        standard: "NSA NCDSMO Raise the Bar · CDS · Data diodes · CDR",
+        choice: "Unidirectional diode + low-side scanning for strict “no data out”",
+        families: ["SC", "AC", "SI", "SA"],
+        stigs: ["boundary", "os", "container"],
+        zt: ["data", "network"],
+      },
+      {
+        id: "updates",
+        name: "Software / Model Updates",
+        standard: "DevSecOps air-gap pipeline · SBOM · Offline vuln DBs",
+        choice: "Pinned-version transfer via diode; never “latest” tags",
+        families: ["CM", "SI", "RA", "SR", "SA"],
+        stigs: ["container", "k8s", "os"],
+        zt: ["apps", "automation"],
+      },
+      {
+        id: "train",
+        name: "Compute — Training",
+        standard: "Zero Trust Applications & Workloads pillar",
+        choice: "Dedicated dense GPU pool, parallel storage, checkpointing",
+        families: ["SC", "AC", "CM", "AU"],
+        stigs: ["k8s", "container", "os"],
+        zt: ["apps", "network"],
+      },
+      {
+        id: "infer",
+        name: "Compute — Inference",
+        standard: "Zero Trust Applications & Workloads pillar",
+        choice: "Separate autoscaled pool, latency SLA-driven",
+        families: ["SC", "AC", "SI", "AU"],
+        stigs: ["k8s", "container", "app"],
+        zt: ["apps", "data"],
+      },
+      {
+        id: "security",
+        name: "Security Baseline",
+        standard: "NIST 800-53 Rev 5 · DISA STIGs · RMF · CMMC",
+        choice: "STIG-hardened OS/container stack + cATO automation",
+        families: ["CA", "CM", "RA", "PL", "PM"],
+        stigs: ["os", "k8s", "container", "app"],
+        zt: ["automation", "visibility"],
+      },
+      {
+        id: "hybrid",
+        name: "Network / Hybrid",
+        standard: "DoD Zero Trust Strategy · IL5 / IL6 cloud",
+        choice: "Micro-segmented on-prem core; accredited cloud burst only",
+        families: ["SC", "AC", "CA", "CM"],
+        stigs: ["boundary", "os", "k8s"],
+        zt: ["network", "automation"],
+      },
+      {
+        id: "lifecycle",
+        name: "Equipment Lifecycle",
+        standard: "NSA PM 9-12 · NISPOM · DLA Disposition Services",
+        choice: "Media-type sanitization; EPL-listed equipment; DLA turn-in",
+        families: ["MP", "PE", "MA", "CM"],
+        stigs: ["os"],
+        zt: ["devices", "data"],
+      },
+    ],
+
+    stigs: [
+      {
+        id: "os",
+        name: "Operating System STIGs",
+        products: "RHEL, Windows Server, Ubuntu (as published)",
+        overlay: "MAC-2 Classified (or equivalent)",
+        summary: "Hardened OS baselines for hosts in the classified lab — authentication, auditing, services, filesystem permissions, and patch posture.",
+        focus: [
+          "Disable unnecessary services and ports",
+          "Enforce strong auth (smart card / multifactor where required)",
+          "Auditd / Windows Event Log retention and permissions",
+          "FIPS-validated crypto where mandated",
+          "SELinux / AppArmor / Windows integrity controls",
+        ],
+        families: ["AC", "AU", "CM", "IA", "SI", "SC"],
+        lab: ["All GPU nodes, management hosts, jump boxes"],
+      },
+      {
+        id: "k8s",
+        name: "Kubernetes STIG",
+        products: "Kubernetes control plane & worker nodes",
+        overlay: "MAC-2 Classified",
+        summary: "Cluster hardening: API server flags, etcd encryption, RBAC, admission controls, and node security aligned with DISA Kubernetes STIG.",
+        focus: [
+          "RBAC least privilege; no anonymous auth",
+          "Pod Security Standards / admission controllers",
+          "NetworkPolicy default-deny between namespaces",
+          "Image provenance & signed images only",
+          "API server audit logging enabled",
+        ],
+        families: ["AC", "CM", "SC", "AU", "SI", "IA"],
+        lab: ["Training cluster", "Inference cluster", "MLOps control plane"],
+      },
+      {
+        id: "container",
+        name: "Container Platform SRG / Runtime",
+        products: "Container runtime, registries, platform SRG",
+        overlay: "MAC-2 Classified",
+        summary: "DISA Container Platform Security Requirements Guide — image hygiene, runtime isolation, registry trust, and host mount restrictions for LLM/container workloads.",
+        focus: [
+          "Distroless / minimal base images",
+          "No privileged pods; drop capabilities",
+          "Internal registry only (post-diode ingest)",
+          "SBOM + vulnerability scan gates",
+          "Read-only root filesystem where possible",
+        ],
+        families: ["CM", "SI", "RA", "SR", "SC", "SA"],
+        lab: ["Model serving", "Training jobs", "Sidecar scanners"],
+      },
+      {
+        id: "app",
+        name: "Application / SRG STIGs",
+        products: "Web apps, APIs, databases (as applicable)",
+        overlay: "Mission-specific SRGs",
+        summary: "Application-layer STIGs and SRGs for lab portals, model APIs, artifact repositories, and data services exposed inside the high side.",
+        focus: [
+          "TLS everywhere; no cleartext credentials",
+          "Input validation & session management",
+          "Service accounts with scoped secrets",
+          "Database STIG baselines for metadata stores",
+        ],
+        families: ["AC", "IA", "SC", "SI", "AU"],
+        lab: ["Internal Artifactory/Nexus/GitLab", "Model APIs", "Lab portals"],
+      },
+      {
+        id: "boundary",
+        name: "Boundary / CDS / Network Controls",
+        products: "CDS, diodes, firewalls, IDS",
+        overlay: "NCDSMO RTB + network STIGs",
+        summary: "Cross-domain and network boundary protections that enforce data-in / no-data-out — Raise the Bar CDS, unidirectional diodes, and CDR.",
+        focus: [
+          "Hardware-enforced one-way transfer (diode)",
+          "Low-side staging, scan, then transfer",
+          "Content Disarm & Reconstruction (CDR)",
+          "No compensating manual bypass of CDS",
+          "Micro-segmentation vs flat trust zones",
+        ],
+        families: ["SC", "AC", "SI", "CA"],
+        lab: ["Ingress appliance", "Perimeter", "Enclave boundaries"],
+      },
+    ],
+
+    pillars: [
+      { id: "user", name: "User", num: "01", summary: "Identity, continuous authentication, least privilege for lab personnel.", families: ["AC", "IA", "PS", "AU"], lab: "Badge + MFA; privileged access workstations; no shared root." },
+      { id: "devices", name: "Devices", num: "02", summary: "Inventory, authorize, patch, and retire every host and accelerator.", families: ["CM", "SI", "MP", "MA"], lab: "GPU nodes, workstations, EPL destruction gear in asset inventory." },
+      { id: "apps", name: "Applications & Workloads", num: "03", summary: "Approved binaries, container provenance, segmented training vs inference.", families: ["CM", "SA", "SI", "SC"], lab: "Pinned images; separate pools; SBOM for models & libs." },
+      { id: "data", name: "Data", num: "04", summary: "Classification labels, encryption, and strict egress denial.", families: ["MP", "SC", "AC", "SI"], lab: "Data-in diode; labeling policy; no outbound path." },
+      { id: "network", name: "Network & Environment", num: "05", summary: "Micro-segmentation, enclave isolation, IL5/IL6 cloud only if used.", families: ["SC", "AC", "PE"], lab: "Per-workload enclaves; ZT overlay not flat VPN trust." },
+      { id: "automation", name: "Automation & Orchestration", num: "06", summary: "Policy-as-code, STIG continuous enforcement, cATO evidence feeds.", families: ["CA", "CM", "SI", "AU"], lab: "Admission controllers; IaC; automated STIG scans in pipeline." },
+      { id: "visibility", name: "Visibility & Analytics", num: "07", summary: "Central logs, detection, and AO-facing dashboards.", families: ["AU", "SI", "IR", "CA"], lab: "High-side SIEM; scan results; continuous monitoring for cATO." },
+    ],
+
+    controls: [
+      // —— Lab-critical controls (curated from deep dive themes) ——
+      { id: "AC-3", family: "AC", title: "Access Enforcement", severity: "high",
+        summary: "Enforce approved authorizations for logical access to information and system resources.",
+        lab: "RBAC on K8s and lab systems; no anonymous API access; namespace isolation between training and inference.",
+        stigs: ["k8s", "os", "app"], layers: ["train", "infer", "security"], zt: ["user", "apps"],
+        check: "Verify RBAC policies, admission controls, and OS ACLs match SSP roles." },
+      { id: "AC-4", family: "AC", title: "Information Flow Enforcement", severity: "cat",
+        summary: "Control information flows within the system and between interconnected systems based on policy.",
+        lab: "Core “no data out” control — diode/CDS enforces unidirectional flow; micro-segmentation between enclaves.",
+        stigs: ["boundary", "k8s", "os"], layers: ["ingress", "hybrid", "security"], zt: ["data", "network"],
+        check: "Document flow policy; prove no high→low path except accredited CDS (if any)." },
+      { id: "AC-6", family: "AC", title: "Least Privilege", severity: "high",
+        summary: "Employ the principle of least privilege, allowing only authorized access necessary for mission functions.",
+        lab: "Service accounts per workload; drop Linux capabilities; no cluster-admin for developers.",
+        stigs: ["k8s", "os", "app"], layers: ["train", "infer", "security"], zt: ["user", "apps"],
+        check: "Review privileged accounts quarterly; scan for privileged pods." },
+      { id: "AU-2", family: "AU", title: "Event Logging", severity: "high",
+        summary: "Determine events to be logged and ensure logging covers security-relevant actions.",
+        lab: "API server audit, container runtime, diode transfer logs, and model registry access.",
+        stigs: ["os", "k8s", "app"], layers: ["security", "updates"], zt: ["visibility"],
+        check: "Event catalog in SSP; sample logs for transfers and admin actions." },
+      { id: "AU-6", family: "AU", title: "Audit Record Review, Analysis, and Reporting", severity: "med",
+        summary: "Review and analyze audit records for indications of inappropriate or unusual activity.",
+        lab: "High-side SIEM / dashboards feeding continuous monitoring and cATO evidence.",
+        stigs: ["os", "k8s"], layers: ["security"], zt: ["visibility", "automation"],
+        check: "Defined review cadence and alerting runbooks." },
+      { id: "CA-2", family: "CA", title: "Control Assessments", severity: "high",
+        summary: "Assess security controls to determine effectiveness in their application.",
+        lab: "STIG scan results per component; automated assessment in pipelines where possible.",
+        stigs: ["os", "k8s", "container"], layers: ["security"], zt: ["automation", "visibility"],
+        check: "Current STIG SCAP/OpenSCAP or equivalent results archived for AO." },
+      { id: "CA-6", family: "CA", title: "Authorization", severity: "cat",
+        summary: "Authorize the system for operation based on determination of risk.",
+        lab: "ATO / cATO for each authorization boundary (prefer per workload class, not one monolith).",
+        stigs: ["os", "k8s", "container", "boundary"], layers: ["security", "train", "infer"], zt: ["automation"],
+        check: "Authorization package, boundary diagram, residual risk accepted by AO." },
+      { id: "CA-7", family: "CA", title: "Continuous Monitoring", severity: "high",
+        summary: "Develop and implement a continuous monitoring strategy for control effectiveness.",
+        lab: "cATO path: automated control testing + monitoring integrated with DevSecOps.",
+        stigs: ["os", "k8s", "container"], layers: ["security", "updates"], zt: ["automation", "visibility"],
+        check: "CM strategy document; live dashboards for authorizing officials." },
+      { id: "CM-2", family: "CM", title: "Baseline Configuration", severity: "high",
+        summary: "Develop, document, and maintain baseline configurations for systems.",
+        lab: "STIG-hardened golden images; IaC defines fabric; immutable version pins for containers.",
+        stigs: ["os", "k8s", "container"], layers: ["updates", "security"], zt: ["apps", "devices"],
+        check: "Baselines in CMDB/IaC; drift detection enabled." },
+      { id: "CM-3", family: "CM", title: "Configuration Change Control", severity: "high",
+        summary: "Determine types of changes; review, approve, and document configuration changes.",
+        lab: "All high-side changes via internal CI; diode pipeline for new artifacts — no ad-hoc pulls.",
+        stigs: ["os", "container"], layers: ["updates", "security"], zt: ["automation"],
+        check: "Change tickets linked to image digests and STIG scan IDs." },
+      { id: "CM-6", family: "CM", title: "Configuration Settings", severity: "high",
+        summary: "Establish and implement configuration settings consistent with security requirements.",
+        lab: "DISA STIG settings as the enforceable baseline for OS, K8s, and platform SRG.",
+        stigs: ["os", "k8s", "container", "app"], layers: ["security"], zt: ["automation"],
+        check: "Automated STIG compliance ≥ target; exceptions documented." },
+      { id: "CM-8", family: "CM", title: "System Component Inventory", severity: "high",
+        summary: "Develop and document an inventory of system components.",
+        lab: "SBOM for models, containers, libraries; hardware inventory including GPUs/HBM.",
+        stigs: ["os", "container"], layers: ["lifecycle", "updates", "security"], zt: ["devices", "apps"],
+        check: "Complete HW/SW/model inventory in SSP boundary." },
+      { id: "IA-2", family: "IA", title: "Identification and Authentication (Organizational Users)", severity: "high",
+        summary: "Uniquely identify and authenticate organizational users.",
+        lab: "No shared accounts on lab systems; multifactor for privileged access.",
+        stigs: ["os", "app", "k8s"], layers: ["security"], zt: ["user"],
+        check: "IdP integration / CAC-PKI patterns as required by classification level." },
+      { id: "IA-5", family: "IA", title: "Authenticator Management", severity: "high",
+        summary: "Manage system authenticators (passwords, keys, certificates, tokens).",
+        lab: "Secrets in vault; short-lived tokens for service accounts; rotate registry credentials.",
+        stigs: ["os", "k8s", "app"], layers: ["security", "infer"], zt: ["user", "apps"],
+        check: "Secret scanning + rotation policy evidence." },
+      { id: "MP-6", family: "MP", title: "Media Sanitization", severity: "cat",
+        summary: "Sanitize system media prior to disposal, release, or reuse.",
+        lab: "NSA PM 9-12 + NISPOM matrix; EPL-listed degauss/destroy; GPU HBM treated as volatile media class.",
+        stigs: ["os"], layers: ["lifecycle"], zt: ["devices", "data"],
+        check: "Disposition SOP; sanitization certificates; only EPL equipment used." },
+      { id: "MP-7", family: "MP", title: "Media Use", severity: "high",
+        summary: "Restrict use of media on systems using technical and procedural controls.",
+        lab: "USB/media policy for high-side; transfer only via accredited paths.",
+        stigs: ["os", "boundary"], layers: ["ingress", "lifecycle"], zt: ["data", "devices"],
+        check: "Technical controls blocking unauthorized removable media." },
+      { id: "PE-3", family: "PE", title: "Physical Access Control", severity: "high",
+        summary: "Enforce physical access authorizations at entry/exit points.",
+        lab: "Classified facility controls; rack/GPU cage access logs.",
+        stigs: [], layers: ["lifecycle", "security"], zt: ["devices", "network"],
+        check: "Physical access list matches personnel security clearances." },
+      { id: "PL-2", family: "PL", title: "System Security and Privacy Plans", severity: "high",
+        summary: "Develop and maintain a system security plan describing boundaries and controls.",
+        lab: "Separate or clearly scoped SSPs per training / inference / ingress boundary.",
+        stigs: [], layers: ["security"], zt: ["automation"],
+        check: "Current SSP with diagrams, STIGs list, and residual risks." },
+      { id: "RA-3", family: "RA", title: "Risk Assessment", severity: "high",
+        summary: "Conduct risk assessments of the system and the information it processes.",
+        lab: "Include AI-specific risks: model supply chain, data poisoning via ingress, GPU multi-tenancy.",
+        stigs: ["container"], layers: ["security", "ingress"], zt: ["visibility"],
+        check: "Risk assessment updated when new model/pipeline classes added." },
+      { id: "RA-5", family: "RA", title: "Vulnerability Monitoring and Scanning", severity: "high",
+        summary: "Monitor and scan for vulnerabilities; remediate according to risk.",
+        lab: "Offline Trivy/Grype/Snyk DB on high side; scan before diode and after deploy.",
+        stigs: ["os", "container", "k8s"], layers: ["updates", "security"], zt: ["automation", "visibility"],
+        check: "Scan results tied to image digests; SLA for critical CVEs." },
+      { id: "SA-10", family: "SA", title: "Developer Configuration Management", severity: "med",
+        summary: "Require developers to perform configuration management during design, development, and implementation.",
+        lab: "Internal Git + CI; signed commits/images; no internet package pulls at build time on high side.",
+        stigs: ["container", "app"], layers: ["updates"], zt: ["apps", "automation"],
+        check: "Pipeline definition enforces internal registry only." },
+      { id: "SA-15", family: "SA", title: "Development Process, Standards, and Tools", severity: "med",
+        summary: "Require developers to follow a documented development process with security engineering.",
+        lab: "DevSecOps air-gap pattern; SBOM generation integrated in CI.",
+        stigs: ["container"], layers: ["updates", "security"], zt: ["apps"],
+        check: "Documented SDLC for lab software and model packaging." },
+      { id: "SC-7", family: "SC", title: "Boundary Protection", severity: "cat",
+        summary: "Monitor and control communications at external boundaries and key internal boundaries.",
+        lab: "Diode / CDS as primary external boundary; NetworkPolicy + firewalls for internal enclaves.",
+        stigs: ["boundary", "k8s", "os"], layers: ["ingress", "hybrid", "security"], zt: ["network", "data"],
+        check: "Architecture diagram shows all boundary devices; no dual-homed bypass hosts." },
+      { id: "SC-8", family: "SC", title: "Transmission Confidentiality and Integrity", severity: "high",
+        summary: "Protect confidentiality and integrity of transmitted information.",
+        lab: "TLS for all high-side services; encrypted interconnect for multi-node training where required.",
+        stigs: ["os", "k8s", "app"], layers: ["train", "infer", "hybrid"], zt: ["network", "data"],
+        check: "Cipher policy; cert management; no plaintext admin protocols." },
+      { id: "SC-39", family: "SC", title: "Process Isolation", severity: "high",
+        summary: "Maintain a separate execution domain for each executing process.",
+        lab: "Container isolation, namespaces, and workload pool segmentation (train vs infer).",
+        stigs: ["k8s", "container", "os"], layers: ["train", "infer"], zt: ["apps", "network"],
+        check: "No shared privileged IPC; PSS restricted." },
+      { id: "SI-2", family: "SI", title: "Flaw Remediation", severity: "high",
+        summary: "Identify, report, and correct system flaws; install security-relevant updates.",
+        lab: "Low-side fetch → scan → diode → high-side registry; never live internet patching.",
+        stigs: ["os", "container", "k8s"], layers: ["updates", "security"], zt: ["automation", "devices"],
+        check: "Patch SLAs met via diode pipeline metrics." },
+      { id: "SI-3", family: "SI", title: "Malicious Code Protection", severity: "high",
+        summary: "Implement malicious code protection mechanisms at entry and exit points and on systems.",
+        lab: "CDR on transfers; image scanning; offline AV/malware signatures on high side.",
+        stigs: ["boundary", "os", "container"], layers: ["ingress", "updates"], zt: ["data", "apps"],
+        check: "CDR + malware engines on staging path; signature update process documented." },
+      { id: "SI-7", family: "SI", title: "Software, Firmware, and Information Integrity", severity: "high",
+        summary: "Employ integrity verification tools to detect unauthorized changes.",
+        lab: "Image digests, signature verification, and admission webhooks blocking unsigned images.",
+        stigs: ["k8s", "container", "os"], layers: ["updates", "security"], zt: ["apps", "automation"],
+        check: "Only signed digests admitted to clusters." },
+      { id: "SR-3", family: "SR", title: "Supply Chain Controls and Processes", severity: "high",
+        summary: "Establish processes to identify and address weaknesses or deficiencies in the supply chain.",
+        lab: "Trusted base images; vendor risk for CDS/diode hardware; model weight provenance.",
+        stigs: ["container"], layers: ["updates", "ingress", "lifecycle"], zt: ["apps", "devices"],
+        check: "Approved vendor list; SBOM review for critical components." },
+      { id: "SR-4", family: "SR", title: "Provenance", severity: "high",
+        summary: "Document, monitor, and maintain valid provenance of systems, components, and services.",
+        lab: "Chain of custody from low-side download through diode to high-side artifact repo.",
+        stigs: ["container", "boundary"], layers: ["ingress", "updates"], zt: ["apps", "data"],
+        check: "Transfer logs link external source → scan ID → high-side digest." },
+
+      // —— Extra supporting controls ——
+      { id: "AC-17", family: "AC", title: "Remote Access", severity: "high",
+        summary: "Establish usage restrictions and implementation guidance for remote access.",
+        lab: "If remote admin exists, only via approved PAW/VDI patterns inside accreditation boundary — never commercial internet RDP into high side.",
+        stigs: ["os", "boundary"], layers: ["hybrid", "security"], zt: ["user", "network"],
+        check: "Remote access methods listed in SSP with compensating controls." },
+      { id: "CM-7", family: "CM", title: "Least Functionality", severity: "high",
+        summary: "Configure systems to provide only essential capabilities.",
+        lab: "Distroless images; disabled unused OS packages; minimal node OS surface.",
+        stigs: ["os", "container"], layers: ["updates", "security"], zt: ["apps", "devices"],
+        check: "Package inventory vs baseline; deny-by-default ports." },
+      { id: "IR-4", family: "IR", title: "Incident Handling", severity: "med",
+        summary: "Implement an incident handling capability for security incidents.",
+        lab: "High-side IR playbooks including compromised model weights and diode misuse.",
+        stigs: ["os"], layers: ["security"], zt: ["visibility"],
+        check: "IR plan tested; contact tree current." },
+      { id: "CP-9", family: "CP", title: "System Backup", severity: "med",
+        summary: "Conduct backups of user-level and system-level information.",
+        lab: "Checkpoint storage for training; encrypted backups stay inside high-side boundary.",
+        stigs: ["os"], layers: ["train", "lifecycle"], zt: ["data"],
+        check: "Backup encryption and restore test evidence." },
+      { id: "SA-9", family: "SA", title: "External System Services", severity: "high",
+        summary: "Require providers of external services to comply with security requirements.",
+        lab: "IL5/IL6 cloud only; commercial multi-tenant cloud not permitted for classified processing.",
+        stigs: ["boundary"], layers: ["hybrid"], zt: ["network", "apps"],
+        check: "Cloud IL rating matches data classification; contracts/ATO for CSP." },
+      { id: "SC-28", family: "SC", title: "Protection of Information at Rest", severity: "high",
+        summary: "Protect the confidentiality and integrity of information at rest.",
+        lab: "Disk encryption on nodes and storage; model weights and datasets encrypted at rest.",
+        stigs: ["os"], layers: ["train", "infer", "lifecycle"], zt: ["data"],
+        check: "Encryption keys managed per policy; escrow/recovery documented." },
+      { id: "SI-4", family: "SI", title: "System Monitoring", severity: "high",
+        summary: "Monitor the system to detect attacks and indicators of potential attacks.",
+        lab: "Host/network sensors inside enclaves; GPU job telemetry for abuse signals.",
+        stigs: ["os", "k8s"], layers: ["security", "train"], zt: ["visibility"],
+        check: "Monitoring coverage map vs architecture." },
+      { id: "PM-5", family: "PM", title: "System Inventory", severity: "med",
+        summary: "Develop and maintain an inventory of organizational systems.",
+        lab: "Enterprise view of all lab authorization boundaries and their STIGs.",
+        stigs: [], layers: ["security", "lifecycle"], zt: ["devices", "visibility"],
+        check: "Authoritative inventory aligned with RMF packages." },
+      { id: "AT-2", family: "AT", title: "Literacy Training and Awareness", severity: "low",
+        summary: "Provide security and privacy literacy training to system users.",
+        lab: "Training on air-gap handling, classification marking, and diode procedures.",
+        stigs: [], layers: ["security"], zt: ["user"],
+        check: "Training records for lab users and admins." },
+      { id: "PS-3", family: "PS", title: "Personnel Screening", severity: "med",
+        summary: "Screen individuals prior to authorizing access to the system.",
+        lab: "Clearance/eligibility matching classification of lab data and models.",
+        stigs: [], layers: ["security"], zt: ["user"],
+        check: "Access provisioning gated on personnel security." },
+    ],
+
+    assessor: [
+      { id: "a1", title: "Data classification & labeling policy", body: "Documented and enforced labeling tied to Zero Trust Data pillar; covers training data, weights, and containers." },
+      { id: "a2", title: "STIG compliance scan results", body: "Verifiable current scans per OS, Kubernetes, and container platform components in the authorization boundary." },
+      { id: "a3", title: "Approved cross-domain / diode ingress", body: "Accredited CDS or unidirectional diode path with no compensating manual bypass for high-side content." },
+      { id: "a4", title: "Network micro-segmentation", body: "Segmented enclaves for training, inference, and management — not flat trust zones." },
+      { id: "a5", title: "SBOM coverage", body: "Hardware/software bill of materials for every AI model, container, and library in the environment." },
+      { id: "a6", title: "Air-gap update pipeline", body: "Low-side fetch → scan → diode → high-side registry with pinned versions only." },
+      { id: "a7", title: "Workload pool separation", body: "Distinct compute pools (and preferably RMF boundaries) for training vs fine-tuning vs inference." },
+      { id: "a8", title: "Media sanitization SOP", body: "NSA PM 9-12 / NISPOM procedures; EPL-listed destruction equipment; GPU memory addressed." },
+      { id: "a9", title: "cATO / continuous monitoring path", body: "Automated evidence collection and AO-facing dashboards rather than point-in-time only assessments." },
+      { id: "a10", title: "CMMC track (if CUI)", body: "Parallel CMMC assessment path when handling CUI alongside classified data." },
+    ],
+
+    rmf: [
+      { n: 1, name: "Prepare", desc: "Roles, risk strategy, common controls, profiles" },
+      { n: 2, name: "Categorize", desc: "System impact; classification-driven boundary" },
+      { n: 3, name: "Select", desc: "800-53 baselines + overlays; STIG product set" },
+      { n: 4, name: "Implement", desc: "Hardening, IaC, policy-as-code, diode pipeline" },
+      { n: 5, name: "Assess", desc: "STIG scans, control tests, penetration / validation" },
+      { n: 6, name: "Authorize", desc: "AO risk decision → ATO or cATO" },
+      { n: 7, name: "Monitor", desc: "Continuous monitoring, drift, reassess" },
+    ],
+
+    crosswalk: [
+      { need: "No data leaves the lab", nist: "AC-4, SC-7, MP-7", stig: "Boundary / CDS, NetworkPolicy", zt: "Data, Network" },
+      { need: "STIG-hardened stack", nist: "CM-2, CM-6, CA-2", stig: "OS, K8s, Container SRG", zt: "Devices, Apps, Automation" },
+      { need: "Container / LLM hygiene", nist: "CM-7, SI-7, RA-5, SR-4", stig: "Container Platform SRG", zt: "Apps & Workloads" },
+      { need: "K8s multi-tenant AI", nist: "AC-3, AC-6, SC-39, AU-2", stig: "Kubernetes STIG", zt: "Apps, Network" },
+      { need: "Air-gap patching", nist: "SI-2, CM-3, SA-10", stig: "OS + Container", zt: "Automation" },
+      { need: "SBOM / supply chain", nist: "CM-8, SR-3, SR-4, RA-3", stig: "Container image gates", zt: "Apps, Visibility" },
+      { need: "cATO readiness", nist: "CA-6, CA-7, AU-6, SI-4", stig: "Continuous STIG automation", zt: "Automation, Visibility" },
+      { need: "Media destruction", nist: "MP-6, MA-*, PE-*", stig: "OS host decommission", zt: "Devices, Data" },
+      { need: "Hybrid IL5/IL6 cloud", nist: "SA-9, SC-7, CA-6", stig: "Boundary + CSP controls", zt: "Network" },
+      { need: "Assessor package", nist: "PL-2, CA-2, RA-3, CM-8", stig: "Scan exports", zt: "All pillars (evidence)" },
+    ],
+  };
+
+  /* =========================================================================
+     STATE & ROUTING
+     ========================================================================= */
+  const state = {
+    view: "home",
+    family: null,
+    stig: null,
+    pillar: null,
+    layer: null,
+    severity: "all",
+    labFocus: "all",
+    q: "",
+  };
+
+  const VIEWS = [
+    { id: "home", label: "Overview", ico: "◈", section: "Navigate" },
+    { id: "layers", label: "Architecture layers", ico: "▣", section: "Navigate" },
+    { id: "families", label: "NIST 800-53 families", ico: "⬢", section: "Catalogs" },
+    { id: "controls", label: "Key controls", ico: "◎", section: "Catalogs" },
+    { id: "stigs", label: "DISA STIGs", ico: "⬡", section: "Catalogs" },
+    { id: "zt", label: "Zero Trust pillars", ico: "✧", section: "Catalogs" },
+    { id: "crosswalk", label: "Crosswalk", ico: "⇄", section: "Maps" },
+    { id: "rmf", label: "RMF & cATO", ico: "↻", section: "Maps" },
+    { id: "assessor", label: "Assessor checklist", ico: "☑", section: "Maps" },
+  ];
+
+  /* =========================================================================
+     HELPERS
+     ========================================================================= */
+  const $ = (sel, el = document) => el.querySelector(sel);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  function sevClass(s) {
+    if (s === "cat") return "sev-cat";
+    if (s === "high") return "sev-high";
+    if (s === "med") return "sev-med";
+    return "sev-low";
+  }
+  function sevLabel(s) {
+    return { cat: "CAT I / Critical", high: "High", med: "Medium", low: "Low" }[s] || s;
+  }
+
+  function familyName(id) {
+    return DATA.families.find(f => f.id === id)?.name || id;
+  }
+  function stigName(id) {
+    return DATA.stigs.find(s => s.id === id)?.name || id;
+  }
+  function pillarName(id) {
+    return DATA.pillars.find(p => p.id === id)?.name || id;
+  }
+  function layerName(id) {
+    return DATA.layers.find(l => l.id === id)?.name || id;
+  }
+
+  function matchQ(obj, fields) {
+    if (!state.q) return true;
+    const q = state.q.toLowerCase();
+    return fields.some(f => String(obj[f] ?? "").toLowerCase().includes(q))
+      || (obj.families && obj.families.some(x => x.toLowerCase().includes(q)))
+      || (obj.stigs && obj.stigs.some(x => x.toLowerCase().includes(q)))
+      || (obj.focus && obj.focus.some(x => x.toLowerCase().includes(q)))
+      || (obj.lab && (Array.isArray(obj.lab) ? obj.lab : [obj.lab]).some(x => x.toLowerCase().includes(q)));
+  }
+
+  function filteredControls() {
+    return DATA.controls.filter(c => {
+      if (state.family && c.family !== state.family) return false;
+      if (state.stig && !(c.stigs || []).includes(state.stig)) return false;
+      if (state.pillar && !(c.zt || []).includes(state.pillar)) return false;
+      if (state.layer && !(c.layers || []).includes(state.layer)) return false;
+      if (state.severity !== "all" && c.severity !== state.severity) return false;
+      if (!matchQ(c, ["id", "title", "summary", "lab", "check", "family"])) return false;
+      return true;
+    });
+  }
+
+  function loadChecks() {
+    try { return JSON.parse(localStorage.getItem("stig-nist-checks") || "{}"); }
+    catch { return {}; }
+  }
+  function saveChecks(map) {
+    localStorage.setItem("stig-nist-checks", JSON.stringify(map));
+  }
+
+  /* =========================================================================
+     DETAIL PANEL
+     ========================================================================= */
+  function openDetail(html) {
+    $("#detail").innerHTML = html;
+    $("#overlay").classList.add("open");
+  }
+  function closeDetail() {
+    $("#overlay").classList.remove("open");
+  }
+
+  function controlDetail(c) {
+    openDetail(`
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">×</button>
+      <div class="detail-id">${esc(c.id)}</div>
+      <h2>${esc(c.title)}</h2>
+      <div class="tags" style="margin-top:10px">
+        <span class="sev ${sevClass(c.severity)}">${sevLabel(c.severity)}</span>
+        <span class="tag">${esc(c.family)} — ${esc(familyName(c.family))}</span>
+      </div>
+      <div class="detail-section">
+        <h4>NIST control intent</h4>
+        <p>${esc(c.summary)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Classified AI lab application</h4>
+        <p>${esc(c.lab)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>How to verify</h4>
+        <p>${esc(c.check)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Related STIGs</h4>
+        <div>${(c.stigs || []).length ? c.stigs.map(s =>
+          `<button class="map-link" onclick="gotoStig('${s}')">${esc(stigName(s))}</button>`
+        ).join("") : "<p>No product STIG mapping in this catalog (program/policy control).</p>"}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Architecture layers</h4>
+        <div>${(c.layers || []).map(l =>
+          `<button class="map-link" onclick="gotoLayer('${l}')">${esc(layerName(l))}</button>`
+        ).join("") || "—"}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Zero Trust pillars</h4>
+        <div>${(c.zt || []).map(p =>
+          `<button class="map-link" onclick="gotoPillar('${p}')">${esc(pillarName(p))}</button>`
+        ).join("") || "—"}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Family</h4>
+        <button class="map-link" onclick="gotoFamily('${c.family}')">${esc(c.family)} · ${esc(familyName(c.family))}</button>
+      </div>
+    `);
+  }
+
+  function stigDetail(s) {
+    openDetail(`
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">×</button>
+      <div class="detail-id">DISA STIG / SRG</div>
+      <h2>${esc(s.name)}</h2>
+      <div class="tags" style="margin-top:10px">
+        <span class="tag">${esc(s.overlay)}</span>
+      </div>
+      <div class="detail-section">
+        <h4>Products</h4>
+        <p>${esc(s.products)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Summary</h4>
+        <p>${esc(s.summary)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Implementation focus</h4>
+        <ul>${s.focus.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+      </div>
+      <div class="detail-section">
+        <h4>Lab components</h4>
+        <ul>${s.lab.map(f => `<li>${esc(f)}</li>`).join("")}</ul>
+      </div>
+      <div class="detail-section">
+        <h4>NIST families</h4>
+        <div>${s.families.map(f =>
+          `<button class="map-link" onclick="gotoFamily('${f}')">${esc(f)}</button>`
+        ).join("")}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Mapped key controls</h4>
+        <div>${DATA.controls.filter(c => (c.stigs||[]).includes(s.id)).map(c =>
+          `<button class="map-link" onclick="showControl('${c.id}')">${esc(c.id)}</button>`
+        ).join("") || "—"}</div>
+      </div>
+    `);
+  }
+
+  function pillarDetail(p) {
+    openDetail(`
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">×</button>
+      <div class="detail-id">Zero Trust pillar ${esc(p.num)}</div>
+      <h2>${esc(p.name)}</h2>
+      <div class="detail-section">
+        <h4>Intent</h4>
+        <p>${esc(p.summary)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Lab application</h4>
+        <p>${esc(p.lab)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>NIST families</h4>
+        <div>${p.families.map(f =>
+          `<button class="map-link" onclick="gotoFamily('${f}')">${esc(f)} · ${esc(familyName(f))}</button>`
+        ).join("")}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Key controls</h4>
+        <div>${DATA.controls.filter(c => (c.zt||[]).includes(p.id)).map(c =>
+          `<button class="map-link" onclick="showControl('${c.id}')">${esc(c.id)} ${esc(c.title)}</button>`
+        ).join("")}</div>
+      </div>
+    `);
+  }
+
+  function layerDetail(l) {
+    openDetail(`
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">×</button>
+      <div class="detail-id">Architecture layer</div>
+      <h2>${esc(l.name)}</h2>
+      <div class="detail-section">
+        <h4>Governing standard</h4>
+        <p>${esc(l.standard)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Key design choice (deep dive)</h4>
+        <p>${esc(l.choice)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>NIST families</h4>
+        <div>${l.families.map(f =>
+          `<button class="map-link" onclick="gotoFamily('${f}')">${esc(f)}</button>`
+        ).join("")}</div>
+      </div>
+      <div class="detail-section">
+        <h4>STIGs</h4>
+        <div>${l.stigs.map(s =>
+          `<button class="map-link" onclick="gotoStig('${s}')">${esc(stigName(s))}</button>`
+        ).join("")}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Zero Trust</h4>
+        <div>${l.zt.map(p =>
+          `<button class="map-link" onclick="gotoPillar('${p}')">${esc(pillarName(p))}</button>`
+        ).join("")}</div>
+      </div>
+      <div class="detail-section">
+        <h4>Key controls</h4>
+        <div>${DATA.controls.filter(c => (c.layers||[]).includes(l.id)).map(c =>
+          `<button class="map-link" onclick="showControl('${c.id}')">${esc(c.id)}</button>`
+        ).join("")}</div>
+      </div>
+    `);
+  }
+
+  // Global handlers for inline onclick
+  window.closeDetail = closeDetail;
+  window.showControl = (id) => {
+    const c = DATA.controls.find(x => x.id === id);
+    if (c) controlDetail(c);
+  };
+  window.gotoFamily = (id) => {
+    state.view = "controls";
+    state.family = id;
+    state.stig = state.pillar = state.layer = null;
+    closeDetail();
+    render();
+  };
+  window.gotoStig = (id) => {
+    state.view = "controls";
+    state.stig = id;
+    state.family = state.pillar = state.layer = null;
+    closeDetail();
+    render();
+  };
+  window.gotoPillar = (id) => {
+    state.view = "controls";
+    state.pillar = id;
+    state.family = state.stig = state.layer = null;
+    closeDetail();
+    render();
+  };
+  window.gotoLayer = (id) => {
+    state.view = "controls";
+    state.layer = id;
+    state.family = state.stig = state.pillar = null;
+    closeDetail();
+    render();
+  };
+
+  /* =========================================================================
+     RENDER VIEWS
+     ========================================================================= */
+  function renderSidebar() {
+    const sections = {};
+    VIEWS.forEach(v => {
+      (sections[v.section] ||= []).push(v);
+    });
+    let html = "";
+    for (const [sec, items] of Object.entries(sections)) {
+      html += `<div class="nav-section"><div class="nav-label">${esc(sec)}</div>`;
+      items.forEach(v => {
+        let count = "";
+        if (v.id === "controls") count = DATA.controls.length;
+        if (v.id === "families") count = DATA.families.length;
+        if (v.id === "stigs") count = DATA.stigs.length;
+        if (v.id === "zt") count = DATA.pillars.length;
+        if (v.id === "layers") count = DATA.layers.length;
+        if (v.id === "assessor") count = DATA.assessor.length;
+        html += `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">
+          <span class="ico">${v.ico}</span>${esc(v.label)}
+          ${count !== "" ? `<span class="count">${count}</span>` : ""}
+        </button>`;
+      });
+      html += `</div>`;
+    }
+    $("#sidebar").innerHTML = html;
+    $("#sidebar").querySelectorAll("[data-view]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.view = btn.dataset.view;
+        if (state.view !== "controls") {
+          state.family = state.stig = state.pillar = state.layer = null;
+        }
+        render();
+      });
+    });
+  }
+
+  function controlToolbar() {
+    const activeFilters = [];
+    if (state.family) activeFilters.push(`Family: ${state.family}`);
+    if (state.stig) activeFilters.push(`STIG: ${stigName(state.stig)}`);
+    if (state.pillar) activeFilters.push(`ZT: ${pillarName(state.pillar)}`);
+    if (state.layer) activeFilters.push(`Layer: ${layerName(state.layer)}`);
+
+    return `
+      <div class="toolbar">
+        ${["all","cat","high","med","low"].map(s =>
+          `<button class="chip ${state.severity === s ? "active" : ""}" data-sev="${s}">${s === "all" ? "All severity" : sevLabel(s)}</button>`
+        ).join("")}
+        <span class="spacer"></span>
+        ${activeFilters.length ? `
+          <span class="pill">${esc(activeFilters.join(" · "))}</span>
+          <button class="chip" id="clearFilters">Clear filters</button>
+        ` : ""}
+        <select class="select" id="familySelect">
+          <option value="">All families</option>
+          ${DATA.families.map(f =>
+            `<option value="${f.id}" ${state.family === f.id ? "selected" : ""}>${f.id} — ${esc(f.name)}</option>`
+          ).join("")}
+        </select>
+      </div>
+    `;
+  }
+
+  function wireControlToolbar() {
+    document.querySelectorAll("[data-sev]").forEach(b => {
+      b.addEventListener("click", () => { state.severity = b.dataset.sev; render(); });
+    });
+    const cf = $("#clearFilters");
+    if (cf) cf.addEventListener("click", () => {
+      state.family = state.stig = state.pillar = state.layer = null;
+      state.severity = "all";
+      render();
+    });
+    const fs = $("#familySelect");
+    if (fs) fs.addEventListener("change", () => {
+      state.family = fs.value || null;
+      render();
+    });
+  }
+
+  function controlCard(c) {
+    return `
+      <button class="card" data-ctrl="${esc(c.id)}">
+        <div class="card-top">
+          <span class="card-id">${esc(c.id)}</span>
+          <h3>${esc(c.title)}</h3>
+          <span class="sev ${sevClass(c.severity)}">${c.severity === "cat" ? "CAT I" : c.severity}</span>
+        </div>
+        <p>${esc(c.lab)}</p>
+        <div class="tags">
+          <span class="tag">${esc(c.family)}</span>
+          ${(c.stigs || []).slice(0, 3).map(s => `<span class="tag">${esc(s)}</span>`).join("")}
+          ${(c.zt || []).slice(0, 2).map(z => `<span class="tag">zt:${esc(z)}</span>`).join("")}
+        </div>
+      </button>
+    `;
+  }
+
+  function renderHome() {
+    const high = DATA.controls.filter(c => c.severity === "cat" || c.severity === "high").length;
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">SOURCE · DEEP DIVE</div>
+        <h1>${esc(DATA.meta.title)}</h1>
+        <p>Browse NIST SP 800-53 Rev 5 families, DISA STIG stacks, DoD Zero Trust pillars, and RMF/cATO expectations for a <strong style="color:var(--text)">classified AI lab</strong> with a strict <em>data-in / no-data-out</em> posture. Content is structured from your architecture deep dive for quick navigation—not a full STIG dump.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">${DATA.families.length}</div><div class="l">NIST control families</div></div>
+        <div class="stat"><div class="n">${DATA.controls.length}</div><div class="l">Lab-mapped key controls</div></div>
+        <div class="stat"><div class="n">${DATA.stigs.length}</div><div class="l">STIG / SRG stacks</div></div>
+        <div class="stat"><div class="n">${DATA.pillars.length}</div><div class="l">Zero Trust pillars</div></div>
+        <div class="stat"><div class="n">${high}</div><div class="l">CAT I / high priority</div></div>
+        <div class="stat"><div class="n">${DATA.layers.length}</div><div class="l">Architecture layers</div></div>
+      </div>
+      <div class="hint">
+        <strong>Constraint:</strong> ${esc(DATA.meta.constraint)}.
+        Start with <strong>Architecture layers</strong> for the big picture, or <strong>Assessor checklist</strong> for what a security reviewer typically looks for.
+      </div>
+      <div style="margin-top:22px">
+        <h2 style="font-size:15px;margin-bottom:12px;color:var(--text-muted)">Quick paths</h2>
+        <div class="grid">
+          <button class="card" data-view="layers"><div class="card-top"><h3>Architecture → controls</h3></div><p>Seven layers from ingress to lifecycle, each mapped to NIST, STIGs, and Zero Trust.</p></button>
+          <button class="card" data-view="crosswalk"><div class="card-top"><h3>Requirement crosswalk</h3></div><p>Mission needs (air-gap, SBOM, cATO…) mapped to control IDs and STIG stacks.</p></button>
+          <button class="card" data-view="assessor"><div class="card-top"><h3>Assessor checklist</h3></div><p>Ten evidence items drawn from the deep dive’s “what security will look for” guidance. Progress saves locally.</p></button>
+          <button class="card" data-view="stigs"><div class="card-top"><h3>DISA STIGs by stack</h3></div><p>OS, Kubernetes, Container Platform, Application SRG, and boundary/CDS.</p></button>
+        </div>
+      </div>
+      <div class="source-bar">
+        Baseline: ${esc(DATA.meta.baseline)}<br/>
+        Source document: ${esc(DATA.meta.source)} · Also in <code style="color:var(--accent)">lab_design/Classified-AI-Lab-Data-Architecture.md</code>
+      </div>
+    `;
+  }
+
+  function renderLayers() {
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">ARCHITECTURE</div>
+        <h1>Reference architecture layers</h1>
+        <p>Each layer is independently defensible against DISA STIG, NIST 800-53, and DoD Zero Trust. Click a layer for mapped controls.</p>
+      </div>
+      <div class="layers">
+        ${DATA.layers.filter(l => matchQ(l, ["name","standard","choice"])).map(l => `
+          <button class="layer" data-layer="${l.id}">
+            <div class="layer-name">${esc(l.name)}</div>
+            <div>
+              <div class="layer-std">${esc(l.standard)}</div>
+              <div class="layer-choice">${esc(l.choice)}</div>
+            </div>
+            <div class="layer-arrow">→</div>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderFamilies() {
+    const list = DATA.families.filter(f => {
+      if (state.labFocus === "high" && f.labFocus !== "high") return false;
+      if (state.labFocus === "med" && f.labFocus === "low") return false;
+      return matchQ(f, ["id","name","desc"]);
+    });
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">NIST SP 800-53 REV 5</div>
+        <h1>Control families</h1>
+        <p>Twenty families (~1,193+ controls in the full catalog). STIGs operationalize these into product baselines. Focus filter highlights families most critical to the classified AI lab.</p>
+      </div>
+      <div class="toolbar">
+        ${["all","high","med"].map(f =>
+          `<button class="chip ${state.labFocus === f ? "active" : ""}" data-focus="${f}">${f === "all" ? "All families" : f === "high" ? "Lab-critical" : "Lab-critical + supporting"}</button>`
+        ).join("")}
+      </div>
+      <div class="family-list">
+        ${list.map(f => {
+          const n = DATA.controls.filter(c => c.family === f.id).length;
+          return `
+            <button class="family-row" data-fam="${f.id}">
+              <div class="family-code">${esc(f.id)}</div>
+              <div>
+                <div class="family-name">${esc(f.name)}</div>
+                <div class="family-desc">${esc(f.desc)}</div>
+              </div>
+              <div class="family-count">${n} mapped · full ${esc(f.nistCount)}</div>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderControls() {
+    const list = filteredControls();
+    const crumbs = ["CONTROLS"];
+    if (state.family) crumbs.push(state.family);
+    if (state.stig) crumbs.push(state.stig);
+    if (state.pillar) crumbs.push("zt:" + state.pillar);
+    if (state.layer) crumbs.push(state.layer);
+
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">${esc(crumbs.join(" · "))}</div>
+        <h1>Key controls for the lab</h1>
+        <p>Curated ${DATA.controls.length} controls with lab-specific application notes. Not exhaustive of 800-53 — optimized for navigation of your deep dive themes.</p>
+      </div>
+      ${controlToolbar()}
+      ${list.length ? `<div class="grid">${list.map(controlCard).join("")}</div>` : `<div class="empty">No controls match your filters. Clear filters or broaden search.</div>`}
+    `;
+  }
+
+  function renderStigs() {
+    const list = DATA.stigs.filter(s => matchQ(s, ["name","products","summary","overlay"]));
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">DISA</div>
+        <h1>STIG & SRG stacks</h1>
+        <p>Product-specific baselines derived from NIST 800-53. For a classified lab, expect <strong style="color:var(--text)">MAC-2 Classified</strong> (or equivalent) overlays. Prefer continuous policy-as-code over point-in-time scans only.</p>
+      </div>
+      <div class="grid">
+        ${list.map(s => `
+          <button class="card" data-stig="${s.id}">
+            <div class="card-top">
+              <span class="card-id">${esc(s.id.toUpperCase())}</span>
+              <h3>${esc(s.name)}</h3>
+            </div>
+            <p>${esc(s.summary)}</p>
+            <div class="tags">
+              <span class="tag">${esc(s.overlay)}</span>
+              ${s.families.slice(0,4).map(f => `<span class="tag">${esc(f)}</span>`).join("")}
+            </div>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderZT() {
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">DOD ZERO TRUST</div>
+        <h1>Seven pillars</h1>
+        <p>DoD’s architectural lens for the lab — structure design end-to-end rather than treating ZT as a separate checklist.</p>
+      </div>
+      <div class="pillars">
+        ${DATA.pillars.filter(p => matchQ(p, ["name","summary","lab"])).map(p => `
+          <button class="pillar" data-pillar="${p.id}">
+            <div class="num">PILLAR ${esc(p.num)}</div>
+            <h3>${esc(p.name)}</h3>
+            <p>${esc(p.summary)}</p>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderCrosswalk() {
+    const rows = DATA.crosswalk.filter(r =>
+      !state.q || Object.values(r).some(v => String(v).toLowerCase().includes(state.q.toLowerCase()))
+    );
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">MAP</div>
+        <h1>Mission need → NIST → STIG → ZT</h1>
+        <p>Crosswalk of the deep dive’s compliance themes for quick briefing and package building.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mission / need</th><th>NIST controls</th><th>STIG / mechanism</th><th>Zero Trust</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td><strong>${esc(r.need)}</strong></td>
+                <td class="mono">${esc(r.nist)}</td>
+                <td>${esc(r.stig)}</td>
+                <td>${esc(r.zt)}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function renderRMF() {
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">RMF · CATO</div>
+        <h1>Risk Management Framework path</h1>
+        <p>NIST RMF steps applied to the lab. Mature guidance pushes toward <strong style="color:var(--text)">continuous ATO (cATO)</strong> — automated derivation, testing, and monitoring in DevSecOps rather than periodic manual reassessments only.</p>
+      </div>
+      <div class="rmf-steps">
+        ${DATA.rmf.map(s => `
+          <div class="rmf-step">
+            <div class="n">${s.n}</div>
+            <h4>${esc(s.name)}</h4>
+            <p>${esc(s.desc)}</p>
+          </div>
+        `).join("")}
+      </div>
+      <div class="grid">
+        <div class="card" style="cursor:default">
+          <div class="card-top"><h3>Authorization boundaries</h3></div>
+          <p>Scope RMF around discrete functions (training, inference, ingress) rather than a single monolithic “AI lab” boundary — cleaner risk decisions and STIGs.</p>
+        </div>
+        <div class="card" style="cursor:default">
+          <div class="card-top"><h3>Policy-as-code</h3></div>
+          <p>Encode STIG/RMF controls in IaC and admission controllers so on-prem vs IL5/IL6 placement is a placement decision, not a re-architecture.</p>
+        </div>
+        <div class="card" style="cursor:default">
+          <div class="card-top"><h3>Evidence for AO</h3></div>
+          <p>STIG scan exports, SBOM inventories, diode transfer logs, and continuous monitoring dashboards form the cATO evidence spine.</p>
+        </div>
+        <div class="card" style="cursor:default">
+          <div class="card-top"><h3>Parallel: CMMC</h3></div>
+          <p>Aerospace/defense contractors handling CUI alongside classified data typically run a CMMC track (NIST 800-171 / 800-53 derivatives) in parallel.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAssessor() {
+    const checks = loadChecks();
+    const done = DATA.assessor.filter(a => checks[a.id]).length;
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">EVIDENCE</div>
+        <h1>What an assessor looks for</h1>
+        <p>From the deep dive’s security reviewer guidance. Check items off as evidence is ready — progress is stored in this browser only (${done}/${DATA.assessor.length} done).</p>
+      </div>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr);max-width:480px">
+        <div class="stat"><div class="n">${done}</div><div class="l">Complete</div></div>
+        <div class="stat"><div class="n">${DATA.assessor.length - done}</div><div class="l">Remaining</div></div>
+        <div class="stat"><div class="n">${Math.round(100 * done / DATA.assessor.length)}%</div><div class="l">Progress</div></div>
+      </div>
+      <div class="checklist">
+        ${DATA.assessor.map(a => `
+          <label class="check-item ${checks[a.id] ? "done" : ""}">
+            <input type="checkbox" data-check="${a.id}" ${checks[a.id] ? "checked" : ""} />
+            <div>
+              <div class="check-title">${esc(a.title)}</div>
+              <div class="check-body">${esc(a.body)}</div>
+            </div>
+          </label>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderSearchResults() {
+    if (!state.q) return null;
+    const q = state.q.toLowerCase();
+    const controls = DATA.controls.filter(c => matchQ(c, ["id","title","summary","lab","check","family"]));
+    const stigs = DATA.stigs.filter(s => matchQ(s, ["name","summary","products"]));
+    const families = DATA.families.filter(f => matchQ(f, ["id","name","desc"]));
+    if (state.view !== "home" && state.view !== "controls") return null;
+    // only hijack main content when on home with query
+    if (state.view !== "home") return null;
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">SEARCH</div>
+        <h1>Results for “${esc(state.q)}”</h1>
+        <p>${controls.length} controls · ${families.length} families · ${stigs.length} STIG stacks</p>
+      </div>
+      ${controls.length ? `<h2 style="font-size:14px;margin:16px 0 10px;color:var(--text-muted)">Controls</h2><div class="grid">${controls.map(controlCard).join("")}</div>` : ""}
+      ${families.length ? `<h2 style="font-size:14px;margin:20px 0 10px;color:var(--text-muted)">Families</h2><div class="family-list">${families.map(f => `
+        <button class="family-row" data-fam="${f.id}">
+          <div class="family-code">${esc(f.id)}</div>
+          <div><div class="family-name">${esc(f.name)}</div><div class="family-desc">${esc(f.desc)}</div></div>
+          <div class="family-count">Open</div>
+        </button>`).join("")}</div>` : ""}
+      ${stigs.length ? `<h2 style="font-size:14px;margin:20px 0 10px;color:var(--text-muted)">STIGs</h2><div class="grid">${stigs.map(s => `
+        <button class="card" data-stig="${s.id}"><div class="card-top"><h3>${esc(s.name)}</h3></div><p>${esc(s.summary)}</p></button>
+      `).join("")}</div>` : ""}
+      ${!controls.length && !families.length && !stigs.length ? `<div class="empty">No matches. Try AC-4, diode, Kubernetes, SBOM, cATO…</div>` : ""}
+    `;
+  }
+
+  function render() {
+    renderSidebar();
+    let html = "";
+    if (state.view === "home" && state.q) {
+      html = renderSearchResults();
+    } else {
+      const map = {
+        home: renderHome,
+        layers: renderLayers,
+        families: renderFamilies,
+        controls: renderControls,
+        stigs: renderStigs,
+        zt: renderZT,
+        crosswalk: renderCrosswalk,
+        rmf: renderRMF,
+        assessor: renderAssessor,
+      };
+      html = (map[state.view] || renderHome)();
+    }
+    $("#main").innerHTML = html;
+    $("#resultCount").textContent =
+      state.view === "controls" ? `${filteredControls().length} controls` :
+      state.q ? `q: ${state.q}` : DATA.meta.baseline.split("·")[0].trim();
+
+    // wire interactions
+    $("#main").querySelectorAll("[data-ctrl]").forEach(el => {
+      el.addEventListener("click", () => {
+        const c = DATA.controls.find(x => x.id === el.dataset.ctrl);
+        if (c) controlDetail(c);
+      });
+    });
+    $("#main").querySelectorAll("[data-view]").forEach(el => {
+      el.addEventListener("click", () => { state.view = el.dataset.view; render(); });
+    });
+    $("#main").querySelectorAll("[data-fam]").forEach(el => {
+      el.addEventListener("click", () => window.gotoFamily(el.dataset.fam));
+    });
+    $("#main").querySelectorAll("[data-stig]").forEach(el => {
+      el.addEventListener("click", () => {
+        const s = DATA.stigs.find(x => x.id === el.dataset.stig);
+        if (state.view === "stigs" && s) stigDetail(s);
+        else window.gotoStig(el.dataset.stig);
+      });
+    });
+    $("#main").querySelectorAll("[data-pillar]").forEach(el => {
+      el.addEventListener("click", () => {
+        const p = DATA.pillars.find(x => x.id === el.dataset.pillar);
+        if (p) pillarDetail(p);
+      });
+    });
+    $("#main").querySelectorAll("[data-layer]").forEach(el => {
+      el.addEventListener("click", () => {
+        const l = DATA.layers.find(x => x.id === el.dataset.layer);
+        if (l) layerDetail(l);
+      });
+    });
+    $("#main").querySelectorAll("[data-focus]").forEach(el => {
+      el.addEventListener("click", () => { state.labFocus = el.dataset.focus; render(); });
+    });
+    $("#main").querySelectorAll("[data-check]").forEach(el => {
+      el.addEventListener("change", () => {
+        const map = loadChecks();
+        map[el.dataset.check] = el.checked;
+        saveChecks(map);
+        render();
+      });
+    });
+    if (state.view === "controls") wireControlToolbar();
+  }
+
+  /* =========================================================================
+     BOOT
+     ========================================================================= */
+  $("#search").addEventListener("input", (e) => {
+    state.q = e.target.value.trim();
+    if (state.q && state.view !== "controls" && state.view !== "home") {
+      // keep view but filters apply where relevant
+    }
+    if (state.q && (state.view === "home" || !state.view)) state.view = "home";
+    render();
+  });
+
+  $("#overlay").addEventListener("click", (e) => {
+    if (e.target === $("#overlay")) closeDetail();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDetail();
+    if (e.key === "/" && document.activeElement !== $("#search")) {
+      e.preventDefault();
+      $("#search").focus();
+    }
+  });
+
+  render();
+  </script>
+</body>
+</html>
