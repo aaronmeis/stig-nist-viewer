@@ -62,7 +62,8 @@ The SPA uses a **fictional, generic classified AI lab** with a *data-in / no-dat
 | **Study checklist** | Common evidence themes (`localStorage` progress) |
 | **Pitfalls & failures** | Anti-patterns and outage drills |
 | **Glossary** | CDS, diode, cATO, IL5/6, SBOM, and more |
-| **Reading list** | Official public references for further study |
+| **Sources & references** | Full bibliography (primary + footnotes 1–35) with filters |
+| **Reading list** | Short curated official starting points |
 
 ### UX
 

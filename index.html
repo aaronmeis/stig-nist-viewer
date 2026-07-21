@@ -1049,6 +1049,32 @@
     .read-card h3 { font-size: 14px; margin-bottom: 6px; color: var(--accent); }
     .read-card p { font-size: 12.5px; color: var(--text-muted); }
 
+    .src-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .src-table th {
+      text-align: left; padding: 10px 12px; background: var(--bg-elev);
+      color: var(--text-dim); font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.05em; border-bottom: 1px solid var(--border); position: sticky; top: 0;
+    }
+    .src-table td {
+      padding: 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top;
+    }
+    .src-table tr:hover td { background: var(--bg-hover); color: var(--text); }
+    .src-table a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .src-table a:hover { text-decoration: underline; }
+    .src-num {
+      font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent);
+      white-space: nowrap;
+    }
+    .kind-badge {
+      font-size: 10px; font-family: var(--mono); text-transform: uppercase;
+      padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .kind-official { color: #34d399; border-color: rgba(52,211,153,0.35); background: rgba(52,211,153,0.1); }
+    .kind-secondary { color: #fbbf24; border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.1); }
+    .kind-primary { color: #38bdf8; border-color: rgba(56,189,248,0.35); background: rgba(56,189,248,0.12); }
+
+
     /* Deck / slides */
     .deck-layout {
       display: grid;
@@ -1877,6 +1903,50 @@
       { title: "NCCoE — data classification practices", org: "NIST NCCoE", why: "Labeling and classification program thinking", url: "https://www.nccoe.nist.gov/sites/default/files/legacy-files/data-classification-project-description-final.pdf" },
     ],
 
+
+    /* Full reference inventory (architecture deep dive footnotes + primary materials) */
+    sources: [
+      { n: "P1", title: "Classified AI Lab Data Architecture framework (primary brief)", org: "Study material", kind: "primary", topic: "Overview", note: "Design, compliance, and lifecycle framework used as the backbone of this learning SPA.", url: "" },
+      { n: "P2", title: "NotebookLM architecture deck (12 slides)", org: "NotebookLM studio", kind: "primary", topic: "Overview", note: "Visual presentation embedded under NotebookLM deck on this site.", url: "" },
+      { n: "P3", title: "STIG · NIST Viewer (this site)", org: "Learning resource", kind: "primary", topic: "Overview", note: "Educational navigator — not official NIST/DISA/DoD guidance.", url: "https://aaronmeis.github.io/stig-nist-viewer/" },
+
+      { n: 1, title: "DevSecOps in Air-Gapped Environments: The CI/CD Survival Guide", org: "Secondary", kind: "secondary", topic: "Air-gap / updates", note: "Local mirrors, diode-friendly CI/CD patterns for disconnected networks.", url: "https://alterra-solutions.com/blog/devsecops-air-gapped-guide" },
+      { n: 2, title: "Air-Gapped Network: Bridging the Security Gap (PDF)", org: "Secondary", kind: "secondary", topic: "Air-gap / updates", note: "Academic/technical PDF on air-gapped networking themes.", url: "https://phaidra.fhstp.ac.at/api/object/o:7403/get" },
+      { n: 3, title: "National Cross Domain Strategy & Management Office (NCDSMO)", org: "NSA", kind: "official", topic: "Ingress / CDS", note: "Raise the Bar strategy context for cross domain solutions.", url: "https://www.nsa.gov/Cybersecurity/Partnership/National-Cross-Domain-Strategy-Management-Office/" },
+      { n: 4, title: "What is the NCDSMO?", org: "Secondary", kind: "secondary", topic: "Ingress / CDS", note: "Overview of NCDSMO role for CDS design and implementation requirements.", url: "https://www.baesystems.com/en-us/definition/what-is-the-ncdsmo" },
+      { n: 5, title: "Raise the Bar for Cross Domain Solutions", org: "Secondary", kind: "secondary", topic: "Ingress / CDS", note: "RTB standards as security guidelines for CDS.", url: "https://www.ghs.com/products/safety_critical/integrity_178_standards_raise-the-bar.html" },
+      { n: 6, title: "Cross Domain Raise the Bar solution brief (PDF)", org: "Secondary / vendor", kind: "secondary", topic: "Ingress / CDS", note: "Industry brief discussing RTB/CDS themes (educational reference only).", url: "https://www.forcepoint.com/sites/default/files/resources/solution_brief/solution_brief_cross_domain_raise_the_bar_en.pdf" },
+      { n: 7, title: "Content Disarm and Reconstruction (CDR)", org: "Secondary", kind: "secondary", topic: "Ingress / CDS", note: "CDR as file content security beyond signature-only detection; NCSC/NCDSMO themes.", url: "https://www.sasa-software.com/blog/content-disarm-and-reconstruction-cdr-is-not-a-vendor-claim-its-a-government-mandated-security-control/" },
+      { n: 8, title: "Raise the Bar / NCSI technology symposium materials (PDF)", org: "Secondary / vendor", kind: "secondary", topic: "Ingress / CDS", note: "Industry symposium materials on RTB and government CDS themes.", url: "https://www.militaryexpos.com/wp-content/uploads/2020/12/Owl-Cyber-Defense-NCSI-Technology-Symposium_FINAL.pdf" },
+      { n: 9, title: "DoD Zero Trust Strategy — Applications & Workloads", org: "Secondary explainer", kind: "secondary", topic: "Zero Trust", note: "Explainer on DoD ZT applications/workloads pillar themes.", url: "https://learn.microsoft.com/en-us/security/zero-trust/dod-zero-trust-strategy-apps" },
+      { n: 10, title: "GPU Infrastructure for Enterprise AI: Sizing compute, memory, storage, networking", org: "Secondary", kind: "secondary", topic: "Compute", note: "GPU sizing guidance: memory, interconnect, storage, utilization metrics.", url: "https://blog.tyronesystems.com/gpu-infrastructure-for-enterprise-ai-how-to-size-compute-memory-storage-networking/" },
+      { n: 11, title: "NIST SP 800-53 Rev. 5 (draft PDF mirror)", org: "NIST (mirror)", kind: "official", topic: "NIST / RMF", note: "Draft/mirror of SP 800-53 Rev 5; prefer the final NIST publication page when possible.", url: "https://csrc.nist.rip/external/nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5-draft.pdf" },
+      { n: 12, title: "NIST SP 800-53 Rev. 5 — Security and Privacy Controls (final)", org: "NIST", kind: "official", topic: "NIST / RMF", note: "Authoritative control catalog (~20 families) underlying many STIG/RMF selections.", url: "https://csrc.nist.gov/pubs/sp/800/53/r5/final" },
+      { n: 13, title: "Example STIG viewer page (Active Directory / MAC-2 Classified overlay)", org: "Secondary viewer", kind: "secondary", topic: "STIGs", note: "Illustrates classified overlay presentation; always pull current STIGs from cyber.mil.", url: "https://www.stigviewer.com/stigs/active_directory_domain/2026-02-11/MAC-2_Classified" },
+      { n: 14, title: "Security Technical Implementation Guides (STIGs)", org: "DISA / cyber.mil", kind: "official", topic: "STIGs", note: "Official STIG and SRG library and downloads.", url: "https://www.cyber.mil/stigs/" },
+      { n: 15, title: "NIST 800-53 Rev 5 Controls: Complete Guide", org: "Secondary", kind: "secondary", topic: "NIST / RMF", note: "Commercial explainer on Rev 5 control catalog themes.", url: "https://cynomi.com/nist/nist-800-53-rev-5-controls-complete-guide/" },
+      { n: 16, title: "NIST 800-53: Complete Guide", org: "Secondary", kind: "secondary", topic: "NIST / RMF", note: "Overview of control families and counts for literacy.", url: "https://www.saltycloud.com/blog/nist-800-53/" },
+      { n: 17, title: "Kubernetes STIG Compliance Guide", org: "Secondary", kind: "secondary", topic: "STIGs", note: "Kubernetes STIG implementation themes and tooling discussion.", url: "https://www.thnkbig.com/resources/kubernetes-stig-guide/" },
+      { n: 18, title: "Container Platform Security Requirements Guide (viewer)", org: "Secondary viewer", kind: "secondary", topic: "STIGs", note: "Container Platform SRG presentation (MAC-2 Classified example path).", url: "https://stigviewer.cyberprotection.com/stigs/container_platform_security_requirements_guide/2025-05-15/MAC-2_Classified" },
+      { n: 19, title: "STIG compliance themes for LLM / container workloads", org: "Secondary", kind: "secondary", topic: "STIGs", note: "Applying container/K8s/RHEL STIG ideas to model-serving stacks.", url: "https://precisionfederal.com/insights/stig-compliance-for-llm-containers" },
+      { n: 20, title: "STIG compliance automation in Kubernetes", org: "Secondary", kind: "secondary", topic: "STIGs", note: "Pipeline integration and policy-as-code enforcement themes.", url: "https://rutagon.com/insights/stig-compliance-automation-kubernetes/" },
+      { n: 21, title: "DoD Zero Trust Reference Architecture v2.0 (PDF)", org: "DoD CIO", kind: "official", topic: "Zero Trust", note: "Seven pillars reference architecture document.", url: "https://dodcio.defense.gov/Portals/0/Documents/Library/(U)ZT_RA_v2.0(U)_Sep22.pdf" },
+      { n: 22, title: "Introduction to DoD Zero Trust (CDSE student guide PDF)", org: "CDSE", kind: "official", topic: "Zero Trust", note: "Accessible pillar overview for training/literacy.", url: "https://www.cdse.edu/Portals/124/Documents/student-guides/CS125-guide.pdf" },
+      { n: 23, title: "CMMC Assessment Guide — Level 1 (PDF)", org: "DoD CIO", kind: "official", topic: "CMMC / CUI", note: "CUI-adjacent assessment literacy when that track applies.", url: "https://dodcio.defense.gov/Portals/0/Documents/CMMC/AssessmentGuideL1.pdf" },
+      { n: 24, title: "Laboratory Data Classification Policy guide", org: "Secondary", kind: "secondary", topic: "Data / labeling", note: "Lab data classification policy themes and templates discussion.", url: "https://www.accountablehq.com/post/laboratory-data-classification-policy-complete-guide-with-template-and-examples" },
+      { n: 25, title: "Data Classification Practices (NCCoE project description PDF)", org: "NIST NCCoE", kind: "official", topic: "Data / labeling", note: "Classification program thinking for enterprise data.", url: "https://www.nccoe.nist.gov/sites/default/files/legacy-files/data-classification-project-description-final.pdf" },
+      { n: 26, title: "DoD Zero Trust Strategy Buyer’s Guide (GSA PDF)", org: "GSA", kind: "official", topic: "Zero Trust", note: "Buyer-oriented ZT strategy companion guide.", url: "https://www.gsa.gov/system/files?file=DoD+Zero+Trust+Strategy+Buyer%E2%80%99s+Guide+Version+1.4+May+2025+508+Reviewed.pdf" },
+      { n: 27, title: "DoD Zero Trust Capability Execution Roadmap (PDF)", org: "DoD CIO", kind: "official", topic: "Zero Trust", note: "Execution roadmap (COA) companion to ZT strategy.", url: "https://dodcio.defense.gov/Portals/0/Documents/Library/ZT-ExecutionRoadmap-v1.1.pdf" },
+      { n: 28, title: "DoD Zero Trust Strategy (PDF)", org: "DoD CIO", kind: "official", topic: "Zero Trust", note: "Core strategy document for DoD Zero Trust outcomes.", url: "https://dodcio.defense.gov/Portals/0/Documents/Library/DoD-ZTStrategy.pdf" },
+      { n: 29, title: "DoD Zero Trust Reference Architecture explainer", org: "Secondary", kind: "secondary", topic: "Zero Trust", note: "Vendor/secondary mapping of ZT pillars (use with official RA).", url: "https://pathlock.com/dod-zero-trust-reference-architecture/" },
+      { n: 30, title: "Clearing and sanitizing classified media guidance excerpt", org: "Secondary host", kind: "secondary", topic: "Lifecycle", note: "Discussion of clear/sanitize matrix themes; verify against official NISPOM/PM sources.", url: "https://www.scribd.com/document/296023658/107-009-005-Exhibit-B" },
+      { n: 31, title: "DLA Disposition Services — Computers turn-in toolbox", org: "DLA", kind: "official", topic: "Lifecycle", note: "Electronics/computers property turn-in procedures.", url: "https://www.dla.mil/Disposition-Services/DDSR/Property-Turn-In/Turn-In-Toolbox/Electronics-and-Communications-Equipment/Computers/" },
+      { n: 32, title: "NSA/CSS Policy Manual 9-12 (media sanitization PDF)", org: "NSA / media.defense.gov", kind: "official", topic: "Lifecycle", note: "Routine sanitization of IS storage devices for disposal/recycling. Confirm current edition.", url: "https://media.defense.gov/2026/Mar/10/2003897016/-1/-1/0/PM%209-12%2020260219.PDF" },
+      { n: 33, title: "DoD 5220-related clearing/sanitization matrix (hosted PDF)", org: "Secondary host", kind: "secondary", topic: "Lifecycle", note: "Historical/hosted matrix themes; validate against current program authority.", url: "http://www.tri-magnetics.com/pdf/DOD_5220.pdf" },
+      { n: 34, title: "NSA Evaluated Products Lists (EPLs) — media destruction", org: "NSA", kind: "official", topic: "Lifecycle", note: "Equipment lists for sanitizing/destroying media to NSA performance requirements.", url: "https://www.nsa.gov/Resources/Media-Destruction-Guidance/NSA-Evaluated-Products-Lists-EPLs/" },
+      { n: 35, title: "NSA Policy Manual 9-12 explainer", org: "Secondary", kind: "secondary", topic: "Lifecycle", note: "Secondary summary of PM 9-12 media-class methods; prefer primary PM text.", url: "https://www.mansfieldtech.us/data-destruction-standards/nsa-rules-for-data-destruction" },
+    ],
+
     metrics: [
       { name: "Transfer success & queue age", why: "Shows whether the diode pipeline is healthy" },
       { name: "STIG / config compliance % by pool", why: "Drift visibility for cATO" },
@@ -2050,6 +2120,8 @@
     labFocus: "all",
     q: "",
     deckSlide: 0,
+    sourceKind: "all",
+    sourceTopic: "all",
   };
 
   const VIEWS = [
@@ -2067,6 +2139,7 @@
     { id: "assessor", label: "Study checklist", ico: "☑", section: "Maps" },
     { id: "pitfalls", label: "Pitfalls & failures", ico: "⚠", section: "Builder" },
     { id: "glossary", label: "Glossary", ico: "☰", section: "Builder" },
+    { id: "sources", label: "Sources & references", ico: "§", section: "Builder" },
     { id: "reading", label: "Reading list", ico: "▤", section: "Builder" },
   ];
 
@@ -2784,6 +2857,7 @@
         if (v.id === "glossary") count = DATA.glossary.length;
         if (v.id === "pitfalls") count = DATA.pitfalls.length;
         if (v.id === "reading") count = DATA.reading.length;
+        if (v.id === "sources") count = DATA.sources.length;
         if (v.id === "deck") count = DATA.slides.length;
         html += `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">
           <span class="ico">${v.ico}</span>${esc(v.label)}
@@ -3178,6 +3252,86 @@
     `;
   }
 
+  function renderSources() {
+    const q = (state.q || "").toLowerCase();
+    const kind = state.sourceKind || "all";
+    const topic = state.sourceTopic || "all";
+    const topics = [...new Set(DATA.sources.map(s => s.topic))].sort();
+    const items = DATA.sources.filter(s => {
+      if (kind !== "all" && s.kind !== kind) return false;
+      if (topic !== "all" && s.topic !== topic) return false;
+      if (!q) return true;
+      return [s.n, s.title, s.org, s.note, s.topic, s.url].join(" ").toLowerCase().includes(q);
+    });
+    const official = DATA.sources.filter(s => s.kind === "official").length;
+    const secondary = DATA.sources.filter(s => s.kind === "secondary").length;
+    const primary = DATA.sources.filter(s => s.kind === "primary").length;
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">BIBLIOGRAPHY · LEARNING RESOURCE</div>
+        <h1>Sources & references</h1>
+        <p>Complete inventory of materials behind this SPA: primary study artifacts, official publications, and secondary explainers cited by the Classified AI Lab architecture deep dive (footnotes 1–35).</p>
+      </div>
+      <div class="hint" style="margin-bottom:14px">
+        <strong>Learning resource.</strong> Inclusion does not imply endorsement or that a link is the current authoritative edition.
+        Prefer <span class="kind-badge kind-official">official</span> sources for decisions. Vendor and blog links are for literacy only.
+        Some URLs may move or require access — verify before relying on them.
+      </div>
+      <div class="stats" style="margin-bottom:16px">
+        <div class="stat"><div class="n">${DATA.sources.length}</div><div class="l">Total listed</div></div>
+        <div class="stat"><div class="n">${primary}</div><div class="l">Primary / site</div></div>
+        <div class="stat"><div class="n">${official}</div><div class="l">Official</div></div>
+        <div class="stat"><div class="n">${secondary}</div><div class="l">Secondary</div></div>
+        <div class="stat"><div class="n">${items.length}</div><div class="l">Showing</div></div>
+      </div>
+      <div class="toolbar">
+        ${["all","primary","official","secondary"].map(k =>
+          `<button class="chip ${kind === k ? "active" : ""}" data-src-kind="${k}">${k === "all" ? "All kinds" : k[0].toUpperCase() + k.slice(1)}</button>`
+        ).join("")}
+        <span class="spacer"></span>
+        <select class="select" id="srcTopic">
+          <option value="all">All topics</option>
+          ${topics.map(t => `<option value="${esc(t)}" ${topic === t ? "selected" : ""}>${esc(t)}</option>`).join("")}
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="src-table">
+          <thead>
+            <tr>
+              <th style="width:52px">#</th>
+              <th>Title / source</th>
+              <th style="width:110px">Kind</th>
+              <th style="width:130px">Topic</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${items.map(s => `
+              <tr>
+                <td class="src-num">${esc(String(s.n))}</td>
+                <td>
+                  ${s.url
+                    ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a>`
+                    : `<strong style="color:var(--text)">${esc(s.title)}</strong>`}
+                  <div style="font-size:11.5px;color:var(--text-dim);margin-top:3px">${esc(s.org)}</div>
+                  ${s.url ? `<div style="font-size:11px;font-family:var(--mono);color:var(--text-dim);margin-top:4px;word-break:break-all">${esc(s.url)}</div>` : ""}
+                </td>
+                <td><span class="kind-badge kind-${esc(s.kind)}">${esc(s.kind)}</span></td>
+                <td style="font-size:12px">${esc(s.topic)}</td>
+                <td style="font-size:12.5px">${esc(s.note)}</td>
+              </tr>
+            `).join("") || `<tr><td colspan="5" class="empty">No sources match your filters.</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+      <div class="source-bar" style="margin-top:18px">
+        Footnotes 1–35 correspond to the architecture deep dive reference list.
+        Official STIG downloads: <a href="https://www.cyber.mil/stigs/" target="_blank" rel="noopener noreferrer">cyber.mil/stigs</a> ·
+        NIST 800-53: <a href="https://csrc.nist.gov/pubs/sp/800/53/r5/final" target="_blank" rel="noopener noreferrer">csrc.nist.gov</a>
+      </div>
+    `;
+  }
+
   function renderReading() {
     const q = (state.q || "").toLowerCase();
     const items = DATA.reading.filter(r =>
@@ -3187,10 +3341,11 @@
       <div class="page-header">
         <div class="breadcrumb">FURTHER STUDY · BUILDER</div>
         <h1>Public reading list</h1>
-        <p>Official or widely cited public references for continued learning. Prefer primary sources over blogs when making real decisions. Links open in a new tab when you are online.</p>
+        <p>Curated official starting points. For the full footnote bibliography, open <strong style="color:var(--text)">Sources & references</strong>.</p>
       </div>
       <div class="hint" style="margin-bottom:16px">
         <strong>Learning resource.</strong> Inclusion does not imply endorsement. Always verify you have the current revision from the issuing organization.
+        <button type="button" class="map-link" data-view="sources" style="margin-left:8px">Open all sources →</button>
       </div>
       <div class="grid">
         ${items.map(r => `
@@ -3478,6 +3633,7 @@
         assessor: renderAssessor,
         pitfalls: renderPitfalls,
         glossary: renderGlossary,
+        sources: renderSources,
         reading: renderReading,
       };
       html = (map[state.view] || renderHome)();
@@ -3487,6 +3643,7 @@
       state.view === "controls" ? `${filteredControls().length} controls` :
       state.view === "diagrams" ? `${DIAGRAMS.length} diagrams` :
       state.view === "deck" ? `slide ${state.deckSlide + 1}/${DATA.slides.length}` :
+      state.view === "sources" ? `${DATA.sources.length} sources` :
       state.q ? `q: ${state.q}` : DATA.meta.baseline.split("·")[0].trim();
 
     // wire interactions
@@ -3503,6 +3660,13 @@
     const deckZoomBtn = $("#deck-zoom-btn");
     if (deckZoom) deckZoom.addEventListener("click", () => openSlideLightbox(state.deckSlide));
     if (deckZoomBtn) deckZoomBtn.addEventListener("click", () => openSlideLightbox(state.deckSlide));
+    // Sources filters
+    $("#main").querySelectorAll("[data-src-kind]").forEach(el => {
+      el.addEventListener("click", () => { state.sourceKind = el.dataset.srcKind; render(); });
+    });
+    const srcTopic = $("#srcTopic");
+    if (srcTopic) srcTopic.addEventListener("change", () => { state.sourceTopic = srcTopic.value; render(); });
+
     // Center active filmstrip thumb
     const activeThumb = $("#main").querySelector(".filmstrip button.active");
     if (activeThumb) activeThumb.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
