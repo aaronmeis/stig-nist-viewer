@@ -48,8 +48,9 @@ The SPA uses a **fictional, generic classified AI lab** with a *data-in / no-dat
 
 | View | What you get |
 |------|----------------|
-| **Overview** | Counts, learning disclaimer, quick paths, featured diagram |
-| **Diagrams** | Inline SVG maps: compliance stack, air-gap flow, RMF, Zero Trust, workloads |
+| **Overview** | Counts, four domains, featured diagram, quick paths |
+| **Lab builder playbook** | Phased path 0–5, principles, artifact pipelines, metrics, design gaps |
+| **Diagrams** | SVG maps + lightbox (stack, air-gap, RMF, ZT, phases, artifacts…) |
 | **Architecture layers** | Ingress → updates → train/infer → security → hybrid → lifecycle |
 | **NIST families** | All 20 SP 800-53 Rev 5 families; lab-critical study filter |
 | **Key controls** | Curated controls with scenario notes and verify prompts |
@@ -58,6 +59,9 @@ The SPA uses a **fictional, generic classified AI lab** with a *data-in / no-dat
 | **Crosswalk** | Scenario need → NIST → STIG → ZT |
 | **RMF & cATO** | Seven RMF steps + continuous ATO study notes |
 | **Study checklist** | Common evidence themes (`localStorage` progress) |
+| **Pitfalls & failures** | Anti-patterns and outage drills |
+| **Glossary** | CDS, diode, cATO, IL5/6, SBOM, and more |
+| **Reading list** | Official public references for further study |
 
 ### UX
 
