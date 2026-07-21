@@ -48,7 +48,8 @@ The SPA uses a **fictional, generic classified AI lab** with a *data-in / no-dat
 
 | View | What you get |
 |------|----------------|
-| **Overview** | Counts, learning disclaimer, quick paths |
+| **Overview** | Counts, learning disclaimer, quick paths, featured diagram |
+| **Diagrams** | Inline SVG maps: compliance stack, air-gap flow, RMF, Zero Trust, workloads |
 | **Architecture layers** | Ingress → updates → train/infer → security → hybrid → lifecycle |
 | **NIST families** | All 20 SP 800-53 Rev 5 families; lab-critical study filter |
 | **Key controls** | Curated controls with scenario notes and verify prompts |

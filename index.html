@@ -662,6 +662,90 @@
     .source-bar a { color: var(--accent); text-decoration: none; }
     .source-bar a:hover { text-decoration: underline; }
 
+    /* Diagrams */
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+    .diagram-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .diagram-card.full {
+      grid-column: 1 / -1;
+    }
+    .diagram-card header {
+      padding: 14px 16px 0;
+    }
+    .diagram-card header h3 {
+      font-size: 14.5px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+    .diagram-card header p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+    .diagram-body {
+      padding: 8px 12px 14px;
+      overflow-x: auto;
+    }
+    .diagram-body svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-width: 280px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .diagram-caption {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      padding: 0 16px 14px;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+      padding-top: 10px;
+    }
+    .diagram-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      padding: 0 16px 12px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .diagram-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .diagram-legend i {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .diagram-inline {
+      margin: 0 0 20px;
+    }
+    .diagram-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .diagram-tabs .chip.active {
+      background: var(--accent-dim);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: var(--accent);
+    }
+
     @media (max-width: 860px) {
       .app { grid-template-columns: 1fr; grid-template-rows: 56px auto 1fr; }
       .sidebar {
@@ -1162,6 +1246,7 @@
 
   const VIEWS = [
     { id: "home", label: "Overview", ico: "◈", section: "Navigate" },
+    { id: "diagrams", label: "Diagrams", ico: "◫", section: "Navigate" },
     { id: "layers", label: "Architecture layers", ico: "▣", section: "Navigate" },
     { id: "families", label: "NIST 800-53 families", ico: "⬢", section: "Catalogs" },
     { id: "controls", label: "Key controls", ico: "◎", section: "Catalogs" },
@@ -1171,6 +1256,306 @@
     { id: "rmf", label: "RMF & cATO", ico: "↻", section: "Maps" },
     { id: "assessor", label: "Study checklist", ico: "☑", section: "Maps" },
   ];
+
+  /* =========================================================================
+     DIAGRAMS — pure SVG (offline, no CDN)
+     ========================================================================= */
+  const DIAGRAMS = [
+    {
+      id: "stack",
+      title: "Compliance stack",
+      blurb: "How NIST, STIGs, Zero Trust, and the lab scenario relate.",
+      caption: "Educational model: policy catalogs → product baselines → architecture pillars → lab implementation.",
+      full: true,
+      svg: () => `
+<svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Compliance stack diagram">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#6366f1"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#1a2740"/></linearGradient>
+    <filter id="soft"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/></filter>
+  </defs>
+  <rect width="880" height="320" rx="12" fill="#0f172a"/>
+  <!-- layers as inverted pyramid / stack -->
+  <g filter="url(#soft)">
+    <rect x="80" y="28" width="720" height="52" rx="10" fill="url(#g1)" opacity="0.95"/>
+    <text x="440" y="52" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="15" font-weight="700">NIST SP 800-53 Rev 5 — control catalog (≈20 families)</text>
+    <text x="440" y="70" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="11" opacity="0.8">Policy intent · what must be true</text>
+
+    <rect x="120" y="96" width="640" height="52" rx="10" fill="#38bdf8"/>
+    <text x="440" y="120" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="15" font-weight="700">DISA STIGs / SRGs — product baselines</text>
+    <text x="440" y="138" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="11" opacity="0.8">OS · Kubernetes · Container platform · Apps · Boundary</text>
+
+    <rect x="160" y="164" width="560" height="52" rx="10" fill="#a78bfa"/>
+    <text x="440" y="188" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="15" font-weight="700">DoD Zero Trust — 7 pillars</text>
+    <text x="440" y="206" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="11" opacity="0.8">Architectural lens across users, devices, apps, data, network, automation, visibility</text>
+
+    <rect x="200" y="232" width="480" height="52" rx="10" fill="#34d399"/>
+    <text x="440" y="256" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="15" font-weight="700">Lab scenario implementation</text>
+    <text x="440" y="274" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="11" opacity="0.8">RMF / cATO · air-gap pipeline · segmented AI workloads</text>
+  </g>
+  <text x="40" y="58" fill="#64748b" font-family="ui-monospace,monospace" font-size="11">1</text>
+  <text x="40" y="126" fill="#64748b" font-family="ui-monospace,monospace" font-size="11">2</text>
+  <text x="40" y="194" fill="#64748b" font-family="ui-monospace,monospace" font-size="11">3</text>
+  <text x="40" y="262" fill="#64748b" font-family="ui-monospace,monospace" font-size="11">4</text>
+</svg>`
+    },
+    {
+      id: "airgap",
+      title: "Data-in / no-data-out flow",
+      blurb: "Low-side staging → scan → diode → high-side lab.",
+      caption: "Scenario constraint: unidirectional transfer only. No high-side path back to the internet.",
+      full: true,
+      svg: () => `
+<svg viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Air-gap diode data flow diagram">
+  <rect width="920" height="300" rx="12" fill="#0f172a"/>
+  <!-- Low side -->
+  <rect x="24" y="40" width="200" height="200" rx="12" fill="#151f35" stroke="#334566" stroke-width="1.5"/>
+  <text x="124" y="68" text-anchor="middle" fill="#38bdf8" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="700">LOW SIDE</text>
+  <text x="124" y="86" text-anchor="middle" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Internet-reachable staging</text>
+  <rect x="44" y="104" width="160" height="36" rx="8" fill="#1a2740" stroke="#243049"/>
+  <text x="124" y="126" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="12">Fetch packages / images</text>
+  <rect x="44" y="150" width="160" height="36" rx="8" fill="#1a2740" stroke="#243049"/>
+  <text x="124" y="172" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="12">SBOM + vuln scan</text>
+  <rect x="44" y="196" width="160" height="28" rx="8" fill="#1a2740" stroke="#243049"/>
+  <text x="124" y="214" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="11">Validate & pin versions</text>
+
+  <!-- Arrow 1 -->
+  <path d="M236 140 H300" stroke="#38bdf8" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#38bdf8"/></marker>
+    <marker id="arrG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#34d399"/></marker>
+    <marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f43f5e"/></marker>
+  </defs>
+
+  <!-- Diode -->
+  <rect x="308" y="90" width="120" height="100" rx="12" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="368" y="120" text-anchor="middle" fill="#7dd3fc" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">DIODE / CDS</text>
+  <text x="368" y="140" text-anchor="middle" fill="#bae6fd" font-family="Segoe UI,system-ui,sans-serif" font-size="10">One-way only</text>
+  <polygon points="340,160 390,160 365,185" fill="#38bdf8" opacity="0.9"/>
+  <text x="368" y="210" text-anchor="middle" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="10">+ CDR optional</text>
+
+  <path d="M440 140 H500" stroke="#34d399" stroke-width="2.5" fill="none" marker-end="url(#arrG)"/>
+
+  <!-- High side -->
+  <rect x="512" y="40" width="384" height="200" rx="12" fill="#052e1c" stroke="#34d399" stroke-width="1.5"/>
+  <text x="704" y="68" text-anchor="middle" fill="#34d399" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="700">HIGH SIDE — CLASSIFIED AI LAB</text>
+  <text x="704" y="86" text-anchor="middle" fill="#6ee7b7" font-family="Segoe UI,system-ui,sans-serif" font-size="10">No outbound internet path</text>
+  <rect x="532" y="104" width="160" height="50" rx="8" fill="#064e3b" stroke="#059669"/>
+  <text x="612" y="124" text-anchor="middle" fill="#ecfdf5" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">Internal registry</text>
+  <text x="612" y="140" text-anchor="middle" fill="#a7f3d0" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Artifacts · models · CVE DB</text>
+  <rect x="712" y="104" width="160" height="50" rx="8" fill="#064e3b" stroke="#059669"/>
+  <text x="792" y="124" text-anchor="middle" fill="#ecfdf5" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">Train pool</text>
+  <text x="792" y="140" text-anchor="middle" fill="#a7f3d0" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Dense GPU cluster</text>
+  <rect x="532" y="168" width="160" height="50" rx="8" fill="#064e3b" stroke="#059669"/>
+  <text x="612" y="188" text-anchor="middle" fill="#ecfdf5" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">Infer pool</text>
+  <text x="612" y="204" text-anchor="middle" fill="#a7f3d0" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Latency-oriented serving</text>
+  <rect x="712" y="168" width="160" height="50" rx="8" fill="#064e3b" stroke="#059669"/>
+  <text x="792" y="188" text-anchor="middle" fill="#ecfdf5" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">High-side CI/CD</text>
+  <text x="792" y="204" text-anchor="middle" fill="#a7f3d0" font-family="Segoe UI,system-ui,sans-serif" font-size="10">STIG · SBOM · admit</text>
+
+  <!-- Blocked reverse -->
+  <path d="M700 258 H220" stroke="#f43f5e" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+  <text x="460" y="278" text-anchor="middle" fill="#fb7185" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">✕ Blocked: high → low / internet (no data out)</text>
+</svg>`
+    },
+    {
+      id: "arch",
+      title: "Lab architecture layers",
+      blurb: "Seven layers from ingress through equipment lifecycle.",
+      caption: "Click Architecture layers in the nav for control mappings per layer.",
+      full: true,
+      svg: () => {
+        const rows = [
+          { y: 36, c: "#38bdf8", t: "Data ingress", s: "Diode / CDS · CDR · staging" },
+          { y: 72, c: "#22d3ee", t: "Software & model updates", s: "Pinned versions · SBOM · offline scanners" },
+          { y: 108, c: "#a78bfa", t: "Compute — training", s: "Dense GPU · parallel storage" },
+          { y: 144, c: "#818cf8", t: "Compute — inference", s: "Separate pool · latency SLAs" },
+          { y: 180, c: "#fbbf24", t: "Security baseline", s: "800-53 · STIGs · RMF / cATO" },
+          { y: 216, c: "#f97316", t: "Network / hybrid", s: "Micro-seg · IL5/IL6 only if used" },
+          { y: 252, c: "#34d399", t: "Equipment lifecycle", s: "Sanitization · disposition" },
+        ];
+        const blocks = rows.map((r, i) => `
+          <rect x="40" y="${r.y}" width="840" height="30" rx="7" fill="${r.c}" opacity="0.18" stroke="${r.c}" stroke-width="1"/>
+          <circle cx="58" cy="${r.y + 15}" r="8" fill="${r.c}"/>
+          <text x="58" y="${r.y + 19}" text-anchor="middle" fill="#0b1220" font-family="ui-monospace,monospace" font-size="9" font-weight="700">${i + 1}</text>
+          <text x="78" y="${r.y + 19}" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="600">${r.t}</text>
+          <text x="860" y="${r.y + 19}" text-anchor="end" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="11">${r.s}</text>
+        `).join("");
+        return `
+<svg viewBox="0 0 920 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture layers diagram">
+  <rect width="920" height="310" rx="12" fill="#0f172a"/>
+  <text x="40" y="24" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="11" font-weight="600" letter-spacing="0.06em">CLASSIFIED AI LAB — LAYERED REFERENCE (STUDY MODEL)</text>
+  ${blocks}
+</svg>`;
+      }
+    },
+    {
+      id: "rmf",
+      title: "RMF lifecycle & cATO",
+      blurb: "Seven RMF steps with continuous monitoring loop.",
+      caption: "cATO emphasizes ongoing evidence (scans, dashboards) rather than point-in-time only.",
+      full: false,
+      svg: () => {
+        const steps = ["Prepare", "Categorize", "Select", "Implement", "Assess", "Authorize", "Monitor"];
+        const cx = 200, cy = 170, R = 110;
+        const nodes = steps.map((name, i) => {
+          const a = (-90 + i * (360 / 7)) * Math.PI / 180;
+          const x = cx + R * Math.cos(a);
+          const y = cy + R * Math.sin(a);
+          return { name, x, y, n: i + 1 };
+        });
+        const lines = nodes.map((n, i) => {
+          const m = nodes[(i + 1) % nodes.length];
+          return `<line x1="${n.x}" y1="${n.y}" x2="${m.x}" y2="${m.y}" stroke="#334566" stroke-width="2"/>`;
+        }).join("");
+        const dots = nodes.map(n => `
+          <circle cx="${n.x}" cy="${n.y}" r="28" fill="#151f35" stroke="${n.n === 7 ? "#34d399" : "#38bdf8"}" stroke-width="2"/>
+          <text x="${n.x}" y="${n.y - 4}" text-anchor="middle" fill="${n.n === 7 ? "#34d399" : "#38bdf8"}" font-family="ui-monospace,monospace" font-size="11" font-weight="700">${n.n}</text>
+          <text x="${n.x}" y="${n.y + 10}" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="9" font-weight="600">${n.name}</text>
+        `).join("");
+        return `
+<svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RMF lifecycle diagram">
+  <rect width="400" height="340" rx="12" fill="#0f172a"/>
+  ${lines}
+  <circle cx="${cx}" cy="${cy}" r="48" fill="#111a2e" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="${cx}" y="${cy - 6}" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">cATO</text>
+  <text x="${cx}" y="${cy + 10}" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="9">continuous</text>
+  <text x="${cx}" y="${cy + 22}" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="9">evidence</text>
+  ${dots}
+  <text x="200" y="328" text-anchor="middle" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Monitor feeds Authorize — continuous ATO path</text>
+</svg>`;
+      }
+    },
+    {
+      id: "zt",
+      title: "Zero Trust seven pillars",
+      blurb: "DoD ZT pillars arranged around the lab mission.",
+      caption: "Use the Zero Trust nav view to open pillar → control mappings.",
+      full: false,
+      svg: () => {
+        const pillars = [
+          "User", "Devices", "Apps &\nWorkloads", "Data",
+          "Network &\nEnvironment", "Automation &\nOrchestration", "Visibility &\nAnalytics"
+        ];
+        const cx = 200, cy = 165, R = 105;
+        const nodes = pillars.map((name, i) => {
+          const a = (-90 + i * (360 / 7)) * Math.PI / 180;
+          return { name, x: cx + R * Math.cos(a), y: cy + R * Math.sin(a), n: i + 1 };
+        });
+        const spokes = nodes.map(n =>
+          `<line x1="${cx}" y1="${cy}" x2="${n.x}" y2="${n.y}" stroke="#243049" stroke-width="1.5"/>`
+        ).join("");
+        const dots = nodes.map(n => {
+          const lines = n.name.split("\n");
+          const ty = lines.length > 1 ? n.y - 2 : n.y + 4;
+          const text = lines.map((ln, i) =>
+            `<text x="${n.x}" y="${ty + i * 10}" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="8.5" font-weight="600">${ln}</text>`
+          ).join("");
+          return `
+          <circle cx="${n.x}" cy="${n.y}" r="32" fill="#151f35" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="${n.x}" y="${n.y - 12}" text-anchor="middle" fill="#a78bfa" font-family="ui-monospace,monospace" font-size="9" font-weight="700">0${n.n}</text>
+          ${text}`;
+        }).join("");
+        return `
+<svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Zero Trust pillars diagram">
+  <rect width="400" height="340" rx="12" fill="#0f172a"/>
+  ${spokes}
+  <circle cx="${cx}" cy="${cy}" r="40" fill="url(#zg)" stroke="#a78bfa" stroke-width="1.5"/>
+  <defs><linearGradient id="zg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#312e81"/><stop offset="100%" stop-color="#1e3a5f"/></linearGradient></defs>
+  <text x="${cx}" y="${cy - 4}" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="11" font-weight="700">AI Lab</text>
+  <text x="${cx}" y="${cy + 10}" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="9">mission</text>
+  ${dots}
+  <text x="200" y="328" text-anchor="middle" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="10">DoD Zero Trust Reference Architecture — study view</text>
+</svg>`;
+      }
+    },
+    {
+      id: "mapflow",
+      title: "Need → NIST → STIG → evidence",
+      blurb: "How a mission need becomes implementable checks.",
+      caption: "Study path for turning requirements into scans, SBOMs, and boundary proofs.",
+      full: true,
+      svg: () => `
+<svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Requirement mapping flow">
+  <rect width="900" height="220" rx="12" fill="#0f172a"/>
+  <defs>
+    <marker id="af" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker>
+  </defs>
+  ${[
+    { x: 30, t: "Mission need", s: "e.g. no data out", c: "#f43f5e" },
+    { x: 210, t: "NIST controls", s: "AC-4 · SC-7 · MP-7", c: "#38bdf8" },
+    { x: 390, t: "STIG / SRG", s: "Boundary · K8s · OS", c: "#a78bfa" },
+    { x: 570, t: "Implement", s: "IaC · admit · diode", c: "#fbbf24" },
+    { x: 750, t: "Evidence", s: "Scans · logs · SBOM", c: "#34d399" },
+  ].map((b, i) => `
+    <rect x="${b.x}" y="60" width="140" height="90" rx="12" fill="#151f35" stroke="${b.c}" stroke-width="1.8"/>
+    <circle cx="${b.x + 20}" cy="80" r="10" fill="${b.c}"/>
+    <text x="${b.x + 20}" y="84" text-anchor="middle" fill="#0b1220" font-family="ui-monospace,monospace" font-size="10" font-weight="700">${i + 1}</text>
+    <text x="${b.x + 70}" y="105" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="700">${b.t}</text>
+    <text x="${b.x + 70}" y="126" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="11">${b.s}</text>
+    ${i < 4 ? `<path d="M${b.x + 148} 105 H${b.x + 172}" stroke="#64748b" stroke-width="2" marker-end="url(#af)"/>` : ""}
+  `).join("")}
+  <text x="450" y="190" text-anchor="middle" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="12">Traceability chain used throughout this learning resource</text>
+</svg>`
+    },
+    {
+      id: "workloads",
+      title: "AI workload segmentation",
+      blurb: "Training, fine-tuning, and inference as separate pools / boundaries.",
+      caption: "RMF often scopes authorization boundaries by function, not one monolith.",
+      full: false,
+      svg: () => `
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI workload segmentation">
+  <rect width="400" height="300" rx="12" fill="#0f172a"/>
+  <rect x="30" y="36" width="340" height="48" rx="10" fill="#151f35" stroke="#334566"/>
+  <text x="200" y="65" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="12">Shared fabric: identity · logging · registry · policy-as-code</text>
+  <rect x="30" y="110" width="100" height="130" rx="12" fill="#1e1b4b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="80" y="140" text-anchor="middle" fill="#c4b5fd" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">Training</text>
+  <text x="80" y="160" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Dense GPU</text>
+  <text x="80" y="176" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Checkpoints</text>
+  <text x="80" y="192" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">High bandwidth</text>
+  <text x="80" y="220" text-anchor="middle" fill="#a78bfa" font-family="ui-monospace,monospace" font-size="9">Boundary A</text>
+  <rect x="150" y="110" width="100" height="130" rx="12" fill="#164e63" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="200" y="140" text-anchor="middle" fill="#a5f3fc" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">Fine-tune</text>
+  <text x="200" y="160" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Flexible GPU</text>
+  <text x="200" y="176" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Curated data</text>
+  <text x="200" y="192" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Shorter jobs</text>
+  <text x="200" y="220" text-anchor="middle" fill="#22d3ee" font-family="ui-monospace,monospace" font-size="9">Boundary B</text>
+  <rect x="270" y="110" width="100" height="130" rx="12" fill="#14532d" stroke="#34d399" stroke-width="1.5"/>
+  <text x="320" y="140" text-anchor="middle" fill="#bbf7d0" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">Inference</text>
+  <text x="320" y="160" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Latency SLAs</text>
+  <text x="320" y="176" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Autoscale</text>
+  <text x="320" y="192" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">Serve models</text>
+  <text x="320" y="220" text-anchor="middle" fill="#34d399" font-family="ui-monospace,monospace" font-size="9">Boundary C</text>
+  <text x="200" y="275" text-anchor="middle" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="11">Separate pools reduce contention and clarify RMF scope</text>
+</svg>`
+    },
+  ];
+
+  function diagramCard(d, { full } = {}) {
+    const isFull = full ?? d.full;
+    return `
+      <article class="diagram-card ${isFull ? "full" : ""}" id="diagram-${d.id}">
+        <header>
+          <h3>${esc(d.title)}</h3>
+          <p>${esc(d.blurb)}</p>
+        </header>
+        <div class="diagram-body">${d.svg()}</div>
+        <div class="diagram-caption">${esc(d.caption)}</div>
+      </article>
+    `;
+  }
+
+  function getDiagram(id) {
+    return DIAGRAMS.find(d => d.id === id);
+  }
+
+  function renderDiagramStrip(ids) {
+    return `<div class="diagram-grid diagram-inline">${ids.map(id => {
+      const d = getDiagram(id);
+      return d ? diagramCard(d, { full: ids.length === 1 }) : "";
+    }).join("")}</div>`;
+  }
 
   /* =========================================================================
      HELPERS
@@ -1450,6 +1835,7 @@
         if (v.id === "zt") count = DATA.pillars.length;
         if (v.id === "layers") count = DATA.layers.length;
         if (v.id === "assessor") count = DATA.assessor.length;
+        if (v.id === "diagrams") count = DIAGRAMS.length;
         html += `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">
           <span class="ico">${v.ico}</span>${esc(v.label)}
           ${count !== "" ? `<span class="count">${count}</span>` : ""}
@@ -1558,16 +1944,40 @@
       <div style="margin-top:22px">
         <h2 style="font-size:15px;margin-bottom:12px;color:var(--text-muted)">Quick paths</h2>
         <div class="grid">
+          <button class="card" data-view="diagrams"><div class="card-top"><h3>Diagrams</h3></div><p>Visual study maps: compliance stack, air-gap flow, RMF, Zero Trust, workload pools.</p></button>
           <button class="card" data-view="layers"><div class="card-top"><h3>Architecture → controls</h3></div><p>Seven layers from ingress to lifecycle, each mapped to NIST, STIGs, and Zero Trust.</p></button>
           <button class="card" data-view="crosswalk"><div class="card-top"><h3>Requirement crosswalk</h3></div><p>Scenario needs (air-gap, SBOM, cATO…) mapped to control IDs and STIG stacks.</p></button>
           <button class="card" data-view="assessor"><div class="card-top"><h3>Study checklist</h3></div><p>Ten evidence themes a security reviewer often discusses. Progress saves locally in this browser.</p></button>
-          <button class="card" data-view="stigs"><div class="card-top"><h3>DISA STIGs by stack</h3></div><p>OS, Kubernetes, Container Platform, Application SRG, and boundary/CDS.</p></button>
         </div>
+      </div>
+      <div style="margin-top:22px">
+        <h2 style="font-size:15px;margin-bottom:12px;color:var(--text-muted)">Featured diagram</h2>
+        ${renderDiagramStrip(["stack"])}
       </div>
       <div class="source-bar">
         <strong style="color:var(--text-muted)">Learning resource</strong> — not legal, accreditation, or employer guidance.<br/>
         Baseline themes: ${esc(DATA.meta.baseline)}<br/>
         ${esc(DATA.meta.source)}
+      </div>
+    `;
+  }
+
+  function renderDiagrams() {
+    const q = (state.q || "").toLowerCase();
+    const list = DIAGRAMS.filter(d =>
+      !q || [d.id, d.title, d.blurb, d.caption].join(" ").toLowerCase().includes(q)
+    );
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">VISUAL MAPS · LEARNING RESOURCE</div>
+        <h1>Diagrams</h1>
+        <p>Inline SVG study diagrams (no external assets). Use them to orient before drilling into controls, STIGs, and checklists.</p>
+      </div>
+      <div class="diagram-grid">
+        ${list.map(d => diagramCard(d)).join("") || `<div class="empty">No diagrams match your search.</div>`}
+      </div>
+      <div class="source-bar" style="margin-top:18px">
+        Educational illustrations only — simplified models, not official architecture drawings or accreditation artifacts.
       </div>
     `;
   }
@@ -1579,6 +1989,7 @@
         <h1>Reference architecture layers</h1>
         <p>Each layer is independently defensible against DISA STIG, NIST 800-53, and DoD Zero Trust. Click a layer for mapped controls.</p>
       </div>
+      ${renderDiagramStrip(["arch", "airgap"])}
       <div class="layers">
         ${DATA.layers.filter(l => matchQ(l, ["name","standard","choice"])).map(l => `
           <button class="layer" data-layer="${l.id}">
@@ -1590,6 +2001,10 @@
             <div class="layer-arrow">→</div>
           </button>
         `).join("")}
+      </div>
+      <div style="margin-top:20px">
+        <h2 style="font-size:14px;margin-bottom:12px;color:var(--text-muted)">Workload pools</h2>
+        ${renderDiagramStrip(["workloads"])}
       </div>
     `;
   }
@@ -1681,6 +2096,7 @@
         <h1>Seven pillars</h1>
         <p>DoD’s architectural lens for the lab — structure design end-to-end rather than treating ZT as a separate checklist.</p>
       </div>
+      ${renderDiagramStrip(["zt"])}
       <div class="pillars">
         ${DATA.pillars.filter(p => matchQ(p, ["name","summary","lab"])).map(p => `
           <button class="pillar" data-pillar="${p.id}">
@@ -1703,6 +2119,7 @@
         <h1>Mission need → NIST → STIG → ZT</h1>
         <p>Crosswalk of scenario compliance themes for study, self-briefing, and literacy exercises.</p>
       </div>
+      ${renderDiagramStrip(["mapflow"])}
       <div class="table-wrap">
         <table>
           <thead>
@@ -1730,6 +2147,7 @@
         <h1>Risk Management Framework path</h1>
         <p>NIST RMF steps applied to the lab. Mature guidance pushes toward <strong style="color:var(--text)">continuous ATO (cATO)</strong> — automated derivation, testing, and monitoring in DevSecOps rather than periodic manual reassessments only.</p>
       </div>
+      ${renderDiagramStrip(["rmf"])}
       <div class="rmf-steps">
         ${DATA.rmf.map(s => `
           <div class="rmf-step">
@@ -1825,6 +2243,7 @@
     } else {
       const map = {
         home: renderHome,
+        diagrams: renderDiagrams,
         layers: renderLayers,
         families: renderFamilies,
         controls: renderControls,
