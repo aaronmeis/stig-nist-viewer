@@ -1049,6 +1049,147 @@
     .read-card h3 { font-size: 14px; margin-bottom: 6px; color: var(--accent); }
     .read-card p { font-size: 12.5px; color: var(--text-muted); }
 
+    /* Deck / slides */
+    .deck-layout {
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 360px);
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .deck-layout { grid-template-columns: 1fr; }
+    }
+    .deck-stage {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .deck-image-wrap {
+      position: relative;
+      background: #0a0f18;
+      cursor: zoom-in;
+    }
+    .deck-image-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .deck-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .deck-toolbar button {
+      border: 1px solid var(--border);
+      background: var(--bg-elev);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .deck-toolbar button:hover {
+      color: var(--accent);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+    .deck-toolbar .idx {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+    .deck-notes {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      position: sticky;
+      top: 12px;
+    }
+    .deck-notes h2 {
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .deck-notes .deck-kicker {
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .deck-notes .summary {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .deck-notes h4 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin: 12px 0 6px;
+    }
+    .deck-notes ul {
+      padding-left: 16px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .deck-notes li { margin-bottom: 5px; }
+    .deck-notes .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .filmstrip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 10px;
+      margin-bottom: 14px;
+    }
+    .filmstrip button {
+      flex: 0 0 auto;
+      width: 96px;
+      padding: 0;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #0a0f18;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.12s, border-color 0.12s;
+    }
+    .filmstrip button:hover { opacity: 1; }
+    .filmstrip button.active {
+      opacity: 1;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35);
+    }
+    .filmstrip img {
+      display: block;
+      width: 100%;
+      height: 54px;
+      object-fit: cover;
+    }
+    .filmstrip .n {
+      display: block;
+      text-align: center;
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      padding: 2px 0 3px;
+      background: var(--bg-elev);
+    }
+
     @media (max-width: 860px) {
       .app { grid-template-columns: 1fr; grid-template-rows: 56px auto 1fr; }
       .sidebar {
@@ -1746,6 +1887,154 @@
       { name: "Unsigned / privileged admission denials", why: "Policy-as-code is actually enforcing" },
       { name: "Inventory completeness (HW + SW + models)", why: "SSP truthfulness" },
     ],
+
+    /* NotebookLM deck: Classified_AI_Architecture (12 slides) */
+    slides: [
+      {
+        id: 1, file: "slides/slide-01.jpg",
+        title: "Title — Classified AI Lab Data Architecture",
+        kicker: "Secure vault blueprint · educational summary",
+        summary: "Opens the deck with the core metaphor: a high-side vault fed only through a one-way data diode (red zone). The mission is a design, compliance, and lifecycle framework for a closed AI lab.",
+        learn: [
+          "Constraint first: data may enter under control; it must not freely leave.",
+          "This SPA treats the deck as a study visual — not an official accreditation package.",
+          "Industry wording on the slide is generic; the patterns apply to any high-side AI lab scenario.",
+        ],
+        explore: ["playbook", "diagrams", "layers"],
+      },
+      {
+        id: 2, file: "slides/slide-02.jpg",
+        title: "The “No Data Out” imperative",
+        kicker: "Four pillars of the lab enclave",
+        summary: "End-to-end story: Perimeter (ingress diode) → Engine (segmented train/infer compute) → Fabric (Zero Trust + continuous monitoring) → Exit (physical destruction of retired media). No feedback path from high-side compute to the outside.",
+        learn: [
+          "Separate AI training from inference with isolation barriers.",
+          "Security is continuous (ZT + monitoring), not a one-time gate.",
+          "Lifecycle/exit is part of architecture — not an afterthought for facilities.",
+        ],
+        explore: ["layers", "playbook", "diagrams"],
+      },
+      {
+        id: 3, file: "slides/slide-03.jpg",
+        title: "Data ingress — breaching the air gap securely",
+        kicker: "NSA Raise the Bar (RTB) pipeline vs firewall myth",
+        summary: "Contrasts a conventional two-way firewall perimeter with a three-stage RTB-style path: low-side staging (fetch/scan/validate) → hardware diode boundary → high-side vault and internal versioned registry.",
+        learn: [
+          "Bidirectional paths at the edge are a structural vulnerability for “no data out.”",
+          "All AI artifacts should stage and scan on the low side before transfer.",
+          "High-side runtime should pull only from an internal registry — never the public internet.",
+        ],
+        explore: ["playbook", "pitfalls", "glossary"],
+      },
+      {
+        id: 4, file: "slides/slide-04.jpg",
+        title: "Ingress mechanisms — CDS, diodes, CDR",
+        kicker: "Perimeter diagnostic readout",
+        summary: "Three complementary controls: Cross Domain Solutions (mediated domain transfer under RTB), data diodes (hardware one-way for strict no-return), and Content Disarm & Reconstruction (rebuild files so malware does not ride the transfer).",
+        learn: [
+          "Diode ≈ physics-enforced one-way; CDS ≈ accredited gateway with broader mediation options.",
+          "CDR assumes signatures alone are not enough for high-assurance file transfer.",
+          "Product authorizations (e.g. SABI/TSABI themes) are program-specific — verify with your approving authority.",
+        ],
+        explore: ["glossary", "layers", "controls"],
+      },
+      {
+        id: 5, file: "slides/slide-05.jpg",
+        title: "DevSecOps & MLOps in the air gap",
+        kicker: "Diode injection → high-side infinity loop",
+        summary: "Low-side assets (repos, datasets, models) cross at a diode/sneakernet injection point as signed, version-pinned artifact classes. High side runs its own build/test/release/monitor loop with distroless images and offline SBOM validation into a trusted registry.",
+        learn: [
+          "CI/CD lives on the high side against internal mirrors — not outbound package pulls.",
+          "Minimal/scratch images shrink CVE surface and diode payload size.",
+          "SBOM + signed digests are how Zero Trust “approved binaries” becomes operational.",
+        ],
+        explore: ["playbook", "stigs", "crosswalk"],
+      },
+      {
+        id: 6, file: "slides/slide-06.jpg",
+        title: "Data classification & handling matrix",
+        kicker: "Public → Internal → Confidential → Restricted",
+        summary: "A four-level handling model with escalating controls (least privilege → RBAC/audit → isolated analysis, crypto wipe themes, MFA). Key rule: aggregation of low-risk elements can raise classification automatically.",
+        learn: [
+          "Labeling is a Zero Trust Data-pillar practice, not only an ingress checkbox.",
+          "Aggregation risk is easy to miss when combining telemetry, models, and datasets.",
+          "Map your real program markings (including classified overlays) with security — this matrix is a teaching scaffold.",
+        ],
+        explore: ["assessor", "zt", "glossary"],
+      },
+      {
+        id: 7, file: "slides/slide-07.jpg",
+        title: "AI compute segmentation & hybrid expansion",
+        kicker: "On-prem core + IL5/IL6 burst",
+        summary: "On-prem: dense GPU pools for train/fine-tune and separate autoscaled inference, each tied to RMF-style boundaries. Optional government-only cloud regions (IL5/IL6 themes) for elastic burst via a Zero Trust micro-segmented corridor — placement as policy-as-code, not a security redesign.",
+        learn: [
+          "“No data out” does not forbid cloud — it forbids the wrong cloud (commercial multi-tenant).",
+          "Function-scoped boundaries clarify STIGs and risk decisions.",
+          "Interconnect, memory, and storage design matter as much as GPU count.",
+        ],
+        explore: ["playbook", "diagrams", "rmf"],
+      },
+      {
+        id: 8, file: "slides/slide-08.jpg",
+        title: "DoD Zero Trust security fabric",
+        kicker: "Seven pillars + PDP/PEP pattern",
+        summary: "Pie of seven ZT pillars with Data / Network / Automation highlighted as connective tissue. Right side shows coordinated policy decision (PDP) and enforcement (PEP) with data tagging, encryption, and a data-domain orchestrator — plus lab implementations: tagging/SDS, micro-segmentation, continuous authentication.",
+        learn: [
+          "ZT is an architecture lens across the whole lab, not a checkbox list.",
+          "Micro-segmentation replaces “big VPN trust” between enclaves.",
+          "Continuous authentication and tagging support least privilege on high side.",
+        ],
+        explore: ["zt", "diagrams", "controls"],
+      },
+      {
+        id: 9, file: "slides/slide-09.jpg",
+        title: "Big data analytics & AI in Zero Trust",
+        kicker: "From fragmented logs to cATO-ready loops",
+        summary: "Conventional side: manual logs, legacy firewall, fragmented paths. Zero Trust side: universal visibility into a security data lake, AI/ML baselining, SOAR remediation, PDP/PEP enforcement — feeding continuous confidence scoring and AO-facing evidence for cATO.",
+        learn: [
+          "Observability must stay inside the high-side boundary (no accidental exfil via SaaS SIEM).",
+          "Automation reduces compliance drift between assessment events.",
+          "cATO needs live dashboards, not only annual binders.",
+        ],
+        explore: ["rmf", "assessor", "pitfalls"],
+      },
+      {
+        id: 10, file: "slides/slide-10.jpg",
+        title: "Compliance baseline integration",
+        kicker: "Mandates → 800-53 → STIGs → proof",
+        summary: "Funnel: federal/DoD mandates (FISMA, ZT, CMMC for CUI) → NIST 800-53 Rev 5 catalog → DISA STIGs as technical implementation. Assessor proof themes: MAC-2 style overlays, K8s/container STIG via policy-as-code, SBOMs for models and libraries.",
+        learn: [
+          "STIGs operationalize 800-53 for specific products — they are not a separate universe.",
+          "Admission controllers turn STIG intent into continuous gates.",
+          "Use this SPA’s Key controls and Study checklist to practice evidence mapping.",
+        ],
+        explore: ["families", "stigs", "assessor", "crosswalk"],
+      },
+      {
+        id: 11, file: "slides/slide-11.jpg",
+        title: "End-of-life — media disposition themes",
+        kicker: "NSA PM 9-12 / EPL equipment",
+        summary: "Study slide summarizing media-type-dependent sanitization/destruction themes (e.g. modern drive types, SSD/NVMe, magnetic HDD, printers). Emphasizes EPL-approved destruction equipment and that simple power-off is not sanitization.",
+        learn: [
+          "Always verify temperatures, methods, and media classes against the current official PM 9-12 and your program’s ISSO — deck details can simplify or lag real guidance.",
+          "GPU/HBM and NVMe in training nodes are in scope for disposition planning.",
+          "Inventory + classification history of the media drives the method choice.",
+        ],
+        explore: ["playbook", "glossary", "reading"],
+      },
+      {
+        id: 12, file: "slides/slide-12.jpg",
+        title: "Reference architecture summary",
+        kicker: "Layer · standard · design choice",
+        summary: "Closes the deck with the six-row matrix: Ingress (diode + staging), Software/Models (pinned transfer, minimal containers), Training compute (dense GPU + RMF boundary), Security baseline (800-53/STIG/cATO), Network/Hybrid (ZT + IL5/IL6 burst), Lifecycle (PM 9-12 / disposition).",
+        learn: [
+          "If you only remember one table from the deck, remember this matrix.",
+          "Each row is independently defensible — and maps to this SPA’s Architecture layers view.",
+          "Innovation speed comes from automation inside the boundary, not from weakening the boundary.",
+        ],
+        explore: ["layers", "crosswalk", "playbook"],
+      },
+    ],
   };
 
   /* =========================================================================
@@ -1760,10 +2049,12 @@
     severity: "all",
     labFocus: "all",
     q: "",
+    deckSlide: 0,
   };
 
   const VIEWS = [
     { id: "home", label: "Overview", ico: "◈", section: "Navigate" },
+    { id: "deck", label: "NotebookLM deck", ico: "▣", section: "Navigate" },
     { id: "playbook", label: "Lab builder playbook", ico: "⚑", section: "Navigate" },
     { id: "diagrams", label: "Diagrams", ico: "◫", section: "Navigate" },
     { id: "layers", label: "Architecture layers", ico: "▣", section: "Navigate" },
@@ -2484,6 +2775,7 @@
         if (v.id === "glossary") count = DATA.glossary.length;
         if (v.id === "pitfalls") count = DATA.pitfalls.length;
         if (v.id === "reading") count = DATA.reading.length;
+        if (v.id === "deck") count = DATA.slides.length;
         html += `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">
           <span class="ico">${v.ico}</span>${esc(v.label)}
           ${count !== "" ? `<span class="count">${count}</span>` : ""}
@@ -2592,10 +2884,10 @@
       <div style="margin-top:22px">
         <h2 style="font-size:15px;margin-bottom:12px;color:var(--text-muted)">Quick paths</h2>
         <div class="grid">
+          <button class="card" data-view="deck"><div class="card-top"><h3>NotebookLM deck</h3></div><p>12 presentation slides with study notes — ingress, air-gap MLOps, Zero Trust, compliance funnel, disposition.</p></button>
           <button class="card" data-view="playbook"><div class="card-top"><h3>Lab builder playbook</h3></div><p>Phased path for standing up a modern air-gapped AI lab — scope, ingress, platform, compute, authorize, lifecycle.</p></button>
           <button class="card" data-view="diagrams"><div class="card-top"><h3>Diagrams</h3></div><p>Visual study maps: compliance stack, air-gap flow, RMF, Zero Trust, artifact pipelines.</p></button>
           <button class="card" data-view="pitfalls"><div class="card-top"><h3>Pitfalls & failures</h3></div><p>Common anti-patterns and outage scenarios before they become expensive lessons.</p></button>
-          <button class="card" data-view="glossary"><div class="card-top"><h3>Glossary + reading</h3></div><p>CDS, diode, cATO, IL5/6, SBOM… and official public references to keep studying.</p></button>
         </div>
       </div>
       <div style="margin-top:22px">
@@ -2640,6 +2932,100 @@
         <strong style="color:var(--text-muted)"> Click any diagram</strong> to open a full-size lightbox (← → to move between diagrams on the page).
       </div>
     `;
+  }
+
+  function setDeckSlide(i) {
+    const n = DATA.slides.length;
+    state.deckSlide = ((i % n) + n) % n;
+    render();
+    // keep scroll near top of notes when paging
+    const main = $("#main");
+    if (main) main.scrollTop = Math.min(main.scrollTop, 120);
+  }
+
+  function renderDeck() {
+    const slides = DATA.slides;
+    const i = Math.min(Math.max(0, state.deckSlide), slides.length - 1);
+    state.deckSlide = i;
+    const s = slides[i];
+    const viewLabel = (id) => (VIEWS.find(v => v.id === id)?.label || id);
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">NOTEBOOKLM DECK · LEARNING RESOURCE</div>
+        <h1>Classified AI Lab Architecture</h1>
+        <p>12-slide visual deck exported from the NotebookLM presentation, with study notes tied to this site’s playbook, controls, and glossary. Click the slide image to enlarge.</p>
+      </div>
+      <div class="hint" style="margin-bottom:14px">
+        <strong>Source:</strong> <code style="color:var(--accent)">Classified_AI_Architecture</code> (NotebookLM studio deck).
+        Educational use only — verify operational details (especially media sanitization) against current official publications and your authorizing officials.
+      </div>
+      <div class="filmstrip" id="filmstrip">
+        ${slides.map((sl, idx) => `
+          <button type="button" class="${idx === i ? "active" : ""}" data-deck-idx="${idx}" title="${esc(sl.title)}">
+            <img src="${esc(sl.file)}" alt="Slide ${sl.id}" loading="lazy" />
+            <span class="n">${sl.id}</span>
+          </button>
+        `).join("")}
+      </div>
+      <div class="deck-layout">
+        <div class="deck-stage">
+          <div class="deck-image-wrap" id="deck-zoom" title="Click to enlarge" data-deck-lightbox="${i}">
+            <img src="${esc(s.file)}" alt="${esc(s.title)}" />
+          </div>
+          <div class="deck-toolbar">
+            <button type="button" id="deck-prev">← Previous</button>
+            <button type="button" id="deck-next">Next →</button>
+            <button type="button" id="deck-zoom-btn">Enlarge</button>
+            <span class="idx">Slide ${i + 1} / ${slides.length}</span>
+          </div>
+        </div>
+        <aside class="deck-notes">
+          <div class="deck-kicker">Slide ${s.id} · ${esc(s.kicker)}</div>
+          <h2>${esc(s.title)}</h2>
+          <p class="summary">${esc(s.summary)}</p>
+          <h4>What to learn</h4>
+          <ul>${s.learn.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+          <h4>Explore on this site</h4>
+          <div class="links">
+            ${s.explore.map(id =>
+              `<button type="button" class="map-link" data-view="${esc(id)}">${esc(viewLabel(id))}</button>`
+            ).join("")}
+          </div>
+        </aside>
+      </div>
+      <div class="source-bar" style="margin-top:18px">
+        Keyboard: <strong style="color:var(--text-muted)">← →</strong> change slides ·
+        <strong style="color:var(--text-muted)">E</strong> enlarge ·
+        Deck images live under <code style="color:var(--accent)">slides/</code> (JPEG).
+        Related Drive folder materials (study guides, matrix, video) are companion learning assets — not all are embedded here.
+      </div>
+    `;
+  }
+
+  function openSlideLightbox(index) {
+    const slides = DATA.slides;
+    const i = Math.min(Math.max(0, index), slides.length - 1);
+    state.deckSlide = i;
+    const s = slides[i];
+    // Reuse diagram lightbox chrome for full-size slide viewing
+    lightboxIds = slides.map((_, idx) => "slide:" + idx);
+    lightboxIndex = i;
+    closeDetail();
+    const lb = $("#lightbox");
+    $("#lightbox-title").textContent = s.title;
+    $("#lightbox-blurb").textContent = `Slide ${s.id} of ${slides.length} · ${s.kicker}`;
+    $("#lightbox-caption").textContent = s.summary;
+    $("#lightbox-index").textContent = `${i + 1} / ${slides.length}`;
+    $("#lightbox-stage").innerHTML = `<img src="${esc(s.file)}" alt="${esc(s.title)}" style="width:100%;height:auto;max-height:min(72vh,680px);border-radius:8px;display:block;" />`;
+    ["lb-prev", "lb-prev2", "lb-next", "lb-next2"].forEach(bid => {
+      const el = $("#" + bid);
+      if (el) el.disabled = slides.length <= 1;
+    });
+    // Override step renderer for slides
+    window.__lbMode = "slides";
+    lb.hidden = false;
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
   }
 
   function renderPlaybook() {
@@ -3070,6 +3456,7 @@
     } else {
       const map = {
         home: renderHome,
+        deck: renderDeck,
         playbook: renderPlaybook,
         diagrams: renderDiagrams,
         layers: renderLayers,
@@ -3090,10 +3477,27 @@
     $("#resultCount").textContent =
       state.view === "controls" ? `${filteredControls().length} controls` :
       state.view === "diagrams" ? `${DIAGRAMS.length} diagrams` :
+      state.view === "deck" ? `slide ${state.deckSlide + 1}/${DATA.slides.length}` :
       state.q ? `q: ${state.q}` : DATA.meta.baseline.split("·")[0].trim();
 
     // wire interactions
     wireLightboxTriggers($("#main"));
+    // Deck navigation
+    $("#main").querySelectorAll("[data-deck-idx]").forEach(el => {
+      el.addEventListener("click", () => setDeckSlide(parseInt(el.dataset.deckIdx, 10)));
+    });
+    const deckPrev = $("#deck-prev");
+    const deckNext = $("#deck-next");
+    if (deckPrev) deckPrev.addEventListener("click", () => setDeckSlide(state.deckSlide - 1));
+    if (deckNext) deckNext.addEventListener("click", () => setDeckSlide(state.deckSlide + 1));
+    const deckZoom = $("#deck-zoom");
+    const deckZoomBtn = $("#deck-zoom-btn");
+    if (deckZoom) deckZoom.addEventListener("click", () => openSlideLightbox(state.deckSlide));
+    if (deckZoomBtn) deckZoomBtn.addEventListener("click", () => openSlideLightbox(state.deckSlide));
+    // Center active filmstrip thumb
+    const activeThumb = $("#main").querySelector(".filmstrip button.active");
+    if (activeThumb) activeThumb.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+
     $("#main").querySelectorAll("[data-ctrl]").forEach(el => {
       el.addEventListener("click", () => {
         const c = DATA.controls.find(x => x.id === el.dataset.ctrl);

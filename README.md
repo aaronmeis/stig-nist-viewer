@@ -49,6 +49,7 @@ The SPA uses a **fictional, generic classified AI lab** with a *data-in / no-dat
 | View | What you get |
 |------|----------------|
 | **Overview** | Counts, four domains, featured diagram, quick paths |
+| **NotebookLM deck** | 12 presentation slides + study notes, filmstrip, lightbox |
 | **Lab builder playbook** | Phased path 0–5, principles, artifact pipelines, metrics, design gaps |
 | **Diagrams** | SVG maps + lightbox (stack, air-gap, RMF, ZT, phases, artifacts…) |
 | **Architecture layers** | Ingress → updates → train/infer → security → hybrid → lifecycle |
@@ -89,7 +90,8 @@ Or double-click `index.html`. No Node, Python, or Docker required. Works offline
 
 ```
 stig-nist-viewer/
-├── index.html      # Entire SPA (UI + embedded study data + logic)
+├── index.html      # SPA (UI + study data + deck notes + logic)
+├── slides/         # NotebookLM deck JPEGs (12)
 ├── README.md
 ├── LICENSE
 └── .nojekyll       # GitHub Pages: serve files as-is
