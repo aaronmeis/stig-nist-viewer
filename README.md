@@ -1,6 +1,6 @@
 # STIG · NIST Viewer
 
-**A learning resource** for navigating NIST SP 800-53, DISA STIGs, DoD Zero Trust, and RMF/cATO concepts using a generic classified AI lab scenario.
+**A learning resource** for navigating NIST SP 800-53, DISA STIGs, DCSA / NISP, DoD Zero Trust, and RMF/cATO concepts using a generic classified AI lab scenario.
 
 [![Live demo](https://img.shields.io/badge/demo-github.io-38bdf8?style=flat-square)](https://aaronmeis.github.io/stig-nist-viewer/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-a78bfa?style=flat-square)](LICENSE)
@@ -37,6 +37,7 @@ Compliance literacy for air-gapped / high-side AI environments means holding sev
 |--------|------------------------|
 | **NIST SP 800-53 Rev 5** | Control catalog (~1,193+ controls, 20 families) |
 | **DISA STIGs / SRGs** | Product baselines derived from 800-53 |
+| **DCSA / NISP** | Personnel vetting, industrial security, CI/training, dotted-line partners |
 | **DoD Zero Trust** | Seven-pillar architecture lens |
 | **RMF / cATO** | Authorization and continuous monitoring concepts |
 
@@ -58,6 +59,7 @@ The SPA uses a **fictional, generic classified AI lab** with a *data-in / no-dat
 | **DISA STIGs** | OS, Kubernetes, Container Platform, App SRG, Boundary/CDS |
 | **Zero Trust** | Seven DoD pillars → mapped controls |
 | **Crosswalk** | Scenario need → NIST → STIG → ZT |
+| **DCSA & NISP** | Five operating components, subcomponents, solid/dotted-line partners, NISP stack |
 | **RMF & cATO** | Seven RMF steps + continuous ATO study notes |
 | **Study checklist** | Common evidence themes (`localStorage` progress) |
 | **Pitfalls & failures** | Anti-patterns and outage drills |
@@ -167,4 +169,4 @@ Keep the zero-build story unless there is a strong reason to split the file.
 
 MIT — see [LICENSE](LICENSE).
 
-NIST, DISA, DoD, and related names are used for educational reference only. This project is **not affiliated with** NIST, DISA, the U.S. Department of Defense, or any commercial employer or vendor.
+NIST, DISA, DCSA, DoD, and related names are used for educational reference only. This project is **not affiliated with** NIST, DISA, DCSA, the U.S. Department of Defense, or any commercial employer or vendor.

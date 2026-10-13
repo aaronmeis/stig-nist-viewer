@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>STIG · NIST Viewer — Learning Resource</title>
-  <meta name="description" content="Learning resource: navigate NIST SP 800-53 Rev 5, DISA STIGs, Zero Trust, and RMF themes for a classified AI lab scenario. Educational only — not official guidance." />
+  <meta name="description" content="Learning resource: navigate NIST SP 800-53 Rev 5, DISA STIGs, DCSA / NISP, Zero Trust, and RMF themes for a classified AI lab scenario. Educational only — not official guidance." />
   <style>
     :root {
       --bg: #0b1220;
@@ -622,6 +622,164 @@
       color: var(--text-muted);
     }
     .hint strong { color: var(--accent); }
+
+
+    /* DCSA org map */
+    .dcsa-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 0 0 18px;
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .dcsa-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dcsa-legend i {
+      display: inline-block;
+      width: 28px;
+      height: 0;
+      border-top: 3px solid var(--accent);
+    }
+    .dcsa-legend i.dotted {
+      border-top-style: dashed;
+      border-top-color: var(--accent-2);
+    }
+    .dcsa-dir-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .dcsa-dir {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .dcsa-dir::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      opacity: 0.75;
+    }
+    .dcsa-dir.role-support::before { background: linear-gradient(90deg, #22d3ee, #38bdf8); }
+    .dcsa-dir.role-integrate::before { background: linear-gradient(90deg, #a78bfa, #f472b6); }
+    .dcsa-dir:hover { border-color: rgba(56, 189, 248, 0.45); transform: translateY(-2px); }
+    .dcsa-dir .code {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .dcsa-dir h3 { font-size: 14.5px; margin: 6px 0 8px; }
+    .dcsa-dir p { font-size: 12.5px; color: var(--text-muted); }
+    .dcsa-dir .role-pill {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px 8px;
+    }
+    .dotted-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .dotted-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      align-items: start;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+      width: 100%;
+      transition: border-color 0.12s;
+    }
+    .dotted-row:hover { border-color: rgba(167, 139, 250, 0.45); }
+    .dotted-row .kind {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-align: center;
+      border: 1px dashed var(--accent-2);
+      color: var(--accent-2);
+      background: rgba(167, 139, 250, 0.08);
+    }
+    .dotted-row .kind.solid {
+      border-style: solid;
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .dotted-row h3 { font-size: 13.5px; margin-bottom: 4px; }
+    .dotted-row p { font-size: 12.5px; color: var(--text-muted); }
+    .nisp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .nisp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+    .nisp-card h4 { font-size: 13px; margin-bottom: 4px; }
+    .nisp-card p { font-size: 12px; color: var(--text-muted); }
+    .touch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .touch-card {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+    .touch-card h4 { font-size: 12.5px; color: var(--accent); margin-bottom: 4px; }
+    .touch-card p { font-size: 12px; color: var(--text-muted); }
+    .section-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin: 8px 0 12px;
+    }
 
     .rmf-steps {
       display: grid;
@@ -1297,9 +1455,9 @@
     meta: {
       title: "STIG · NIST Learning Navigator",
       source: "Educational synthesis: classified AI lab architecture, compliance, and lifecycle themes",
-      baseline: "NIST SP 800-53 Rev 5 · DISA STIGs · DoD Zero Trust · RMF / cATO",
+      baseline: "NIST SP 800-53 Rev 5 · DISA STIGs · DCSA / NISP · DoD Zero Trust · RMF / cATO",
       constraint: "Scenario constraint: no data leaves the lab (high-side / air-gap posture)",
-      disclaimer: "Learning resource only. Not official NIST, DISA, DoD, or organizational guidance. Not affiliated with any company or employer.",
+      disclaimer: "Learning resource only. Not official NIST, DISA, DCSA, DoD, or organizational guidance. Not affiliated with any company or employer.",
     },
 
     families: [
@@ -1712,6 +1870,247 @@
       { n: 7, name: "Monitor", desc: "Continuous monitoring, drift, reassess" },
     ],
 
+
+    dcsa: {
+      overview: {
+        name: "Defense Counterintelligence and Security Agency",
+        short: "DCSA",
+        formed: "2019 (reorganized from Defense Security Service; NBIB background-investigation mission transferred from OPM)",
+        hq: "Marine Corps Base Quantico, Virginia",
+        reportsTo: "Under Secretary of Defense for Intelligence and Security (USD(I&S))",
+        role: "DoD's primary personnel-vetting and industrial-security agency. Two core missions (personnel vetting and industrial security) sit on supporting CI/insider-threat and security-training centers, with Field Operations integrating work in the regions.",
+        scale: "Largest dedicated security agency in the federal government. Public materials cite support to 100+ federal entities, ~12,500 cleared facilities under NISP, and millions of background investigations per year. Exact counts move; treat published figures as orientation, not a current inventory.",
+        note: "Educational map only. Confirm current directorate names, tools, and authorities on dcsa.mil and in 32 CFR Part 117 before operational use.",
+      },
+
+      directorates: [
+        {
+          id: "pv",
+          code: "PV",
+          name: "Personnel Vetting",
+          aka: "Personnel Security (legacy label still appears in older charts)",
+          role: "core",
+          summary: "Background investigations, continuous vetting, adjudications, and vetted-workforce data services for the federal and contractor workforce.",
+          does: [
+            "Conducts background investigations for roughly 95% of the federal government across 100+ departments and agencies (agency-stated scale).",
+            "Delivers continuous vetting (CV) after initial clearance or suitability decisions.",
+            "Adjudicates a large share of federal adjudicative determinations via Consolidated Adjudication Services (CAS).",
+            "Operates and modernizes investigation IT (including NBIS program themes) that replaced older e-QIP / legacy OPM pathways.",
+          ],
+          subcomponents: [
+            { id: "cas", name: "Consolidated Adjudication Services (CAS)", blurb: "Central adjudicative body for many DoD and supported-agency clearance decisions." },
+            { id: "nbis", name: "National Background Investigation Services (NBIS)", blurb: "Enterprise IT modernization for initiating, conducting, and managing investigations and related records." },
+            { id: "cv", name: "Continuous Vetting (CV)", blurb: "Ongoing automated checks after initial determination; cornerstone of Trusted Workforce 2.0 themes." },
+          ],
+          lab: "Lab staff and cleared contractors need eligibility before they touch classified AI systems. PS family controls in 800-53 and facility visit procedures connect here.",
+          links: ["rmf", "assessor"],
+        },
+        {
+          id: "is",
+          code: "IS",
+          name: "Industrial Security",
+          aka: "",
+          role: "core",
+          summary: "Administers the National Industrial Security Program (NISP) for DoD and agreed non-DoD agencies. Oversees cleared companies, facilities, FOCI mitigation, and NISP information-system cybersecurity.",
+          does: [
+            "Issues and oversees facility clearances (FCL) for companies that need access to classified information.",
+            "Mitigates Foreign Ownership, Control, or Influence (FOCI) so ownership structure does not compromise classified work.",
+            "Authorizes and inspects contractor information systems that process, store, or transmit classified information under NISP rules.",
+            "Provides day-to-day Cognizant Security Office (CSO) services when DoD (via DCSA) is the assigned CSO.",
+          ],
+          subcomponents: [
+            { id: "nao", name: "NISP Authorization Office (NAO)", blurb: "Authorizes contractor information systems under the NISP (the industrial-security cousin of a government ATO path)." },
+            { id: "naesoc", name: "National Access Elsewhere Security Oversight Center (NAESOC)", blurb: "Specialized oversight for classified access performed away from the company's primary cleared facility." },
+            { id: "fcl", name: "Facility Clearance (FCL) process", blurb: "Company-level eligibility to hold classified information at an approved facility." },
+            { id: "foci", name: "FOCI mitigation", blurb: "Board resolutions, voting trusts, proxy agreements, and related instruments when foreign ownership creates risk." },
+          ],
+          lab: "A contractor-run classified AI lab lives in this lane: FCL, system authorization under NISP, media control, and inspection readiness. Distinct from a pure government RMF ATO, though control themes overlap with 800-53.",
+          links: ["rmf", "stigs", "layers"],
+        },
+        {
+          id: "ci",
+          code: "CI",
+          name: "Counterintelligence and Insider Threat",
+          aka: "",
+          role: "support",
+          summary: "Identifies, assesses, deters, and mitigates foreign and insider threats against the cleared workforce and Defense Industrial Base. Supports both personnel-vetting and industrial-security missions.",
+          does: [
+            "Provides CI functional services to cleared industry and internal DCSA equities.",
+            "Focuses CI collection/analysis on foreign intelligence targeting of cleared people and technology.",
+            "Runs insider-threat analysis and referral pathways (including DITMAC for DoD enterprise insider-threat support).",
+            "Collaborates with intelligence and law-enforcement partners; DCSA's CI element is designated a Defense Intelligence Component for its CI mission work.",
+          ],
+          subcomponents: [
+            { id: "ditmac", name: "DoD Insider Threat Management and Analysis Center (DITMAC)", blurb: "Enterprise analysis hub that receives and triages insider-threat information across DoD components." },
+            { id: "ci-fs", name: "CI functional services to industry", blurb: "Threat awareness, reporting channels, and case support for cleared companies facing foreign targeting." },
+          ],
+          lab: "Model weights, training data, and GPU clusters are high-value targets. Insider-threat and foreign-collection themes belong in the lab's training and reporting design, not only in the personnel file.",
+          links: ["zt", "pitfalls"],
+        },
+        {
+          id: "st",
+          code: "ST",
+          name: "Security Training",
+          aka: "",
+          role: "support",
+          summary: "Education, training, certification, and research for security professionals across DoD and NISP industry.",
+          does: [
+            "Delivers online and in-person curricula spanning industrial security, personnel security, information security, CI, and insider threat.",
+            "Hosts nationally accredited centers used by government and cleared industry.",
+            "Issues professional certifications and role-based learning paths for FSOs, ISSMs/ISSOs, investigators, and related roles.",
+          ],
+          subcomponents: [
+            { id: "cdse", name: "Center for Development of Security Excellence (CDSE)", blurb: "Primary security education and certification center for DoD and NISP industry (Linthicum, MD)." },
+            { id: "ncca", name: "National Center for Credibility Assessment (NCCA)", blurb: "Polygraph / credibility-assessment training and standards center; transferred from DIA into DCSA's training enterprise." },
+            { id: "academy", name: "DCSA Security Academy themes", blurb: "Broader academy branding covering integrated security training products beyond a single schoolhouse name." },
+          ],
+          lab: "FSO, ISSM, system admin, and data-handler training often routes through CDSE products. Useful literacy path before an assessor visit.",
+          links: ["reading", "glossary"],
+        },
+        {
+          id: "fo",
+          code: "FO",
+          name: "Field Operations",
+          aka: "",
+          role: "integrate",
+          summary: "Regional integration of background investigations, industrial security, cybersecurity oversight, and CI/insider-threat work under unity of command in the field.",
+          does: [
+            "Organizes ~40% of the workforce across four regions and ~170+ field locations (agency-stated).",
+            "Puts BI, IS, CS, and CI mission directors under regional leadership so local threats get a combined response.",
+            "Carries out daily investigations, facility inspections, and NISP IT system inspections at cleared companies.",
+          ],
+          subcomponents: [
+            { id: "midatl", name: "Mid-Atlantic Region", blurb: "Regional HQ and field offices covering Mid-Atlantic states." },
+            { id: "east", name: "Eastern Region", blurb: "Regional HQ and field offices covering Eastern states." },
+            { id: "central", name: "Central Region", blurb: "Regional HQ and field offices covering Central states." },
+            { id: "west", name: "Western Region", blurb: "Regional HQ and field offices covering Western states." },
+          ],
+          lab: "Your Industrial Security Representative, ISSP, and CI contact usually sit in a Field Operations region, not at Quantico HQ.",
+          links: ["assessor", "playbook"],
+        },
+      ],
+
+      dottedLines: [
+        {
+          id: "usd-is",
+          name: "USD(I&S)",
+          kind: "solid",
+          relation: "Authority, direction, and control",
+          why: "DoDD 5105.42 places the Director, DCSA under the Under Secretary of Defense for Intelligence and Security. This is the solid reporting line.",
+          study: "When org charts show DCSA under DoD, the practical boss line is USD(I&S), not every other Under Secretary.",
+        },
+        {
+          id: "csas",
+          name: "NISP Cognizant Security Agencies (CSAs)",
+          kind: "dotted",
+          relation: "Peer policy / program authorities",
+          why: "EO 12829 designates five CSAs: DoD, DOE, NRC, ODNI, and DHS. Each CSA sets industrial-security policy for its equities. DoD (via USD(I&S) / DCSA as CSO) administers NISP services for DoD and for agencies that signed security agreements with DoD.",
+          study: "A lab working DOE or IC classified equities may see a different CSA lead even when DCSA still provides some services. Always ask which CSA and CSO own the contract.",
+        },
+        {
+          id: "isoo",
+          name: "ISOO (NARA)",
+          kind: "dotted",
+          relation: "NISPOM consultation / oversight of classified national security information programs",
+          why: "The Information Security Oversight Office consults on NISPOM maintenance. USD(I&S) issues 32 CFR Part 117 with required concurrences from other CSA principals.",
+          study: "NISPOM is a federal rule (32 CFR 117), not a DCSA pamphlet. DCSA executes; ISOO and the CSA set stay in the policy loop.",
+        },
+        {
+          id: "gca",
+          name: "Government Contracting Activities (GCAs)",
+          kind: "dotted",
+          relation: "Contract owners who sponsor clearances and classify work",
+          why: "GCAs decide what classified information a contractor receives and sponsor facility/personnel clearances. DCSA oversees how the company protects that information under NISP.",
+          study: "For a classified AI lab, the GCA owns the requirement and classification guidance. DCSA owns industrial-security oversight of the cleared company performing the work.",
+        },
+        {
+          id: "disa",
+          name: "DISA / cyber.mil STIGs",
+          kind: "dotted",
+          relation: "Product security baselines used inside NISP and DoD systems",
+          why: "DISA publishes STIGs and SRGs. DCSA (through NAO / ISSPs) oversees whether cleared contractor systems meet applicable hardening and authorization expectations. Different agencies, shared control language rooted in NIST 800-53.",
+          study: "Do not treat DCSA and DISA as the same office. STIGs are the product checklist; DCSA industrial security is the oversight relationship for cleared industry.",
+        },
+        {
+          id: "tw20",
+          name: "Trusted Workforce 2.0 / Security & Suitability Executive Agents",
+          kind: "dotted",
+          relation: "Enterprise personnel-vetting reform partners",
+          why: "Continuous vetting and reciprocal clearance policy sit in a multi-agency reform. ODNI (Security Executive Agent) and OPM (Suitability Executive Agent) set personnel-security policy lanes while DCSA performs most investigations.",
+          study: "Investigation delivery (DCSA) and adjudicative/policy standards (executive agents) are separate dotted-line partners on the same clearance journey.",
+        },
+        {
+          id: "opm-nbib",
+          name: "OPM / former NBIB",
+          kind: "dotted",
+          relation: "Mission transfer lineage",
+          why: "EO 13869 and follow-on actions moved federal background investigations from OPM's National Background Investigations Bureau into DoD, culminating in the DCSA rename and NBIS modernization.",
+          study: "Older SOPs that say \"send it to OPM/NBIB\" are stale. The operational home is DCSA; some suitability policy still ties to OPM.",
+        },
+        {
+          id: "dia-ncca",
+          name: "DIA (NCCA transfer)",
+          kind: "dotted",
+          relation: "Prior owning agency for credibility assessment",
+          why: "NCCA moved from DIA into DCSA Security Training so polygraph standards and training sit with the broader security-education enterprise.",
+          study: "Dotted historical line: mission moved, partnership with the Defense Intelligence Enterprise continues.",
+        },
+        {
+          id: "sap",
+          name: "Special Access Program (SAP) carve-outs",
+          kind: "dotted",
+          relation: "Exception path that can remove DCSA NISP oversight",
+          why: "NISPOM text allows the Secretary/Deputy Secretary of Defense to approve carve-outs that relieve DCSA of NISP oversight for specified DoD SAPs. Those programs use alternate cognizance.",
+          study: "If the lab supports a carved-out SAP, your industrial-security map changes. Do not assume standard DCSA ISR coverage.",
+        },
+        {
+          id: "niss",
+          name: "NISS / NISP systems ecosystem",
+          kind: "dotted",
+          relation: "Shared IT used by industry and DCSA",
+          why: "Cleared companies interact with DCSA through enterprise portals (NISS and related services) for facility, personnel, and system actions. These tools are the day-to-day dotted line between company FSOs and the agency.",
+          study: "Process literacy often fails at the portal step: sponsorship, packages, and notifications live here.",
+        },
+        {
+          id: "cmmc",
+          name: "CMMC / CUI track",
+          kind: "dotted",
+          relation: "Parallel cybersecurity certification for CUI",
+          why: "CMMC is led under DoD acquisition / CIO policy lanes for Controlled Unclassified Information. DCSA's NISP lane is primarily classified industrial security. Many companies touch both.",
+          study: "A lab may hold an FCL for classified work and separately pursue CMMC for CUI contracts. Overlap in NIST control language, different oversight chains.",
+        },
+        {
+          id: "cdse-audience",
+          name: "CDSE students across DoD + industry",
+          kind: "dotted",
+          relation: "Training audience outside DCSA payroll",
+          why: "CDSE trains FSOs, ISSMs, and security staff who do not work for DCSA. The schoolhouse is inside DCSA; the student body is the wider security enterprise.",
+          study: "Use CDSE for literacy even when your AO path is government RMF rather than NISP.",
+        },
+      ],
+
+      nisp: {
+        title: "NISP stack (study map)",
+        items: [
+          { name: "EO 12829", blurb: "Establishes the National Industrial Security Program across executive-branch agencies." },
+          { name: "32 CFR Part 117 (NISPOM)", blurb: "Operating manual issued as a federal rule. Primary requirements text for cleared industry." },
+          { name: "CSA vs CSO", blurb: "CSA sets policy for its equities. CSO (often DCSA for DoD-serviced agencies) performs oversight of cleared contractors." },
+          { name: "FCL + PCL", blurb: "Facility clearance for the company/site; personnel clearance / eligibility for people who need access." },
+          { name: "System authorization (NAO)", blurb: "Contractor systems that process classified information need NISP authorization and ongoing inspection." },
+          { name: "FOCI", blurb: "Foreign ownership, control, or influence must be mitigated before or while holding an FCL." },
+        ],
+      },
+
+      labTouchpoints: [
+        { title: "People", body: "Personnel vetting + continuous vetting decide who may enter the high-side AI lab." },
+        { title: "Company / facility", body: "Industrial Security FCL and inspections decide whether the contractor site may hold the classified work." },
+        { title: "Systems", body: "NAO / ISSP oversight of NISP systems sits beside (and must not be confused with) a government RMF ATO for a DoD lab enclave." },
+        { title: "Threat", body: "CI and insider-threat reporting cover targeting of models, data, and cleared staff." },
+        { title: "Skills", body: "CDSE curricula upskill FSOs, ISSMs, and admins who run day-2 security." },
+        { title: "Field face", body: "Most contact is regional Field Operations, not HQ staff offices." },
+      ],
+    },
+
     crosswalk: [
       { need: "No data leaves the lab", nist: "AC-4, SC-7, MP-7", stig: "Boundary / CDS, NetworkPolicy", zt: "Data, Network" },
       { need: "STIG-hardened stack", nist: "CM-2, CM-6, CA-2", stig: "OS, K8s, Container SRG", zt: "Devices, Apps, Automation" },
@@ -1888,6 +2287,18 @@
       { term: "PM 9-12", def: "NSA/CSS Policy Manual on routine sanitization of IS storage media prior to disposal or recycling." },
       { term: "CMMC", def: "Cybersecurity Maturity Model Certification — often parallel track when CUI is handled alongside other data." },
       { term: "Distroless / minimal image", def: "Container images with only runtime essentials — smaller transfer size and CVE surface across the diode." },
+      { term: "DCSA", def: "Defense Counterintelligence and Security Agency — DoD agency for personnel vetting, NISP industrial security, CI/insider-threat support, and security training. Reports to USD(I&S)." },
+      { term: "NISP", def: "National Industrial Security Program — executive-branch program (EO 12829) for protecting classified information held by industry." },
+      { term: "NISPOM", def: "National Industrial Security Program Operating Manual — requirements for cleared contractors, codified at 32 CFR Part 117." },
+      { term: "CSA / CSO", def: "Cognizant Security Agency / Cognizant Security Office — CSA sets NISP policy for its equities; CSO (often DCSA) performs contractor oversight." },
+      { term: "FCL", def: "Facility Clearance — administrative determination that a company facility is eligible to access classified information at a stated level." },
+      { term: "FOCI", def: "Foreign Ownership, Control, or Influence — condition that can bar or condition an FCL until mitigated." },
+      { term: "NAO", def: "NISP Authorization Office — DCSA office that authorizes contractor information systems under the NISP." },
+      { term: "CDSE", def: "Center for Development of Security Excellence — DCSA security education and certification center serving DoD and NISP industry." },
+      { term: "DITMAC", def: "DoD Insider Threat Management and Analysis Center — enterprise insider-threat analysis hub aligned under DCSA CI/insider-threat mission." },
+      { term: "NBIS", def: "National Background Investigation Services — enterprise IT for federal background investigations operated in the DCSA personnel-vetting mission." },
+      { term: "Continuous Vetting", def: "Ongoing automated checks after initial clearance/suitability decisions; replaces periodic reinvestigation-only models in Trusted Workforce 2.0 themes." },
+      { term: "NISS", def: "National Industrial Security System — enterprise portal ecosystem cleared industry uses to transact NISP actions with DCSA." },
     ],
 
     reading: [
@@ -1901,6 +2312,11 @@
       { title: "CDSE — Intro to DoD Zero Trust", org: "CDSE", why: "Accessible student-oriented ZT overview", url: "https://www.cdse.edu/Portals/124/Documents/student-guides/CS125-guide.pdf" },
       { title: "DLA Disposition Services — electronics turn-in", org: "DLA", why: "Lifecycle/turn-in toolbox themes for retired equipment", url: "https://www.dla.mil/Disposition-Services/DDSR/Property-Turn-In/Turn-In-Toolbox/Electronics-and-Communications-Equipment/Computers/" },
       { title: "NCCoE — data classification practices", org: "NIST NCCoE", why: "Labeling and classification program thinking", url: "https://www.nccoe.nist.gov/sites/default/files/legacy-files/data-classification-project-description-final.pdf" },
+      { title: "DCSA — About Us", org: "DCSA", why: "Official mission framing: personnel vetting, industrial security, CI, training", url: "https://www.dcsa.mil/About-Us/" },
+      { title: "DCSA — Operating Components", org: "DCSA", why: "Directorate / mission-center breakdown including Field Operations", url: "https://www.dcsa.mil/About-Us/Operating-Components/" },
+      { title: "32 CFR Part 117 (NISPOM)", org: "eCFR", why: "Binding industrial-security rule for cleared contractors", url: "https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-D/part-117" },
+      { title: "DoDD 5105.42 — DCSA", org: "DoD / WHS", why: "Charter: mission, USD(I&S) control, NISP CSO role", url: "https://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodd/510542p.pdf" },
+      { title: "CDSE — Security Awareness Hub", org: "CDSE", why: "Training portal for DoD and NISP industry security roles", url: "https://www.cdse.edu/" },
     ],
 
 
@@ -1945,6 +2361,13 @@
       { n: 33, title: "DoD 5220-related clearing/sanitization matrix (hosted PDF)", org: "Secondary host", kind: "secondary", topic: "Lifecycle", note: "Historical/hosted matrix themes; validate against current program authority.", url: "http://www.tri-magnetics.com/pdf/DOD_5220.pdf" },
       { n: 34, title: "NSA Evaluated Products Lists (EPLs) — media destruction", org: "NSA", kind: "official", topic: "Lifecycle", note: "Equipment lists for sanitizing/destroying media to NSA performance requirements.", url: "https://www.nsa.gov/Resources/Media-Destruction-Guidance/NSA-Evaluated-Products-Lists-EPLs/" },
       { n: 35, title: "NSA Policy Manual 9-12 explainer", org: "Secondary", kind: "secondary", topic: "Lifecycle", note: "Secondary summary of PM 9-12 media-class methods; prefer primary PM text.", url: "https://www.mansfieldtech.us/data-destruction-standards/nsa-rules-for-data-destruction" },
+      { n: 36, title: "DCSA About Us", org: "DCSA", kind: "official", topic: "DCSA / NISP", note: "Agency role: personnel vetting, industrial security, CI/insider threat, security training.", url: "https://www.dcsa.mil/About-Us/" },
+      { n: 37, title: "DCSA Operating Components", org: "DCSA", kind: "official", topic: "DCSA / NISP", note: "Industrial Security, Personnel Vetting, CI/Insider Threat, Security Training, Field Operations.", url: "https://www.dcsa.mil/About-Us/Operating-Components/" },
+      { n: 38, title: "DCSA Field Operations", org: "DCSA", kind: "official", topic: "DCSA / NISP", note: "Four-region field structure integrating BI, IS, CS, and CI missions.", url: "https://www.dcsa.mil/Field-Operations/" },
+      { n: 39, title: "32 CFR Part 117 — NISPOM", org: "eCFR", kind: "official", topic: "DCSA / NISP", note: "National Industrial Security Program Operating Manual as federal regulation.", url: "https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-D/part-117" },
+      { n: 40, title: "DoDD 5105.42 Defense Counterintelligence and Security Agency", org: "DoD / WHS", kind: "official", topic: "DCSA / NISP", note: "Charter directive: USD(I&S) control, NISP administration, CI element designation.", url: "https://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodd/510542p.pdf" },
+      { n: 41, title: "CDSE About", org: "CDSE / DCSA", kind: "official", topic: "DCSA / NISP", note: "Center for Development of Security Excellence mission and audience.", url: "https://securityawareness.dcsa.mil/about.html" },
+      { n: 42, title: "DCSA Five Year Retrospective (PDF)", org: "DCSA", kind: "official", topic: "DCSA / NISP", note: "Agency history, five mission directorates framing, scale metrics as of report date.", url: "https://www.dcsa.mil/Portals/128/Documents/about/err/DCSA%20Five%20Year%20Retrospective%20Report_032025_vFinal.pdf" },
     ],
 
     metrics: [
@@ -2135,6 +2558,7 @@
     { id: "stigs", label: "DISA STIGs", ico: "⬡", section: "Catalogs" },
     { id: "zt", label: "Zero Trust pillars", ico: "✧", section: "Catalogs" },
     { id: "crosswalk", label: "Crosswalk", ico: "⇄", section: "Maps" },
+    { id: "dcsa", label: "DCSA & NISP", ico: "⌖", section: "Maps" },
     { id: "rmf", label: "RMF & cATO", ico: "↻", section: "Maps" },
     { id: "assessor", label: "Study checklist", ico: "☑", section: "Maps" },
     { id: "pitfalls", label: "Pitfalls & failures", ico: "⚠", section: "Builder" },
@@ -2473,6 +2897,74 @@
     <rect x="630" y="${r.y}" width="230" height="36" rx="8" fill="#052e1c" stroke="#34d399"/>
     <text x="745" y="${r.y + 23}" text-anchor="middle" fill="#bbf7d0" font-family="Segoe UI,system-ui,sans-serif" font-size="11">High-side only · pinned</text>
   `).join("")}
+</svg>`
+    },
+
+    {
+      id: "dcsa-org",
+      title: "DCSA org & dotted-line map",
+      blurb: "Solid line to USD(I&S); five operating components; dotted partners around NISP and vetting.",
+      caption: "Study model. Solid = command/control. Dotted = policy, peer CSA, GCA, STIG, or reform partners.",
+      full: true,
+      svg: () => `
+<svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DCSA organization and dotted-line partners">
+  <rect width="960" height="520" rx="12" fill="#0f172a"/>
+  <defs>
+    <marker id="ds" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#38bdf8"/></marker>
+    <marker id="dd" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#a78bfa"/></marker>
+  </defs>
+  <text x="24" y="28" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="11" font-weight="600" letter-spacing="0.06em">DCSA STUDY MAP · SOLID = COMMAND · DOTTED = COORDINATION / PEER POLICY</text>
+
+  <rect x="360" y="44" width="240" height="44" rx="10" fill="#151f35" stroke="#38bdf8" stroke-width="2"/>
+  <text x="480" y="62" text-anchor="middle" fill="#38bdf8" font-family="ui-monospace,monospace" font-size="10" font-weight="700">SOLID LINE</text>
+  <text x="480" y="78" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="700">USD(I&amp;S)</text>
+
+  <line x1="480" y1="88" x2="480" y2="118" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#ds)"/>
+
+  <rect x="330" y="118" width="300" height="52" rx="12" fill="#0ea5e9" opacity="0.95"/>
+  <text x="480" y="140" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="15" font-weight="800">DCSA Director</text>
+  <text x="480" y="158" text-anchor="middle" fill="#0b1220" font-family="Segoe UI,system-ui,sans-serif" font-size="11">Quantico HQ · Defense Agency</text>
+
+  <line x1="480" y1="170" x2="480" y2="198" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="100" y1="198" x2="860" y2="198" stroke="#38bdf8" stroke-width="2"/>
+
+  ${[
+    { x: 24, title: "Personnel Vetting", sub: "CAS · NBIS · CV", c: "#38bdf8" },
+    { x: 208, title: "Industrial Security", sub: "NAO · FOCI · FCL", c: "#38bdf8" },
+    { x: 392, title: "CI & Insider Threat", sub: "DITMAC · CI FS", c: "#22d3ee" },
+    { x: 576, title: "Security Training", sub: "CDSE · NCCA", c: "#22d3ee" },
+    { x: 760, title: "Field Operations", sub: "4 regions · ISR/ISSP", c: "#a78bfa" },
+  ].map(b => `
+    <line x1="${b.x + 88}" y1="198" x2="${b.x + 88}" y2="220" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="${b.x}" y="220" width="176" height="70" rx="10" fill="#151f35" stroke="${b.c}" stroke-width="1.6"/>
+    <text x="${b.x + 88}" y="248" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">${b.title}</text>
+    <text x="${b.x + 88}" y="268" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">${b.sub}</text>
+  `).join("")}
+
+  <text x="24" y="322" fill="#a78bfa" font-family="ui-monospace,monospace" font-size="10" font-weight="700">DOTTED-LINE PARTNERS</text>
+
+  ${[
+    { x: 24, t: "NISP CSAs", s: "DoD · DOE · NRC · ODNI · DHS" },
+    { x: 208, t: "ISOO / NISPOM", s: "32 CFR 117 policy loop" },
+    { x: 392, t: "GCAs", s: "Contract sponsors" },
+    { x: 576, t: "DISA STIGs", s: "Product baselines" },
+    { x: 760, t: "TW 2.0 EAs", s: "ODNI SEA · OPM Suit." },
+  ].map(b => `
+    <rect x="${b.x}" y="336" width="176" height="58" rx="10" fill="#111a2e" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="${b.x + 88}" y="358" text-anchor="middle" fill="#e8eef9" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="700">${b.t}</text>
+    <text x="${b.x + 88}" y="376" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="10">${b.s}</text>
+  `).join("")}
+
+  <line x1="112" y1="290" x2="112" y2="336" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dd)"/>
+  <line x1="296" y1="290" x2="296" y2="336" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dd)"/>
+  <line x1="480" y1="290" x2="480" y2="336" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dd)"/>
+  <line x1="664" y1="290" x2="664" y2="336" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dd)"/>
+  <line x1="848" y1="290" x2="848" y2="336" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dd)"/>
+
+  <rect x="24" y="416" width="912" height="78" rx="10" fill="#151f35" stroke="#243049"/>
+  <text x="40" y="440" fill="#94a3b8" font-family="Segoe UI,system-ui,sans-serif" font-size="12">Also on the dotted map: SAP carve-outs (alternate cognizance), NISS industry portals, CMMC/CUI track (parallel acquisition lane), OPM/NBIB transfer lineage, DIA→NCCA history.</text>
+  <text x="40" y="462" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="11">Educational illustration — confirm current org names and authorities on dcsa.mil and in DoDD 5105.42 / 32 CFR 117.</text>
+  <text x="40" y="480" fill="#64748b" font-family="Segoe UI,system-ui,sans-serif" font-size="11">Core missions: Personnel Vetting + Industrial Security. Support: CI/Insider Threat + Security Training. Integrate: Field Operations.</text>
 </svg>`
     },
   ];
@@ -2859,6 +3351,7 @@
         if (v.id === "reading") count = DATA.reading.length;
         if (v.id === "sources") count = DATA.sources.length;
         if (v.id === "deck") count = DATA.slides.length;
+        if (v.id === "dcsa") count = DATA.dcsa.directorates.length + DATA.dcsa.dottedLines.length;
         html += `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">
           <span class="ico">${v.ico}</span>${esc(v.label)}
           ${count !== "" ? `<span class="count">${count}</span>` : ""}
@@ -2946,7 +3439,7 @@
       <div class="page-header">
         <div class="breadcrumb">LEARNING RESOURCE · EDUCATIONAL USE</div>
         <h1>${esc(DATA.meta.title)}</h1>
-        <p>Browse NIST SP 800-53 Rev 5 families, DISA STIG stacks, DoD Zero Trust pillars, and RMF/cATO <strong style="color:var(--text)">concepts</strong> using a generic <strong style="color:var(--text)">classified AI lab</strong> scenario with a strict <em>data-in / no-data-out</em> posture. Built for study and literacy—not a full STIG dump or accreditation package.</p>
+        <p>Browse NIST SP 800-53 Rev 5 families, DISA STIG stacks, DCSA / NISP industrial security, DoD Zero Trust pillars, and RMF/cATO <strong style="color:var(--text)">concepts</strong> using a generic <strong style="color:var(--text)">classified AI lab</strong> scenario with a strict <em>data-in / no-data-out</em> posture. Built for study and literacy—not a full STIG dump or accreditation package.</p>
       </div>
       <div class="hint" style="margin-bottom:18px">
         <strong>Learning resource.</strong> ${esc(DATA.meta.disclaimer)}
@@ -2971,6 +3464,7 @@
           <button class="card" data-view="playbook"><div class="card-top"><h3>Lab builder playbook</h3></div><p>Phased path for standing up a modern air-gapped AI lab — scope, ingress, platform, compute, authorize, lifecycle.</p></button>
           <button class="card" data-view="diagrams"><div class="card-top"><h3>Diagrams</h3></div><p>Visual study maps: compliance stack, air-gap flow, RMF, Zero Trust, artifact pipelines.</p></button>
           <button class="card" data-view="pitfalls"><div class="card-top"><h3>Pitfalls & failures</h3></div><p>Common anti-patterns and outage scenarios before they become expensive lessons.</p></button>
+          <button class="card" data-view="dcsa"><div class="card-top"><h3>DCSA & NISP</h3></div><p>Agency breakdown, five operating components, and dotted-line partners (CSAs, ISOO, GCAs, DISA STIGs, Trusted Workforce).</p></button>
         </div>
       </div>
       <div style="margin-top:22px">
@@ -3517,6 +4011,156 @@
     `;
   }
 
+
+  function dcsaDirDetail(d) {
+    openDetail(`
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">×</button>
+      <div class="detail-id">DCSA · ${esc(d.code)}</div>
+      <h2>${esc(d.name)}</h2>
+      ${d.aka ? `<p style="color:var(--text-dim);font-size:12.5px;margin-top:4px">${esc(d.aka)}</p>` : ""}
+      <div class="tags" style="margin-top:10px">
+        <span class="tag">${esc(d.role === "core" ? "Core mission" : d.role === "support" ? "Supporting mission" : "Field integration")}</span>
+      </div>
+      <div class="detail-section">
+        <h4>What it does</h4>
+        <p>${esc(d.summary)}</p>
+        <ul>${d.does.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+      </div>
+      <div class="detail-section">
+        <h4>Subcomponents & named pieces</h4>
+        <ul>${d.subcomponents.map(s => `<li><strong style="color:var(--text)">${esc(s.name)}</strong> — ${esc(s.blurb)}</li>`).join("")}</ul>
+      </div>
+      <div class="detail-section">
+        <h4>Classified AI lab angle</h4>
+        <p>${esc(d.lab)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Related study views</h4>
+        <div>${(d.links || []).map(id =>
+          `<button class="map-link" data-view="${esc(id)}">${esc(VIEWS.find(v => v.id === id)?.label || id)}</button>`
+        ).join("")}</div>
+      </div>
+    `);
+    $("#detail").querySelectorAll("[data-view]").forEach(el => {
+      el.addEventListener("click", () => { closeDetail(); state.view = el.dataset.view; render(); });
+    });
+  }
+
+  function dcsaDottedDetail(item) {
+    openDetail(`
+      <button class="detail-close" onclick="closeDetail()" aria-label="Close">×</button>
+      <div class="detail-id">${item.kind === "solid" ? "SOLID LINE" : "DOTTED LINE"}</div>
+      <h2>${esc(item.name)}</h2>
+      <div class="tags" style="margin-top:10px">
+        <span class="tag">${esc(item.relation)}</span>
+      </div>
+      <div class="detail-section">
+        <h4>Relationship</h4>
+        <p>${esc(item.why)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Study takeaway</h4>
+        <p>${esc(item.study)}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Jump</h4>
+        <div>
+          <button class="map-link" data-view="dcsa">Back to DCSA map</button>
+          <button class="map-link" data-view="sources">Sources</button>
+          <button class="map-link" data-view="reading">Reading list</button>
+        </div>
+      </div>
+    `);
+    $("#detail").querySelectorAll("[data-view]").forEach(el => {
+      el.addEventListener("click", () => { closeDetail(); state.view = el.dataset.view; render(); });
+    });
+  }
+
+  function renderDcsa() {
+    const q = (state.q || "").toLowerCase();
+    const dirs = DATA.dcsa.directorates.filter(d =>
+      !q || [d.name, d.code, d.summary, d.lab, d.aka, ...(d.does || []), ...(d.subcomponents || []).flatMap(s => [s.name, s.blurb])].join(" ").toLowerCase().includes(q)
+    );
+    const dots = DATA.dcsa.dottedLines.filter(d =>
+      !q || [d.name, d.relation, d.why, d.study, d.kind].join(" ").toLowerCase().includes(q)
+    );
+    const o = DATA.dcsa.overview;
+    const roleLabel = (r) => r === "core" ? "Core mission" : r === "support" ? "Supporting" : "Field integration";
+
+    return `
+      <div class="page-header">
+        <div class="breadcrumb">DCSA · NISP · INDUSTRIAL SECURITY</div>
+        <h1>${esc(o.short)} — agency map</h1>
+        <p>${esc(o.name)} sits under <strong style="color:var(--text)">${esc(o.reportsTo)}</strong>. ${esc(o.role)}</p>
+      </div>
+      <div class="hint" style="margin-bottom:18px">
+        <strong>Learning resource.</strong> ${esc(o.note)} Formed ${esc(o.formed)}. HQ: ${esc(o.hq)}.
+      </div>
+      <div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+        <div class="stat"><div class="n">${DATA.dcsa.directorates.length}</div><div class="l">Operating components</div></div>
+        <div class="stat"><div class="n">${DATA.dcsa.dottedLines.length}</div><div class="l">Solid / dotted partners</div></div>
+        <div class="stat"><div class="n">${DATA.dcsa.nisp.items.length}</div><div class="l">NISP stack cards</div></div>
+        <div class="stat"><div class="n">${DATA.dcsa.labTouchpoints.length}</div><div class="l">Lab touchpoints</div></div>
+      </div>
+      <div class="hint">${esc(o.scale)}</div>
+
+      ${renderDiagramStrip(["dcsa-org"])}
+
+      <div class="dcsa-legend">
+        <span><i></i> Solid line — authority, direction, and control (USD(I&amp;S) → DCSA)</span>
+        <span><i class="dotted"></i> Dotted line — peer policy, sponsorship, product baselines, or reform partners</span>
+      </div>
+
+      <div class="section-kicker">Operating components</div>
+      <div class="dcsa-dir-grid">
+        ${dirs.map(d => `
+          <button class="dcsa-dir role-${esc(d.role)}" data-dcsa-dir="${esc(d.id)}">
+            <div class="code">${esc(d.code)}</div>
+            <h3>${esc(d.name)}</h3>
+            <p>${esc(d.summary)}</p>
+            <span class="role-pill">${esc(roleLabel(d.role))}</span>
+          </button>
+        `).join("") || `<div class="empty">No directorates match your search.</div>`}
+      </div>
+
+      <div class="section-kicker">Solid and dotted-line items</div>
+      <p style="font-size:13px;color:var(--text-muted);margin:-4px 0 12px">Click a row for the relationship and the study takeaway. The solid USD(I&amp;S) line is listed first so the command path stays obvious next to the coordination partners.</p>
+      <div class="dotted-list">
+        ${dots.map(item => `
+          <button class="dotted-row" data-dcsa-dot="${esc(item.id)}">
+            <div class="kind ${item.kind === "solid" ? "solid" : ""}">${item.kind === "solid" ? "SOLID" : "DOTTED"}</div>
+            <div>
+              <h3>${esc(item.name)}</h3>
+              <p><strong style="color:var(--text)">${esc(item.relation)}</strong> — ${esc(item.why)}</p>
+            </div>
+          </button>
+        `).join("") || `<div class="empty">No partner rows match your search.</div>`}
+      </div>
+
+      <div class="section-kicker">NISP stack</div>
+      <div class="nisp-grid">
+        ${DATA.dcsa.nisp.items.map(i => `
+          <div class="nisp-card"><h4>${esc(i.name)}</h4><p>${esc(i.blurb)}</p></div>
+        `).join("")}
+      </div>
+
+      <div class="section-kicker">How DCSA touches the classified AI lab scenario</div>
+      <div class="touch-grid">
+        ${DATA.dcsa.labTouchpoints.map(t => `
+          <div class="touch-card"><h4>${esc(t.title)}</h4><p>${esc(t.body)}</p></div>
+        `).join("")}
+      </div>
+
+      <div class="source-bar" style="margin-top:22px">
+        Primary references: <a href="https://www.dcsa.mil/About-Us/" target="_blank" rel="noopener">dcsa.mil About</a>,
+        <a href="https://www.dcsa.mil/About-Us/Operating-Components/" target="_blank" rel="noopener">Operating Components</a>,
+        <a href="https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-D/part-117" target="_blank" rel="noopener">32 CFR 117</a>,
+        <a href="https://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodd/510542p.pdf" target="_blank" rel="noopener">DoDD 5105.42</a>.
+        <button type="button" class="map-link" data-view="sources" style="margin-left:8px">Open all sources →</button>
+      </div>
+    `;
+  }
+
   function renderRMF() {
     return `
       <div class="page-header">
@@ -3589,6 +4233,12 @@
     const controls = DATA.controls.filter(c => matchQ(c, ["id","title","summary","lab","check","family"]));
     const stigs = DATA.stigs.filter(s => matchQ(s, ["name","summary","products"]));
     const families = DATA.families.filter(f => matchQ(f, ["id","name","desc"]));
+    const dcsaDirs = DATA.dcsa.directorates.filter(d =>
+      [d.name, d.code, d.summary, d.lab, ...(d.subcomponents || []).map(s => s.name)].join(" ").toLowerCase().includes(q)
+    );
+    const dcsaDots = DATA.dcsa.dottedLines.filter(d =>
+      [d.name, d.relation, d.why, d.study].join(" ").toLowerCase().includes(q)
+    );
     if (state.view !== "home" && state.view !== "controls") return null;
     // only hijack main content when on home with query
     if (state.view !== "home") return null;
@@ -3596,7 +4246,7 @@
       <div class="page-header">
         <div class="breadcrumb">SEARCH</div>
         <h1>Results for “${esc(state.q)}”</h1>
-        <p>${controls.length} controls · ${families.length} families · ${stigs.length} STIG stacks</p>
+        <p>${controls.length} controls · ${families.length} families · ${stigs.length} STIG stacks · ${dcsaDirs.length + dcsaDots.length} DCSA</p>
       </div>
       ${controls.length ? `<h2 style="font-size:14px;margin:16px 0 10px;color:var(--text-muted)">Controls</h2><div class="grid">${controls.map(controlCard).join("")}</div>` : ""}
       ${families.length ? `<h2 style="font-size:14px;margin:20px 0 10px;color:var(--text-muted)">Families</h2><div class="family-list">${families.map(f => `
@@ -3608,7 +4258,22 @@
       ${stigs.length ? `<h2 style="font-size:14px;margin:20px 0 10px;color:var(--text-muted)">STIGs</h2><div class="grid">${stigs.map(s => `
         <button class="card" data-stig="${s.id}"><div class="card-top"><h3>${esc(s.name)}</h3></div><p>${esc(s.summary)}</p></button>
       `).join("")}</div>` : ""}
-      ${!controls.length && !families.length && !stigs.length ? `<div class="empty">No matches. Try AC-4, diode, Kubernetes, SBOM, cATO…</div>` : ""}
+      ${(dcsaDirs.length || dcsaDots.length) ? `<h2 style="font-size:14px;margin:20px 0 10px;color:var(--text-muted)">DCSA / NISP</h2>
+        <div class="grid" style="margin-bottom:12px">
+          <button class="card" data-view="dcsa"><div class="card-top"><h3>Open DCSA & NISP map</h3></div><p>${dcsaDirs.length} components · ${dcsaDots.length} partners match “${esc(state.q)}”</p></button>
+        </div>
+        <div class="dcsa-dir-grid">${dcsaDirs.map(d => `
+          <button class="dcsa-dir role-${esc(d.role)}" data-dcsa-dir="${esc(d.id)}">
+            <div class="code">${esc(d.code)}</div>
+            <h3>${esc(d.name)}</h3>
+            <p>${esc(d.summary)}</p>
+          </button>`).join("")}</div>
+        <div class="dotted-list" style="margin-top:12px">${dcsaDots.map(item => `
+          <button class="dotted-row" data-dcsa-dot="${esc(item.id)}">
+            <div class="kind ${item.kind === "solid" ? "solid" : ""}">${item.kind === "solid" ? "SOLID" : "DOTTED"}</div>
+            <div><h3>${esc(item.name)}</h3><p>${esc(item.relation)}</p></div>
+          </button>`).join("")}</div>` : ""}
+      ${!controls.length && !families.length && !stigs.length && !dcsaDirs.length && !dcsaDots.length ? `<div class="empty">No matches. Try AC-4, diode, Kubernetes, SBOM, cATO, DCSA, NISP, FOCI…</div>` : ""}
     `;
   }
 
@@ -3629,6 +4294,7 @@
         stigs: renderStigs,
         zt: renderZT,
         crosswalk: renderCrosswalk,
+        dcsa: renderDcsa,
         rmf: renderRMF,
         assessor: renderAssessor,
         pitfalls: renderPitfalls,
@@ -3644,6 +4310,7 @@
       state.view === "diagrams" ? `${DIAGRAMS.length} diagrams` :
       state.view === "deck" ? `slide ${state.deckSlide + 1}/${DATA.slides.length}` :
       state.view === "sources" ? `${DATA.sources.length} sources` :
+      state.view === "dcsa" ? `${DATA.dcsa.directorates.length} components · ${DATA.dcsa.dottedLines.length} partners` :
       state.q ? `q: ${state.q}` : DATA.meta.baseline.split("·")[0].trim();
 
     // wire interactions
@@ -3694,6 +4361,18 @@
       el.addEventListener("click", () => {
         const p = DATA.pillars.find(x => x.id === el.dataset.pillar);
         if (p) pillarDetail(p);
+      });
+    });
+    $("#main").querySelectorAll("[data-dcsa-dir]").forEach(el => {
+      el.addEventListener("click", () => {
+        const d = DATA.dcsa.directorates.find(x => x.id === el.dataset.dcsaDir);
+        if (d) dcsaDirDetail(d);
+      });
+    });
+    $("#main").querySelectorAll("[data-dcsa-dot]").forEach(el => {
+      el.addEventListener("click", () => {
+        const d = DATA.dcsa.dottedLines.find(x => x.id === el.dataset.dcsaDot);
+        if (d) dcsaDottedDetail(d);
       });
     });
     $("#main").querySelectorAll("[data-layer]").forEach(el => {
